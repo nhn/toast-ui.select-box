@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": "umd",
+        "targets": {
+          "browsers": ["last 2 versions", "ie >= 8"]
+        },
+        "loose": true
+      }
+    ]
+  ],
+  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+}
