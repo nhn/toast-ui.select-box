@@ -24,7 +24,7 @@ export default class SelectBox {
    *   @param {boolean} [options.required=false] - whether an option should be required or not
    *   @param {name} [options.name] - name of the select
    */
-  constructor(container, { placeholder, ...options }) {
+  constructor(container, { placeholder, disabled = false, ...options }) {
     /**
      * @type {HTMLElement}
      * @private
@@ -42,22 +42,59 @@ export default class SelectBox {
      * @type {Input}
      * @private
      */
-    this.input = new Input({ placeholder });
+    this.input = new Input({ placeholder, disabled });
 
     /**
      * @type {Dropdown}
      * @private
      */
-    this.dropdown = new Dropdown(options);
+    this.dropdown = new Dropdown({ disabled, ...options });
 
     this.appendElements();
+    this.initialize();
     this.container.appendChild(this.el);
   }
 
+  /**
+   * Append input, dropdown, and select
+   * @private
+   */
   appendElements() {
     this.el.appendChild(this.input.el);
     this.el.appendChild(this.dropdown.el);
     this.el.appendChild(this.dropdown.nativeEl);
+  }
+
+  /**
+   * Initialize
+   * @private
+   */
+  initialize() {
+    this.changeDisabled(this.disabled);
+  }
+
+  /**
+   * Make disable or enable a select box
+   * @param {boolean} disabled - if true, a select box is disabled. if false, a select box is enabled.
+   * @private
+   */
+  changeDisabled(disabled) {
+    this.input.changeDisabled(disabled);
+    this.dropdown.changeDisabled(disabled);
+  }
+
+  /**
+   * Disable a select box
+   */
+  disable() {
+    this.changeDisabled(true);
+  }
+
+  /**
+   * Enable a select box
+   */
+  enable() {
+    this.changeDisabled(false);
   }
 
   /**

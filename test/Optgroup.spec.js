@@ -1,5 +1,6 @@
 import Optgroup from '@src/Optgroup';
 import Option from '@src/Option';
+import { DISABLED_CLASS_NAME } from '@src/statics';
 
 describe('Optgroup', () => {
   let optgroup;
@@ -34,5 +35,17 @@ describe('Optgroup', () => {
 
     expect(options.length).toBe(2);
     expect(options[0] instanceof Option).toBe(true);
+  });
+
+  it('should disable and enable an optgroup.', () => {
+    optgroup.disable();
+    expect(optgroup.disabled).toBe(true);
+    expect(optgroup.nativeEl.disabled).toBe(true);
+    expect(optgroup.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(true);
+
+    optgroup.enable();
+    expect(optgroup.disabled).toBe(false);
+    expect(optgroup.nativeEl.disabled).toBe(false);
+    expect(optgroup.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(false);
   });
 });

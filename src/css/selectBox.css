@@ -1,0 +1,40 @@
+
+.hidden {
+  /* display: none; */
+  background: gray; /* for test */
+}
+
+.disabled {
+  text-decoration-line: line-through; /* for test */
+}
+
+.input {
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.placeholder {
+  display: inline-block;
+  margin: 0;
+}
+
+.ico-select {
+  display: block;
+  float: right;
+  background: url(../img/ico_tui_select.png) left center no-repeat;
+  width: 8px;
+  overflow: hidden;
+  text-indent: 100%;
+}
+
+.ico-select.open {
+  background-position: right center;
+}
+
+.dropdown,
+.optgroup {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

@@ -1,6 +1,7 @@
 import Dropdown from '@src/Dropdown';
 import Optgroup from '@src/Optgroup';
 import Option from '@src/Option';
+import { DISABLED_CLASS_NAME } from '@src/statics';
 
 describe('Dropdown', () => {
   let dropdown;
@@ -44,5 +45,17 @@ describe('Dropdown', () => {
     expect(options.length).toBe(2);
     expect(options[0] instanceof Optgroup).toBe(true);
     expect(options[1] instanceof Option).toBe(true);
+  });
+
+  it('should disable and enable a dropdown.', () => {
+    dropdown.changeDisabled(true);
+    expect(dropdown.disabled).toBe(true);
+    expect(dropdown.nativeEl.disabled).toBe(true);
+    expect(dropdown.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(true);
+
+    dropdown.changeDisabled(false);
+    expect(dropdown.disabled).toBe(false);
+    expect(dropdown.nativeEl.disabled).toBe(false);
+    expect(dropdown.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(false);
   });
 });

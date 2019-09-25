@@ -3,8 +3,10 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
+import addClass from 'tui-code-snippet/domUtil/addClass';
+import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import { DROPDOWN_CLASS_NAME, HIDDEN_CLASS_NAME } from './statics';
+import { DROPDOWN_CLASS_NAME, HIDDEN_CLASS_NAME, DISABLED_CLASS_NAME } from './statics';
 import Optgroup from './Optgroup';
 import Option from './Option';
 
@@ -18,8 +20,8 @@ export default class Dropdown {
    * @constructor
    * @param {object} options - options
    *   @param {array<object>} options.data - data for optgroups and options
-   *   @param {boolean} [options.disabled=false] - whether an option should be disabled or not
-   *   @param {boolean} [options.required=false] - whether an option should be required or not
+   *   @param {boolean} [options.disabled=false] - whether a dropdown should be disabled or not
+   *   @param {boolean} [options.required=false] - whether a dropdown should be required or not
    *   @param {name} [options.name] - name of the select
    */
   constructor({ data, disabled = false, required = false, name }) {
@@ -57,16 +59,40 @@ export default class Dropdown {
     });
 
     this.appendOptions();
+    this.initialize();
   }
 
   /**
    * Append options and optgroups to a dropdown
+   * @private
    */
   appendOptions() {
     this.options.forEach(option => {
       this.el.appendChild(option.el);
       this.nativeEl.appendChild(option.nativeEl);
     });
+  }
+
+  /**
+   * Initialize
+   * @private
+   */
+  initialize() {
+    this.changeDisabled(this.disabled);
+  }
+
+  /**
+   * Make disable or enable a dropdown
+   * @param {boolean} disabled - if true, a dropdown is disabled. if false, a dropdown is enabled.
+   * @private
+   */
+  changeDisabled(disabled) {
+    this.disabled = this.nativeEl.disabled = disabled;
+    if (disabled) {
+      addClass(this.el, DISABLED_CLASS_NAME);
+    } else {
+      removeClass(this.el, DISABLED_CLASS_NAME);
+    }
   }
 
   /**

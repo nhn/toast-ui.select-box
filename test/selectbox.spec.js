@@ -44,4 +44,18 @@ describe('SelectBox', () => {
     expect(container.querySelectorAll(`.${OPTGROUP_CLASS_NAME}`).length).toBe(1);
     expect(container.querySelectorAll(`.${OPTION_CLASS_NAME}`).length).toBe(3);
   });
+
+  it('should disable and enable a select box.', () => {
+    const { input, dropdown } = selectbox;
+    spyOn(input, 'changeDisabled');
+    spyOn(dropdown, 'changeDisabled');
+
+    selectbox.disable();
+    expect(input.changeDisabled).toHaveBeenCalledWith(true);
+    expect(dropdown.changeDisabled).toHaveBeenCalledWith(true);
+
+    selectbox.enable();
+    expect(input.changeDisabled).toHaveBeenCalledWith(false);
+    expect(dropdown.changeDisabled).toHaveBeenCalledWith(false);
+  });
 });
