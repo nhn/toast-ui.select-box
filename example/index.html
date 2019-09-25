@@ -3,10 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <title>Development</title>
-    <link href="../dist/toastui-select-box.css" rel="stylesheet" />
+    <!-- <link href="../dist/toastui-select-box.css" rel="stylesheet" /> -->
   </head>
   <body>
-    <div id="container"></div>
+    <div id="select-box"></div>
     <script type="text/javascript" src="../dist/toastui-select-box.js"></script>
+    <script class="code-js">
+      var selectBox = new toastui.SelectBox('#select-box', {
+        placeholder: 'Please select an option.',
+        data: [
+          {
+            text: '과일',
+            data: [
+              {
+                text: '사과',
+                value: 'apple'
+              }, 
+              {
+                text: '바나나',
+                value: 'banana'
+              }
+            ]
+          },
+          {
+            text: '없음',
+            value: 'none'
+          }
+        ]
+      });
+    </script>
   </body>
 </html>

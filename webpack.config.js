@@ -28,11 +28,6 @@ module.exports = (env, { mode = 'development' }) => {
       publicPath: 'dist',
       filename: name + (isProduction ? '.min.js' : '.js')
     },
-    resolve: {
-      alias: {
-        '@src': path.resolve(__dirname, './src/js')
-      }
-    },
     module: {
       rules: [
         {
