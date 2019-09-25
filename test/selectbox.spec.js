@@ -58,4 +58,18 @@ describe('SelectBox', () => {
     expect(input.changeDisabled).toHaveBeenCalledWith(false);
     expect(dropdown.changeDisabled).toHaveBeenCalledWith(false);
   });
+
+  it('should open and close a dropdown list.', () => {
+    const { input, dropdown } = selectbox;
+    spyOn(input, 'changeOpened');
+    spyOn(dropdown, 'changeOpened');
+
+    selectbox.open();
+    expect(input.changeOpened).toHaveBeenCalledWith(true);
+    expect(dropdown.changeOpened).toHaveBeenCalledWith(true);
+
+    selectbox.close();
+    expect(input.changeOpened).toHaveBeenCalledWith(false);
+    expect(dropdown.changeOpened).toHaveBeenCalledWith(false);
+  });
 });

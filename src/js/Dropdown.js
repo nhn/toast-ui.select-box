@@ -96,6 +96,19 @@ export default class Dropdown {
   }
 
   /**
+   * Open or close a dropdown list
+   * @param {boolean} opened - if true, a dropdown opens. if false, a dropdown closes.
+   * @private
+   */
+  changeOpened(opened) {
+    if (opened) {
+      removeClass(this.el, HIDDEN_CLASS_NAME);
+    } else {
+      addClass(this.el, HIDDEN_CLASS_NAME);
+    }
+  }
+
+  /**
    * Destory an optgroup
    */
   destroy() {

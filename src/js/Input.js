@@ -10,6 +10,7 @@ import { CSS_PREFIX, INPUT_CLASS_NAME, DISABLED_CLASS_NAME } from './statics';
 
 const PLACEHOLDER_CLASS_NAME = `${CSS_PREFIX}-placeholder`;
 const ICON_CLASS_NAME = `${CSS_PREFIX}-ico-select`;
+const OPEN_CLASS_NAME = `${CSS_PREFIX}-open`;
 
 /**
  * @class
@@ -56,8 +57,8 @@ export default class Input {
   }
 
   /**
-   * Make disable or enable a select box
-   * @param {boolean} disabled - if true, a select box is disabled. if false, a select box is enabled.
+   * Make disable or enable an input
+   * @param {boolean} disabled - if true, an input is disabled. if false, an input is enabled.
    * @private
    */
   changeDisabled(disabled) {
@@ -66,6 +67,19 @@ export default class Input {
       addClass(this.el, DISABLED_CLASS_NAME);
     } else {
       removeClass(this.el, DISABLED_CLASS_NAME);
+    }
+  }
+
+  /**
+   * Change the direction of arrow depending on whether a dropdown list is open
+   * @param {boolean} opened - if true, an arrow points upward. if false, an arrow points downward.
+   * @private
+   */
+  changeOpened(openness) {
+    if (openness) {
+      addClass(this.el, OPEN_CLASS_NAME);
+    } else {
+      removeClass(this.el, OPEN_CLASS_NAME);
     }
   }
 

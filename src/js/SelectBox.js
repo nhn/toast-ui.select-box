@@ -50,6 +50,12 @@ export default class SelectBox {
      */
     this.dropdown = new Dropdown({ disabled, ...options });
 
+    /**
+     * whether a dropdown list open
+     * @type {boolean}
+     */
+    this.opened = false;
+
     this.appendElements();
     this.initialize();
     this.container.appendChild(this.el);
@@ -95,6 +101,35 @@ export default class SelectBox {
    */
   enable() {
     this.changeDisabled(false);
+  }
+
+  /**
+   * Open a dropdown list
+   */
+  open() {
+    this.opened = true;
+    this.dropdown.changeOpened(true);
+    this.input.changeOpened(true);
+  }
+
+  /**
+   * Close a dropdown list
+   */
+  close() {
+    this.opened = false;
+    this.dropdown.changeOpened(false);
+    this.input.changeOpened(false);
+  }
+
+  /**
+   * Toggle a dropdown list
+   */
+  toggle() {
+    if (this.opened) {
+      this.close();
+    } else {
+      this.open();
+    }
   }
 
   /**

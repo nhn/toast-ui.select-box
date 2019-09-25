@@ -28,7 +28,7 @@
   text-indent: 100%;
 }
 
-.ico-select.open {
+.open > .ico-select {
   background-position: right center;
 }
 
