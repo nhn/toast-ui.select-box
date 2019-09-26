@@ -61,7 +61,7 @@ module.exports = (env, { mode = 'development' }) => {
                 sourceMap: true,
                 plugins: [
                   postcssPrefixer({
-                    prefix: `${name}-`
+                    prefix: `tui-select-box-`
                   })
                 ]
               }

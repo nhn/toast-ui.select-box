@@ -163,7 +163,7 @@ module.exports = function(config) {
                   sourceMap: true,
                   plugins: [
                     postcssPrefixer({
-                      prefix: `${name}-`
+                      prefix: `tui-select-box-`
                     })
                   ]
                 }

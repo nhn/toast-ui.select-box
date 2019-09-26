@@ -3,7 +3,7 @@
  * @author NHN. FE dev team.<dl_javascript@nhn.com>
  */
 
-export const CSS_PREFIX = 'toastui-select-box';
+export const CSS_PREFIX = 'tui-select-box';
 
 export const OPTION_CLASS_NAME = `${CSS_PREFIX}-option`;
 export const OPTGROUP_CLASS_NAME = `${CSS_PREFIX}-optgroup`;
