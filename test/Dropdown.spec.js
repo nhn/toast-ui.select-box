@@ -58,4 +58,20 @@ describe('Dropdown', () => {
     expect(dropdown.nativeEl.disabled).toBe(false);
     expect(dropdown.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(false);
   });
+
+  it('should select and deselect an option in the dropdown.', () => {
+    const result = dropdown.select('0');
+    expect(result).toBe(true);
+    expect(dropdown.selectedOption).toBe(dropdown.options[1]);
+
+    dropdown.deselect();
+    expect(dropdown.selectedOption).toBe(null);
+  });
+
+  it('should return true and set a selectedOption when a selection is valid.', () => {
+    expect(dropdown.select('1')).toBe(true);
+    expect(dropdown.selectedOption).toBe(dropdown.options[0]);
+    expect(dropdown.select('wrong value')).toBe(false);
+    expect(dropdown.selectedOption).toBe(null);
+  });
 });

@@ -5,7 +5,9 @@
 
 import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import { CSS_PREFIX } from './statics';
+import closest from 'tui-code-snippet/domUtil/closest';
+import on from 'tui-code-snippet/domEvent/on';
+import { CSS_PREFIX, OPTION_CLASS_NAME, INPUT_CLASS_NAME } from './statics';
 import Input from './Input';
 import Dropdown from './Dropdown';
 
@@ -76,7 +78,13 @@ export default class SelectBox {
    * @private
    */
   initialize() {
+    const classNames = {
+      input: `.${INPUT_CLASS_NAME}`,
+      option: `.${OPTION_CLASS_NAME}`
+    };
+
     this.changeDisabled(this.disabled);
+    on(this.el, 'click', ev => this.handleClick(ev, classNames), this);
   }
 
   /**
@@ -87,6 +95,18 @@ export default class SelectBox {
   changeDisabled(disabled) {
     this.input.changeDisabled(disabled);
     this.dropdown.changeDisabled(disabled);
+  }
+
+  /**
+   * Handle click events
+   * @param {Event} ev - an event
+   */
+  handleClick(ev, classNames) {
+    if (closest(ev.target, classNames.input)) {
+      this.toggle();
+    } else if (closest(ev.target, classNames.option)) {
+      this.select(ev.target.getAttribute('data-value'));
+    }
   }
 
   /**
@@ -130,6 +150,29 @@ export default class SelectBox {
     } else {
       this.open();
     }
+  }
+
+  /**
+   * Select an option
+   * @return {boolean} result of selection
+   */
+  select(value) {
+    return this.dropdown.select(value);
+  }
+
+  /**
+   * Deselect an option
+   */
+  deselect() {
+    this.dropdown.deselect();
+  }
+
+  /**
+   * Return the selected option
+   * @return {Option}
+   */
+  getSelectedOption() {
+    return this.dropdown.getSelectedOption();
   }
 
   /**

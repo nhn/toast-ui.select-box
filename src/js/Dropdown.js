@@ -58,6 +58,13 @@ export default class Dropdown {
       return new Option(datum);
     });
 
+    /**
+     * selected Option or Optgroup
+     * @type {Option|Optgroup}
+     * @private
+     */
+    this.selectedOption = null;
+
     this.appendOptions();
     this.initialize();
   }
@@ -106,6 +113,49 @@ export default class Dropdown {
     } else {
       addClass(this.el, HIDDEN_CLASS_NAME);
     }
+  }
+
+  /**
+   * Select an option
+   * @param {string} value - value to find an option
+   * @return {boolean} result of selection
+   */
+  select(value) {
+    let result = false;
+
+    this.deselect();
+    this.options.some(option => {
+      result = option.select(value);
+      if (result) {
+        this.selectedOption = option;
+      }
+
+      return result;
+    });
+
+    return !!this.selectedOption;
+  }
+
+  /**
+   * Deselect an option
+   */
+  deselect() {
+    if (this.selectedOption) {
+      this.selectedOption.deselect();
+      this.selectedOption = null;
+    }
+  }
+
+  /**
+   * Return the selected option
+   * @return {Option}
+   */
+  getSelectedOption() {
+    if (this.selectedOption instanceof Optgroup) {
+      return this.selectedOption.getSelectedOption();
+    }
+
+    return this.selectedOption;
   }
 
   /**

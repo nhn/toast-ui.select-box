@@ -21,6 +21,10 @@ describe('Optgroup', () => {
     });
   });
 
+  afterEach(() => {
+    optgroup.destroy();
+  });
+
   it('should make an optgroup and ul elements.', () => {
     const { el, nativeEl } = optgroup;
 
@@ -47,5 +51,21 @@ describe('Optgroup', () => {
     expect(optgroup.disabled).toBe(false);
     expect(optgroup.nativeEl.disabled).toBe(false);
     expect(optgroup.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(false);
+  });
+
+  it('should select and deselect an option in the optgroup.', () => {
+    const result = optgroup.select('1');
+    expect(result).toBe(true);
+    expect(optgroup.selectedOption).toBe(optgroup.options[0]);
+
+    optgroup.deselect();
+    expect(optgroup.selectedOption).toBe(null);
+  });
+
+  it('should return true and set a selectedOption when a selection is valid.', () => {
+    expect(optgroup.select('1')).toBe(true);
+    expect(optgroup.selectedOption).toBe(optgroup.options[0]);
+    expect(optgroup.select('wrong value')).toBe(false);
+    expect(optgroup.selectedOption).toBe(null);
   });
 });

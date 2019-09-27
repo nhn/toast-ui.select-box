@@ -20,25 +20,28 @@ describe('SelectBox', () => {
           data: [
             {
               text: '사과',
-              value: 'apple'
+              value: 1
             },
             {
               text: '바나나',
-              value: 'banana'
+              value: 2
             }
           ]
         },
         {
           text: '없음',
-          value: 'none'
+          value: 0
         }
       ]
     });
   });
 
+  afterEach(() => {
+    selectbox.destroy();
+  });
+
   it('should make Options, Optgroups, Dropdown and Input.', () => {
     const { input, dropdown } = selectbox;
-
     expect(container.querySelector(`.${INPUT_CLASS_NAME}`)).toBe(input.el);
     expect(container.querySelector(`.${DROPDOWN_CLASS_NAME}`)).toBe(dropdown.el);
     expect(container.querySelectorAll(`.${OPTGROUP_CLASS_NAME}`).length).toBe(1);
@@ -71,5 +74,41 @@ describe('SelectBox', () => {
     selectbox.close();
     expect(input.changeOpened).toHaveBeenCalledWith(false);
     expect(dropdown.changeOpened).toHaveBeenCalledWith(false);
+  });
+
+  it('should select and deselect an option.', () => {
+    const [, option] = selectbox.dropdown.options;
+    const result = selectbox.select(option.value);
+    expect(result).toBe(true);
+    expect(selectbox.getSelectedOption()).toBe(option);
+
+    selectbox.deselect();
+    expect(selectbox.getSelectedOption()).toBe(null);
+  });
+
+  it('should return true when a selection is valid.', () => {
+    expect(selectbox.select('1')).toBe(true);
+    expect(selectbox.select('wrong value')).toBe(false);
+  });
+
+  describe('mouse event', () => {
+    it('should open and close a dropdown list when clicking the input.', () => {
+      const { input } = selectbox;
+
+      input.el.click();
+      expect(selectbox.opened).toBe(true);
+
+      input.el.click();
+      expect(selectbox.opened).toBe(false);
+    });
+
+    it('should select an option when clicking the option.', () => {
+      const { dropdown } = selectbox;
+      const [, option] = dropdown.options;
+
+      const result = selectbox.select(option.value);
+      expect(result).toBe(true);
+      expect(selectbox.getSelectedOption()).toBe(option);
+    });
   });
 });

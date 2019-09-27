@@ -13,6 +13,7 @@ const OPTGROUP_LABEL_CLASS_NAME = `${CSS_PREFIX}-optgroup-label`;
 
 /**
  * @class
+ * @private
  */
 export default class Optgroup {
   /**
@@ -46,6 +47,12 @@ export default class Optgroup {
      * @type {array<Option>}
      */
     this.options = data.map(datum => new Option(datum));
+
+    /**
+     * selected Option
+     * @type {Option}
+     */
+    this.selectedOption = null;
 
     this.appendOptions();
     this.initialize();
@@ -109,6 +116,45 @@ export default class Optgroup {
    */
   enable() {
     this.changeDisabled(false);
+  }
+
+  /**
+   * Select an option
+   * @param {string} value - value to find an option
+   * @return {boolean}
+   */
+  select(value) {
+    let result = false;
+
+    this.deselect();
+    this.options.some(option => {
+      result = option.select(value);
+      if (result) {
+        this.selectedOption = option;
+      }
+
+      return result;
+    });
+
+    return result;
+  }
+
+  /**
+   * Deselect an option
+   */
+  deselect() {
+    if (this.selectedOption) {
+      this.selectedOption.deselect();
+      this.selectedOption = null;
+    }
+  }
+
+  /**
+   * Return the selected option
+   * @return {Option}
+   */
+  getSelectedOption() {
+    return this.selectedOption;
   }
 
   /**

@@ -10,6 +10,7 @@ import { OPTION_CLASS_NAME, DISABLED_CLASS_NAME, SELECTED_CLASS_NAME } from './s
 
 /**
  * @class
+ * @private
  */
 export default class Option {
   /**
@@ -17,7 +18,7 @@ export default class Option {
    * @constructor
    * @param {object} options - options
    *   @param {string} [options.text] - label to be displayed in the drop-down list
-   *   @param {*} options.value - value to be sent to a server
+   *   @param {string} options.value - value to be sent to a server
    *   @param {boolean} [options.disabled=false] - whether an option should be disabled or not
    *   @param {boolean} [options.selected=false] - whether an option should be pre-selected or not
    */
@@ -28,6 +29,7 @@ export default class Option {
      * @private
      */
     this.el = this.createElement(text);
+    this.el.setAttribute('data-value', value);
 
     /**
      * option element for a select element
@@ -37,7 +39,7 @@ export default class Option {
     this.nativeEl = document.createElement('option');
 
     this.label = this.nativeEl.label = text;
-    this.value = this.nativeEl.value = value;
+    this.value = this.nativeEl.value = value.toString();
     this.disabled = this.nativeEl.disabled = disabled;
     this.selected = this.nativeEl.selected = selected;
 
@@ -110,9 +112,16 @@ export default class Option {
 
   /**
    * Select an option
+   * @return {boolean}
    */
-  select() {
-    this.changeSelected(true);
+  select(value) {
+    if (this.value === value) {
+      this.changeSelected(true);
+
+      return true;
+    }
+
+    return false;
   }
 
   /**

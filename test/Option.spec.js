@@ -11,6 +11,10 @@ describe('Option', () => {
     });
   });
 
+  afterEach(() => {
+    option.destroy();
+  });
+
   it('should make an option and li elements.', () => {
     const { el, nativeEl } = option;
 
@@ -35,8 +39,9 @@ describe('Option', () => {
     expect(option.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(false);
   });
 
-  it('should select and not select an option.', () => {
-    option.select();
+  it('should select and deselect an option.', () => {
+    const result = option.select('1');
+    expect(result).toBe(true);
     expect(option.selected).toBe(true);
     expect(option.nativeEl.selected).toBe(true);
     expect(option.el.className.indexOf(SELECTED_CLASS_NAME) > -1).toBe(true);
@@ -45,5 +50,10 @@ describe('Option', () => {
     expect(option.selected).toBe(false);
     expect(option.nativeEl.selected).toBe(false);
     expect(option.el.className.indexOf(SELECTED_CLASS_NAME) > -1).toBe(false);
+  });
+
+  it('should select when a parameter is same as its value.', () => {
+    expect(option.select('wrong value')).toBe(false);
+    expect(option.select('1')).toBe(true);
   });
 });

@@ -1,6 +1,5 @@
 
 .hidden {
-  /* display: none; */
   background: gray; /* for test */
 }
 
@@ -37,4 +36,8 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.selected {
+  color: red; /* for test */
 }
