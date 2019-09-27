@@ -8,24 +8,13 @@ describe('Dropdown', () => {
 
   beforeEach(() => {
     dropdown = new Dropdown({
+      placeholder: '',
       data: [
         {
           text: 'fruit',
-          data: [
-            {
-              text: 'apple',
-              value: 1
-            },
-            {
-              text: 'banana',
-              value: 2
-            }
-          ]
+          data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
         },
-        {
-          text: 'none',
-          value: 0
-        }
+        { text: 'none', value: 0 }
       ]
     });
   });
@@ -39,12 +28,13 @@ describe('Dropdown', () => {
     expect(nativeEl.required).toBe(false);
   });
 
-  it('should make Optgroups and Options.', () => {
-    const { options } = dropdown;
+  it('should make Optgroups, Options and a placeholder.', () => {
+    const { options, placeholder } = dropdown;
 
     expect(options.length).toBe(2);
     expect(options[0] instanceof Optgroup).toBe(true);
     expect(options[1] instanceof Option).toBe(true);
+    expect(placeholder instanceof Option).toBe(true);
   });
 
   it('should disable and enable a dropdown.', () => {
@@ -60,18 +50,23 @@ describe('Dropdown', () => {
   });
 
   it('should select and deselect an option in the dropdown.', () => {
+    const [, option] = dropdown.options;
     const result = dropdown.select('0');
-    expect(result).toBe(true);
+    expect(result).toBe(option);
     expect(dropdown.selectedOption).toBe(dropdown.options[1]);
 
     dropdown.deselect();
     expect(dropdown.selectedOption).toBe(null);
   });
 
-  it('should return true and set a selectedOption when a selection is valid.', () => {
-    expect(dropdown.select('1')).toBe(true);
-    expect(dropdown.selectedOption).toBe(dropdown.options[0]);
-    expect(dropdown.select('wrong value')).toBe(false);
-    expect(dropdown.selectedOption).toBe(null);
+  it('should select an option by its value (string) and index (number).', () => {
+    const [, option] = dropdown.options;
+    expect(dropdown.select('0')).toBe(option);
+    expect(dropdown.select(2)).toBe(option);
+  });
+
+  it('should return null when a selection is not valid.', () => {
+    expect(dropdown.select('wrong value')).toBe(null);
+    expect(dropdown.select(100)).toBe(null);
   });
 });

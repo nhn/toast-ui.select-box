@@ -6,19 +6,13 @@ describe('Optgroup', () => {
   let optgroup;
 
   beforeEach(() => {
-    optgroup = new Optgroup({
-      text: 'fruit',
-      data: [
-        {
-          text: 'apple',
-          value: 1
-        },
-        {
-          text: 'banana',
-          value: 2
-        }
-      ]
-    });
+    optgroup = new Optgroup(
+      {
+        text: 'fruit',
+        data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
+      },
+      0
+    );
   });
 
   afterEach(() => {
@@ -54,18 +48,23 @@ describe('Optgroup', () => {
   });
 
   it('should select and deselect an option in the optgroup.', () => {
+    const [option] = optgroup.options;
     const result = optgroup.select('1');
-    expect(result).toBe(true);
-    expect(optgroup.selectedOption).toBe(optgroup.options[0]);
+    expect(result).toBe(option);
+    expect(optgroup.selectedOption).toBe(option);
 
     optgroup.deselect();
     expect(optgroup.selectedOption).toBe(null);
   });
 
-  it('should return true and set a selectedOption when a selection is valid.', () => {
-    expect(optgroup.select('1')).toBe(true);
-    expect(optgroup.selectedOption).toBe(optgroup.options[0]);
-    expect(optgroup.select('wrong value')).toBe(false);
-    expect(optgroup.selectedOption).toBe(null);
+  it('should select an option by its value (string) and index (number).', () => {
+    const [option] = optgroup.options;
+    expect(optgroup.select('1')).toBe(option);
+    expect(optgroup.select(0)).toBe(option);
+  });
+
+  it('should return null when a selection is not valid.', () => {
+    expect(optgroup.select('wrong value')).toBe(null);
+    expect(optgroup.select(100)).toBe(null);
   });
 });

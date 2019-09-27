@@ -1,4 +1,5 @@
 import Input from '@src/Input';
+import Option from '@src/Option';
 import { DISABLED_CLASS_NAME } from '@src/statics';
 
 describe('Input', () => {
@@ -24,5 +25,11 @@ describe('Input', () => {
     input.changeDisabled(false);
     expect(input.disabled).toBe(false);
     expect(input.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(false);
+  });
+
+  it('should change text in the placeholder by the Option.', () => {
+    const option = new Option({ value: 1, text: 'first' }, 0);
+    input.changeText(option);
+    expect(input.placeholderEl.innerHTML).toBe('first');
   });
 });

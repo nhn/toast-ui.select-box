@@ -5,10 +5,7 @@ describe('Option', () => {
   let option;
 
   beforeEach(() => {
-    option = new Option({
-      value: 1,
-      text: 'first'
-    });
+    option = new Option({ value: 1, text: 'first' }, 0);
   });
 
   afterEach(() => {
@@ -41,7 +38,7 @@ describe('Option', () => {
 
   it('should select and deselect an option.', () => {
     const result = option.select('1');
-    expect(result).toBe(true);
+    expect(result).toBe(option);
     expect(option.selected).toBe(true);
     expect(option.nativeEl.selected).toBe(true);
     expect(option.el.className.indexOf(SELECTED_CLASS_NAME) > -1).toBe(true);
@@ -52,8 +49,13 @@ describe('Option', () => {
     expect(option.el.className.indexOf(SELECTED_CLASS_NAME) > -1).toBe(false);
   });
 
-  it('should select when a parameter is same as its value.', () => {
-    expect(option.select('wrong value')).toBe(false);
-    expect(option.select('1')).toBe(true);
+  it('should select an option by its value (string) and index (number).', () => {
+    expect(option.select('1')).toBe(option);
+    expect(option.select(0)).toBe(option);
+  });
+
+  it('should return null when a selection is not valid.', () => {
+    expect(option.select('wrong value')).toBe(null);
+    expect(option.select(100)).toBe(null);
   });
 });

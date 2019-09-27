@@ -23,8 +23,9 @@ export default class Optgroup {
    *   @param {string} [options.text] - label to be displayed in the drop-down list
    *   @param {array<object>} options.data - data for options to be included in the optgroup
    *   @param {boolean} [options.disabled=false] - whether an optgroup should be disabled or not
+   * @param {number} optgroupIndex - option's index
    */
-  constructor({ text = '', data, disabled = false }) {
+  constructor({ text = '', data, disabled = false }, optgroupIndex) {
     /**
      * ul element for a custom dropdown item
      * @type {HTMLUListElement}
@@ -46,7 +47,7 @@ export default class Optgroup {
      * Options to be included in the optgroup
      * @type {array<Option>}
      */
-    this.options = data.map(datum => new Option(datum));
+    this.options = data.map((datum, index) => new Option(datum, optgroupIndex + index));
 
     /**
      * selected Option
@@ -120,23 +121,18 @@ export default class Optgroup {
 
   /**
    * Select an option
-   * @param {string} value - value to find an option
-   * @return {boolean}
+   * @param {string|number} value - if string, find an option by its value. if number, find an option by its index.
+   * @return {Option} - selected option
    */
   select(value) {
-    let result = false;
-
     this.deselect();
     this.options.some(option => {
-      result = option.select(value);
-      if (result) {
-        this.selectedOption = option;
-      }
+      this.selectedOption = option.select(value);
 
-      return result;
+      return !!this.selectedOption;
     });
 
-    return result;
+    return this.selectedOption;
   }
 
   /**

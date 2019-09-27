@@ -7,6 +7,7 @@ import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import closest from 'tui-code-snippet/domUtil/closest';
 import on from 'tui-code-snippet/domEvent/on';
+import getTarget from 'tui-code-snippet/domEvent/getTarget';
 import { CSS_PREFIX, OPTION_CLASS_NAME, INPUT_CLASS_NAME } from './statics';
 import Input from './Input';
 import Dropdown from './Dropdown';
@@ -26,7 +27,7 @@ export default class SelectBox {
    *   @param {boolean} [options.required=false] - whether an option should be required or not
    *   @param {name} [options.name] - name of the select
    */
-  constructor(container, { placeholder, disabled = false, ...options }) {
+  constructor(container, { placeholder = '', disabled = false, ...options }) {
     /**
      * @type {HTMLElement}
      * @private
@@ -50,7 +51,7 @@ export default class SelectBox {
      * @type {Dropdown}
      * @private
      */
-    this.dropdown = new Dropdown({ disabled, ...options });
+    this.dropdown = new Dropdown({ placeholder, disabled, ...options });
 
     /**
      * whether a dropdown list open
@@ -58,9 +59,23 @@ export default class SelectBox {
      */
     this.opened = false;
 
-    this.appendElements();
     this.initialize();
+    if (!placeholder) {
+      this.select(0);
+    }
     this.container.appendChild(this.el);
+  }
+
+  /**
+   * Initialize
+   * @private
+   */
+  initialize() {
+    this.appendElements();
+    this.changeDisabled(this.disabled);
+    on(this.el, 'click', ev =>
+      this.handleClick(ev, { input: `.${INPUT_CLASS_NAME}`, option: `.${OPTION_CLASS_NAME}` })
+    );
   }
 
   /**
@@ -71,20 +86,6 @@ export default class SelectBox {
     this.el.appendChild(this.input.el);
     this.el.appendChild(this.dropdown.el);
     this.el.appendChild(this.dropdown.nativeEl);
-  }
-
-  /**
-   * Initialize
-   * @private
-   */
-  initialize() {
-    const classNames = {
-      input: `.${INPUT_CLASS_NAME}`,
-      option: `.${OPTION_CLASS_NAME}`
-    };
-
-    this.changeDisabled(this.disabled);
-    on(this.el, 'click', ev => this.handleClick(ev, classNames), this);
   }
 
   /**
@@ -102,10 +103,12 @@ export default class SelectBox {
    * @param {Event} ev - an event
    */
   handleClick(ev, classNames) {
-    if (closest(ev.target, classNames.input)) {
+    const target = getTarget(ev);
+
+    if (closest(target, classNames.input)) {
       this.toggle();
-    } else if (closest(ev.target, classNames.option)) {
-      this.select(ev.target.getAttribute('data-value'));
+    } else if (closest(target, classNames.option)) {
+      this.select(target.getAttribute('data-value'));
     }
   }
 
@@ -153,11 +156,16 @@ export default class SelectBox {
   }
 
   /**
-   * Select an option
-   * @return {boolean} result of selection
+   * Select an option.
+   * If a value is not valid, automatically select the first option.
+   * @param {string|number} value - if string, find an option by its value. if number, find an option by its index.
+   * @return {Option} - selected option
    */
   select(value) {
-    return this.dropdown.select(value);
+    const selectedOption = this.dropdown.select(value);
+    this.input.changeText(selectedOption);
+
+    return selectedOption;
   }
 
   /**
@@ -165,6 +173,7 @@ export default class SelectBox {
    */
   deselect() {
     this.dropdown.deselect();
+    this.input.changeText();
   }
 
   /**

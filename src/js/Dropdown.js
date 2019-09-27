@@ -19,12 +19,13 @@ export default class Dropdown {
    * Create a select box
    * @constructor
    * @param {object} options - options
+   *   @param {string} [options.placeholder] - placeholder for an input
    *   @param {array<object>} options.data - data for optgroups and options
    *   @param {boolean} [options.disabled=false] - whether a dropdown should be disabled or not
    *   @param {boolean} [options.required=false] - whether a dropdown should be required or not
    *   @param {name} [options.name] - name of the select
    */
-  constructor({ data, disabled = false, required = false, name }) {
+  constructor({ placeholder, data, disabled = false, required = false, name }) {
     /**
      * ul element for a custom dropdown
      * @type {HTMLElement}
@@ -40,6 +41,7 @@ export default class Dropdown {
      */
     this.nativeEl = document.createElement('select');
     this.nativeEl.className = HIDDEN_CLASS_NAME;
+    this.nativeEl.tabIndex = -1;
 
     this.disabled = this.nativeEl.disabled = disabled;
     this.required = this.nativeEl.required = required;
@@ -50,12 +52,26 @@ export default class Dropdown {
      * @type {array<Option|Optgroup>}
      * @private
      */
-    this.options = data.map(datum => {
+    let idx = 0;
+    this.options = data.map((datum, index) => {
       if (datum.data) {
-        return new Optgroup(datum);
+        const optgroupIndex = index + idx;
+        idx += datum.data.length - 1;
+
+        return new Optgroup(datum, optgroupIndex);
       }
 
-      return new Option(datum);
+      return new Option(datum, index + idx);
+    });
+
+    /**
+     * Placeholder
+     * @type {Option}
+     * @private
+     */
+    this.placeholder = new Option({
+      value: '',
+      text: placeholder
     });
 
     /**
@@ -65,19 +81,7 @@ export default class Dropdown {
      */
     this.selectedOption = null;
 
-    this.appendOptions();
     this.initialize();
-  }
-
-  /**
-   * Append options and optgroups to a dropdown
-   * @private
-   */
-  appendOptions() {
-    this.options.forEach(option => {
-      this.el.appendChild(option.el);
-      this.nativeEl.appendChild(option.nativeEl);
-    });
   }
 
   /**
@@ -85,7 +89,20 @@ export default class Dropdown {
    * @private
    */
   initialize() {
+    this.appendOptions();
     this.changeDisabled(this.disabled);
+  }
+
+  /**
+   * Append options and optgroups to a dropdown
+   * @private
+   */
+  appendOptions() {
+    this.nativeEl.appendChild(this.placeholder.nativeEl);
+    this.options.forEach(option => {
+      this.el.appendChild(option.el);
+      this.nativeEl.appendChild(option.nativeEl);
+    });
   }
 
   /**
@@ -117,23 +134,18 @@ export default class Dropdown {
 
   /**
    * Select an option
-   * @param {string} value - value to find an option
+   * @param {string|number} value - if string, find an option by its value. if number, find an option by its index.
    * @return {boolean} result of selection
    */
   select(value) {
-    let result = false;
-
     this.deselect();
     this.options.some(option => {
-      result = option.select(value);
-      if (result) {
-        this.selectedOption = option;
-      }
+      this.selectedOption = option.select(value);
 
-      return result;
+      return !!this.selectedOption;
     });
 
-    return !!this.selectedOption;
+    return this.selectedOption;
   }
 
   /**

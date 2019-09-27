@@ -3,6 +3,8 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
+import isNumber from 'tui-code-snippet/type/isNumber';
+import isString from 'tui-code-snippet/type/isString';
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
@@ -21,8 +23,9 @@ export default class Option {
    *   @param {string} options.value - value to be sent to a server
    *   @param {boolean} [options.disabled=false] - whether an option should be disabled or not
    *   @param {boolean} [options.selected=false] - whether an option should be pre-selected or not
+   * @param {number} index - option's index
    */
-  constructor({ value, text, disabled = false, selected = false }) {
+  constructor({ value, text, disabled = false, selected = false }, index) {
     /**
      * li element for a custom dropdown item
      * @type {HTMLLIElement}
@@ -42,6 +45,7 @@ export default class Option {
     this.value = this.nativeEl.value = value.toString();
     this.disabled = this.nativeEl.disabled = disabled;
     this.selected = this.nativeEl.selected = selected;
+    this.index = index;
 
     this.initialize();
   }
@@ -112,16 +116,20 @@ export default class Option {
 
   /**
    * Select an option
-   * @return {boolean}
+   * @param {string|number} value - if string, find an option by its value. if number, find an option by its index.
+   * @return {Option} - selected option
    */
   select(value) {
-    if (this.value === value) {
+    const isValid =
+      (isString(value) && this.value === value) || (isNumber(value) && this.index === value);
+
+    if (isValid) {
       this.changeSelected(true);
 
-      return true;
+      return this;
     }
 
-    return false;
+    return null;
   }
 
   /**
