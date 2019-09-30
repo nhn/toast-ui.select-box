@@ -13,3 +13,4 @@ export const INPUT_CLASS_NAME = `${CSS_PREFIX}-input`;
 export const HIDDEN_CLASS_NAME = `${CSS_PREFIX}-hidden`;
 export const DISABLED_CLASS_NAME = `${CSS_PREFIX}-disabled`;
 export const SELECTED_CLASS_NAME = `${CSS_PREFIX}-selected`;
+export const HIGHLIGHT_CLASS_NAME = `${CSS_PREFIX}-highlight`;

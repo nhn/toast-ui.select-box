@@ -59,10 +59,17 @@ describe('Dropdown', () => {
     expect(dropdown.selectedOption).toBe(null);
   });
 
+  it('should get an option by its value (string) and index (number).', () => {
+    const [, option] = dropdown.options;
+    expect(dropdown.getOption('0')).toBe(option);
+    expect(dropdown.getOption(2)).toBe(option);
+  });
+
   it('should select an option by its value (string) and index (number).', () => {
     const [, option] = dropdown.options;
     expect(dropdown.select('0')).toBe(option);
     expect(dropdown.select(2)).toBe(option);
+    expect(dropdown.getSelectedOption()).toBe(option);
   });
 
   it('should return null when a selection is not valid.', () => {

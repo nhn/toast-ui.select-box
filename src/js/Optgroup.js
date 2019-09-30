@@ -49,12 +49,6 @@ export default class Optgroup {
      */
     this.options = data.map((datum, index) => new Option(datum, optgroupIndex + index));
 
-    /**
-     * selected Option
-     * @type {Option}
-     */
-    this.selectedOption = null;
-
     this.appendOptions();
     this.initialize();
   }
@@ -120,37 +114,22 @@ export default class Optgroup {
   }
 
   /**
-   * Select an option
-   * @param {string|number} value - if string, find an option by its value. if number, find an option by its index.
-   * @return {Option} - selected option
-   */
-  select(value) {
-    this.deselect();
-    this.options.some(option => {
-      this.selectedOption = option.select(value);
-
-      return !!this.selectedOption;
-    });
-
-    return this.selectedOption;
-  }
-
-  /**
-   * Deselect an option
-   */
-  deselect() {
-    if (this.selectedOption) {
-      this.selectedOption.deselect();
-      this.selectedOption = null;
-    }
-  }
-
-  /**
-   * Return the selected option
+   * Get an option by its index or value
+   * @param {number|string} value - if string, the option's value. if number, the option's index.
    * @return {Option}
    */
-  getSelectedOption() {
-    return this.selectedOption;
+  getOption(value) {
+    let result;
+
+    this.options.some(option => {
+      if (option.compare(value)) {
+        result = option;
+      }
+
+      return result;
+    });
+
+    return result;
   }
 
   /**

@@ -47,24 +47,9 @@ describe('Optgroup', () => {
     expect(optgroup.el.className.indexOf(DISABLED_CLASS_NAME) > -1).toBe(false);
   });
 
-  it('should select and deselect an option in the optgroup.', () => {
-    const [option] = optgroup.options;
-    const result = optgroup.select('1');
-    expect(result).toBe(option);
-    expect(optgroup.selectedOption).toBe(option);
-
-    optgroup.deselect();
-    expect(optgroup.selectedOption).toBe(null);
-  });
-
-  it('should select an option by its value (string) and index (number).', () => {
-    const [option] = optgroup.options;
-    expect(optgroup.select('1')).toBe(option);
-    expect(optgroup.select(0)).toBe(option);
-  });
-
-  it('should return null when a selection is not valid.', () => {
-    expect(optgroup.select('wrong value')).toBe(null);
-    expect(optgroup.select(100)).toBe(null);
+  it('should get an option by its value (string) and index (number).', () => {
+    const [, option] = optgroup.options;
+    expect(optgroup.getOption('2')).toBe(option);
+    expect(optgroup.getOption(1)).toBe(option);
   });
 });

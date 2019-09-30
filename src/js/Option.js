@@ -116,20 +116,9 @@ export default class Option {
 
   /**
    * Select an option
-   * @param {string|number} value - if string, find an option by its value. if number, find an option by its index.
-   * @return {Option} - selected option
    */
-  select(value) {
-    const isValid =
-      (isString(value) && this.value === value) || (isNumber(value) && this.index === value);
-
-    if (isValid) {
-      this.changeSelected(true);
-
-      return this;
-    }
-
-    return null;
+  select() {
+    this.changeSelected(true);
   }
 
   /**
@@ -137,6 +126,15 @@ export default class Option {
    */
   deselect() {
     this.changeSelected(false);
+  }
+
+  /**
+   * whether an option has a same index with a parameter
+   * @param {number|string} value - if string, the option's value. if number, the option's index.
+   * @return {boolean}
+   */
+  compare(value) {
+    return (isNumber(value) && this.index === value) || (isString(value) && this.value === value);
   }
 
   /**

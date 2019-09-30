@@ -74,11 +74,13 @@ export default class Input {
    * @private
    */
   changeDisabled(disabled) {
-    this.disabled = disabled;
-    if (disabled) {
-      addClass(this.el, DISABLED_CLASS_NAME);
-    } else {
-      removeClass(this.el, DISABLED_CLASS_NAME);
+    if (this.disabled !== disabled) {
+      this.disabled = disabled;
+      if (disabled) {
+        addClass(this.el, DISABLED_CLASS_NAME);
+      } else {
+        removeClass(this.el, DISABLED_CLASS_NAME);
+      }
     }
   }
 

@@ -37,8 +37,7 @@ describe('Option', () => {
   });
 
   it('should select and deselect an option.', () => {
-    const result = option.select('1');
-    expect(result).toBe(option);
+    option.select('1');
     expect(option.selected).toBe(true);
     expect(option.nativeEl.selected).toBe(true);
     expect(option.el.className.indexOf(SELECTED_CLASS_NAME) > -1).toBe(true);
@@ -49,13 +48,10 @@ describe('Option', () => {
     expect(option.el.className.indexOf(SELECTED_CLASS_NAME) > -1).toBe(false);
   });
 
-  it('should select an option by its value (string) and index (number).', () => {
-    expect(option.select('1')).toBe(option);
-    expect(option.select(0)).toBe(option);
-  });
-
-  it('should return null when a selection is not valid.', () => {
-    expect(option.select('wrong value')).toBe(null);
-    expect(option.select(100)).toBe(null);
+  it('should compare with its value (string) and index (number).', () => {
+    expect(option.compare(0)).toBe(true);
+    expect(option.compare(123)).toBe(false);
+    expect(option.compare('1')).toBe(true);
+    expect(option.compare('wrong value')).toBe(false);
   });
 });

@@ -45,24 +45,16 @@ export default class Dropdown {
 
     this.disabled = this.nativeEl.disabled = disabled;
     this.required = this.nativeEl.required = required;
-    this.name = this.nativeEl.name = name;
+    if (name) {
+      this.name = this.nativeEl.name = name;
+    }
 
     /**
      * Options and Optgroups
-     * @type {array<Option|Optgroup>}
+     * @type {Array.<Option|Optgroup>}
      * @private
      */
-    let idx = 0;
-    this.options = data.map((datum, index) => {
-      if (datum.data) {
-        const optgroupIndex = index + idx;
-        idx += datum.data.length - 1;
-
-        return new Optgroup(datum, optgroupIndex);
-      }
-
-      return new Option(datum, index + idx);
-    });
+    this.options = [];
 
     /**
      * Placeholder
@@ -81,16 +73,35 @@ export default class Dropdown {
      */
     this.selectedOption = null;
 
-    this.initialize();
+    this.initialize(data);
   }
 
   /**
    * Initialize
    * @private
    */
-  initialize() {
+  initialize(data) {
+    this.createOptions(data);
     this.appendOptions();
     this.changeDisabled(this.disabled);
+  }
+
+  /**
+   * Create options and optgroup
+   * @param {object} data - data for optgroups and options
+   */
+  createOptions(data) {
+    let idx = 0;
+    this.options = data.map((datum, index) => {
+      index += idx;
+      if (datum.data) {
+        idx += datum.data.length - 1;
+
+        return new Optgroup(datum, index);
+      }
+
+      return new Option(datum, index);
+    });
   }
 
   /**
@@ -111,11 +122,13 @@ export default class Dropdown {
    * @private
    */
   changeDisabled(disabled) {
-    this.disabled = this.nativeEl.disabled = disabled;
-    if (disabled) {
-      addClass(this.el, DISABLED_CLASS_NAME);
-    } else {
-      removeClass(this.el, DISABLED_CLASS_NAME);
+    if (this.disabled !== disabled) {
+      this.disabled = this.nativeEl.disabled = disabled;
+      if (disabled) {
+        addClass(this.el, DISABLED_CLASS_NAME);
+      } else {
+        removeClass(this.el, DISABLED_CLASS_NAME);
+      }
     }
   }
 
@@ -139,11 +152,12 @@ export default class Dropdown {
    */
   select(value) {
     this.deselect();
-    this.options.some(option => {
-      this.selectedOption = option.select(value);
 
-      return !!this.selectedOption;
-    });
+    const selectingOption = this.getOption(value);
+    if (selectingOption) {
+      selectingOption.select();
+      this.selectedOption = selectingOption;
+    }
 
     return this.selectedOption;
   }
@@ -163,11 +177,28 @@ export default class Dropdown {
    * @return {Option}
    */
   getSelectedOption() {
-    if (this.selectedOption instanceof Optgroup) {
-      return this.selectedOption.getSelectedOption();
-    }
-
     return this.selectedOption;
+  }
+
+  /**
+   * Get an option by its index or value
+   * @param {number|string} value - if string, the option's value. if number, the option's index.
+   * @return {Option}
+   */
+  getOption(value) {
+    let result;
+
+    this.options.some(option => {
+      if (option instanceof Optgroup) {
+        result = option.getOption(value);
+      } else if (option.compare(value)) {
+        result = option;
+      }
+
+      return result;
+    });
+
+    return result;
   }
 
   /**

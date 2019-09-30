@@ -122,10 +122,17 @@ describe('SelectBox', () => {
     expect(input.placeholderEl.innerHTML).toBe('');
   });
 
+  it('should get an option by its value (string) and index (number).', () => {
+    const [, option] = selectbox.dropdown.options;
+    expect(selectbox.getOption('0')).toBe(option);
+    expect(selectbox.getOption(2)).toBe(option);
+  });
+
   it('should select an option by its value (string) and index (number).', () => {
     const [, option] = selectbox.dropdown.options;
     expect(selectbox.select('0')).toBe(option);
     expect(selectbox.select(2)).toBe(option);
+    expect(selectbox.getSelectedOption()).toBe(option);
   });
 
   it('should return null when a selection is not valid.', () => {

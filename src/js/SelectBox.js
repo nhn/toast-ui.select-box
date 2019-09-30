@@ -56,13 +56,18 @@ export default class SelectBox {
     /**
      * whether a dropdown list open
      * @type {boolean}
+     * @private
      */
     this.opened = false;
 
-    this.initialize();
-    if (!placeholder) {
-      this.select(0);
-    }
+    /**
+     * whether a selectbox is disabled
+     * @type {boolean}
+     * @private
+     */
+    this.diabled = false;
+
+    this.initialize({ placeholder, disabled });
     this.container.appendChild(this.el);
   }
 
@@ -70,9 +75,15 @@ export default class SelectBox {
    * Initialize
    * @private
    */
-  initialize() {
+  initialize(options) {
     this.appendElements();
-    this.changeDisabled(this.disabled);
+
+    if (!options.placeholder) {
+      this.select(0);
+    }
+
+    this.changeDisabled(options.disabled);
+
     on(this.el, 'click', ev =>
       this.handleClick(ev, { input: `.${INPUT_CLASS_NAME}`, option: `.${OPTION_CLASS_NAME}` })
     );
@@ -94,13 +105,18 @@ export default class SelectBox {
    * @private
    */
   changeDisabled(disabled) {
-    this.input.changeDisabled(disabled);
-    this.dropdown.changeDisabled(disabled);
+    if (this.disabled !== disabled) {
+      this.disabled = disabled;
+      this.input.changeDisabled(disabled);
+      this.dropdown.changeDisabled(disabled);
+    }
   }
 
   /**
    * Handle click events
    * @param {Event} ev - an event
+   * @param {object} classNames - classNames
+   * @private
    */
   handleClick(ev, classNames) {
     const target = getTarget(ev);
@@ -130,18 +146,22 @@ export default class SelectBox {
    * Open a dropdown list
    */
   open() {
-    this.opened = true;
-    this.dropdown.changeOpened(true);
-    this.input.changeOpened(true);
+    if (!this.opened) {
+      this.opened = true;
+      this.dropdown.changeOpened(true);
+      this.input.changeOpened(true);
+    }
   }
 
   /**
    * Close a dropdown list
    */
   close() {
-    this.opened = false;
-    this.dropdown.changeOpened(false);
-    this.input.changeOpened(false);
+    if (this.opened) {
+      this.opened = false;
+      this.dropdown.changeOpened(false);
+      this.input.changeOpened(false);
+    }
   }
 
   /**
@@ -182,6 +202,15 @@ export default class SelectBox {
    */
   getSelectedOption() {
     return this.dropdown.getSelectedOption();
+  }
+
+  /**
+   * Get an option by its index or value
+   * @param {number|string} value - if string, the option's value. if number, the option's index.
+   * @return {Option}
+   */
+  getOption(value) {
+    return this.dropdown.getOption(value);
   }
 
   /**
