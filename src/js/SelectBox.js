@@ -7,7 +7,9 @@ import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import closest from 'tui-code-snippet/domUtil/closest';
 import on from 'tui-code-snippet/domEvent/on';
+import preventDefault from 'tui-code-snippet/domEvent/preventDefault';
 import getTarget from 'tui-code-snippet/domEvent/getTarget';
+import { identifyKey } from './utils';
 import { CSS_PREFIX, OPTION_CLASS_NAME, INPUT_CLASS_NAME } from './statics';
 import Input from './Input';
 import Dropdown from './Dropdown';
@@ -26,8 +28,9 @@ export default class SelectBox {
    *   @param {boolean} [options.disabled=false] - whether an option should be disabled or not
    *   @param {boolean} [options.required=false] - whether an option should be required or not
    *   @param {name} [options.name] - name of the select
+   *   @param {boolean} [options.autofocus=false] - whether a selectbox should get focus when th page loads
    */
-  constructor(container, { placeholder = '', disabled = false, ...options }) {
+  constructor(container, { placeholder = '', disabled = false, autofocus = false, ...options }) {
     /**
      * @type {HTMLElement}
      * @private
@@ -67,7 +70,7 @@ export default class SelectBox {
      */
     this.diabled = false;
 
-    this.initialize({ placeholder, disabled });
+    this.initialize({ placeholder, disabled, autofocus });
     this.container.appendChild(this.el);
   }
 
@@ -82,11 +85,32 @@ export default class SelectBox {
       this.select(0);
     }
 
+    if (options.autofocus) {
+      window.onload = () => {
+        this.input.focus();
+      };
+    }
+
     this.changeDisabled(options.disabled);
 
-    on(this.el, 'click', ev =>
-      this.handleClick(ev, { input: `.${INPUT_CLASS_NAME}`, option: `.${OPTION_CLASS_NAME}` })
-    );
+    const classNames = {
+      input: `.${INPUT_CLASS_NAME}`,
+      option: `.${OPTION_CLASS_NAME}`
+    };
+    on(document, 'click', ev => {
+      const target = getTarget(ev);
+      if (!closest(target, classNames.input)) {
+        this.close();
+      }
+    });
+    on(document, 'click', ev => {
+      const target = getTarget(ev);
+      if (!closest(target, classNames.input)) {
+        this.close();
+      }
+    });
+    on(this.el, 'click', ev => this.handleClick(ev, classNames));
+    on(this.el, 'keydown', ev => this.handleKeydown(ev, classNames));
   }
 
   /**
@@ -125,6 +149,68 @@ export default class SelectBox {
       this.toggle();
     } else if (closest(target, classNames.option)) {
       this.select(target.getAttribute('data-value'));
+    }
+  }
+
+  /**
+   * Handle keydown events
+   * @param {Event} ev - an event
+   * @param {object} classNames - classNames
+   * @private
+   */
+  handleKeydown(ev, classNames) {
+    const target = getTarget(ev);
+    const key = identifyKey(ev.key);
+
+    if (closest(target, classNames.input)) {
+      preventDefault(ev);
+      this.openDropdownByKeydown(target, key);
+    } else if (closest(target, classNames.option)) {
+      preventDefault(ev);
+      this.moveHighlightedOption(target, key);
+    }
+  }
+
+  /**
+   * Use keyboard to open a dropdown list
+   * @param {HTMLElement} target - a highlighted option
+   * @param {string} key - key pressed by the user
+   */
+  openDropdownByKeydown(target, key) {
+    const keys = ['ArrowUp', 'ArrowDown', ' ', 'Enter'];
+    if (keys.indexOf(key) > -1) {
+      target.blur();
+      this.dropdown.highlight();
+      this.open();
+    } else if (key === 'Escape') {
+      this.close();
+    }
+  }
+
+  /**
+   * Use arrow keys to move a highlighted option
+   * @param {HTMLElement} target - a highlighted option
+   * @param {string} key - key pressed by the user
+   */
+  moveHighlightedOption(target, key) {
+    switch (key) {
+      case 'ArrowUp':
+        this.dropdown.highlight(-1);
+        break;
+      case 'ArrowDown':
+        this.dropdown.highlight(1);
+        break;
+      case 'Enter':
+      case ' ':
+        this.select(target.getAttribute('data-value'));
+      // eslint-disable-next-line no-fallthrough
+      case 'Escape':
+        this.close();
+        target.blur();
+        this.input.focus();
+        break;
+      default:
+        break;
     }
   }
 

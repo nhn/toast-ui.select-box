@@ -76,4 +76,27 @@ describe('Dropdown', () => {
     expect(dropdown.select('wrong value')).toBe(null);
     expect(dropdown.select(100)).toBe(null);
   });
+
+  it('should highlight and dehighlight an option in the dropdown.', () => {
+    dropdown.highlight();
+    expect(dropdown.highlightedOption).not.toBeNull();
+
+    dropdown.dehighlight();
+    expect(dropdown.highlightedOption).toBeNull();
+  });
+
+  it('should determine which option will be highlighted by direction.', () => {
+    dropdown.highlight();
+    expect(dropdown.highlightedOption).toBe(dropdown.getOption(0));
+
+    dropdown.select(1);
+    dropdown.highlight();
+    expect(dropdown.highlightedOption).toBe(dropdown.getOption(1));
+
+    dropdown.highlight(1);
+    expect(dropdown.highlightedOption).toBe(dropdown.getOption(2));
+
+    dropdown.highlight(-1);
+    expect(dropdown.highlightedOption).toBe(dropdown.getOption(1));
+  });
 });

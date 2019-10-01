@@ -1,5 +1,5 @@
 import Option from '@src/Option';
-import { DISABLED_CLASS_NAME, SELECTED_CLASS_NAME } from '@src/statics';
+import { DISABLED_CLASS_NAME, SELECTED_CLASS_NAME, HIGHLIGHT_CLASS_NAME } from '@src/statics';
 
 describe('Option', () => {
   let option;
@@ -53,5 +53,13 @@ describe('Option', () => {
     expect(option.compare(123)).toBe(false);
     expect(option.compare('1')).toBe(true);
     expect(option.compare('wrong value')).toBe(false);
+  });
+
+  it('should highlight and dehighlight an option.', () => {
+    option.highlight();
+    expect(option.el.className.indexOf(HIGHLIGHT_CLASS_NAME) > -1).toBe(true);
+
+    option.dehighlight();
+    expect(option.el.className.indexOf(HIGHLIGHT_CLASS_NAME) > -1).toBe(false);
   });
 });

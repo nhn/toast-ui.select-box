@@ -110,10 +110,17 @@ export default class Input {
   }
 
   /**
+   * Focus
+   */
+  focus() {
+    this.el.focus();
+  }
+
+  /**
    * Destroy an option
    */
   destroy() {
     removeElement(this.el);
-    this.el = this.placeholder = null;
+    this.el = this.placeholderEl = null;
   }
 }

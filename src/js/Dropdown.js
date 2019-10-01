@@ -3,6 +3,7 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
+import isNumber from 'tui-code-snippet/type/isNumber';
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
@@ -57,6 +58,13 @@ export default class Dropdown {
     this.options = [];
 
     /**
+     * the number of Options
+     * @type {number}
+     * @private
+     */
+    this.optionLength = 0;
+
+    /**
      * Placeholder
      * @type {Option}
      * @private
@@ -72,6 +80,13 @@ export default class Dropdown {
      * @private
      */
     this.selectedOption = null;
+
+    /**
+     * Highlighted option
+     * @type {Option}
+     * @private
+     */
+    this.highlightedOption = null;
 
     this.initialize(data);
   }
@@ -102,6 +117,7 @@ export default class Dropdown {
 
       return new Option(datum, index);
     });
+    this.optionLength = data.length + idx;
   }
 
   /**
@@ -142,6 +158,7 @@ export default class Dropdown {
       removeClass(this.el, HIDDEN_CLASS_NAME);
     } else {
       addClass(this.el, HIDDEN_CLASS_NAME);
+      this.dehighlight();
     }
   }
 
@@ -170,6 +187,59 @@ export default class Dropdown {
       this.selectedOption.deselect();
       this.selectedOption = null;
     }
+  }
+
+  /**
+   * Highlight an option
+   * @param {number} direction - if negative, highlight moves upward. if positive, highlight moves downward.
+   */
+  highlight(direction) {
+    let index = 0;
+    if (this.highlightedOption) {
+      index = this.highlightedOption.getIndex();
+    }
+
+    const highlightingOption = this.determineHighlightingOption(direction, index);
+
+    if (highlightingOption !== this.highlightedOption) {
+      this.dehighlight();
+      highlightingOption.highlight();
+      this.highlightedOption = highlightingOption;
+    }
+  }
+
+  /**
+   * Dehighlight an option
+   */
+  dehighlight() {
+    if (this.highlightedOption) {
+      this.highlightedOption.dehighlight();
+      this.highlightedOption = null;
+    }
+  }
+
+  /**
+   * Determine which option will be highlighted
+   * @param {number} direction - if negative, highlight moves upward. if positive, highlight moves downward.
+   * @param {number} index - the reference index
+   * @return {Option} - the option to be highlighted
+   */
+  determineHighlightingOption(direction, index) {
+    let highlightingOption;
+
+    if (isNumber(direction)) {
+      index += direction;
+      if (index < 0) {
+        index = 0;
+      } else if (index > this.optionLength - 1) {
+        index = this.optionLength - 1;
+      }
+      highlightingOption = this.getOption(index);
+    } else {
+      highlightingOption = this.selectedOption || this.getOption(0);
+    }
+
+    return highlightingOption;
   }
 
   /**
@@ -206,8 +276,9 @@ export default class Dropdown {
    */
   destroy() {
     this.options.forEach(option => option.destroy());
+    this.placeholder.destroy();
     removeElement(this.el);
     removeElement(this.nativeEl);
-    this.el = this.nativeEl = null;
+    this.el = this.nativeEl = this.options = this.placeholder = this.selectedOption = this.highlightedOption = null;
   }
 }

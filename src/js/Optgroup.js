@@ -139,6 +139,6 @@ export default class Optgroup {
     this.options.forEach(option => option.destroy());
     removeElement(this.el);
     removeElement(this.nativeEl);
-    this.el = this.nativeEl = null;
+    this.el = this.nativeEl = this.options = null;
   }
 }

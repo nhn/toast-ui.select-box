@@ -159,5 +159,93 @@ describe('SelectBox', () => {
       expect(result).toBe(option);
       expect(selectbox.getSelectedOption()).toBe(option);
     });
+
+    it('should close a dropdown list when click anywhere except the select box.', () => {
+      selectbox.open();
+      document.body.click();
+      expect(selectbox.opened).toBe(false);
+    });
+  });
+
+  describe('keyboard event', () => {
+    const classNames = {
+      input: `.${INPUT_CLASS_NAME}`,
+      option: `.${OPTION_CLASS_NAME}`
+    };
+
+    it('should open a dropdown list when press ArrowUp, ArrowDown, Space, or Enter on the input.', () => {
+      selectbox.handleKeydown(
+        { target: selectbox.input.el, key: 'ArrowDown', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.opened).toBe(true);
+    });
+
+    it('should move a highlighted option when press ArrowUp and ArrowDown on the options.', () => {
+      spyOn(selectbox.dropdown, 'highlight');
+
+      selectbox.handleKeydown(
+        { target: selectbox.getOption(0).el, key: 'ArrowDown', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(1);
+
+      selectbox.handleKeydown(
+        { target: selectbox.getOption(0).el, key: 'ArrowUp', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(-1);
+    });
+
+    it('should select a highlighted option when press Space or Enter on the option.', () => {
+      selectbox.handleKeydown(
+        { target: selectbox.getOption(2).el, key: ' ', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.getSelectedOption()).toBe(selectbox.getOption(2));
+
+      selectbox.handleKeydown(
+        { target: selectbox.getOption(1).el, key: 'Enter', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.getSelectedOption()).toBe(selectbox.getOption(1));
+    });
+
+    it('should close a dropdown list when press Escape on the options.', () => {
+      selectbox.handleKeydown(
+        { target: selectbox.getOption(2).el, key: 'Escape', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.opened).toBe(false);
+    });
+  });
+});
+
+describe('Selectbox options -', () => {
+  let container, selectbox, options;
+
+  beforeEach(() => {
+    fixture.set('<div id="select-box"></div>');
+    container = document.querySelector('#select-box');
+    options = {
+      data: [
+        {
+          text: 'fruit',
+          data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
+        },
+        { text: 'none', value: 0 }
+      ]
+    };
+  });
+
+  afterEach(() => {
+    selectbox.destroy();
+  });
+
+  it('autofocus should be automatically focus on the input.', () => {
+    options.autofocus = true;
+    selectbox = new SelectBox(container, options);
+    window.onload();
+    expect(document.activeElement).toBe(selectbox.input.el);
   });
 });

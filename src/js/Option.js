@@ -8,7 +8,12 @@ import isString from 'tui-code-snippet/type/isString';
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import { OPTION_CLASS_NAME, DISABLED_CLASS_NAME, SELECTED_CLASS_NAME } from './statics';
+import {
+  OPTION_CLASS_NAME,
+  DISABLED_CLASS_NAME,
+  SELECTED_CLASS_NAME,
+  HIGHLIGHT_CLASS_NAME
+} from './statics';
 
 /**
  * @class
@@ -32,6 +37,7 @@ export default class Option {
      * @private
      */
     this.el = this.createElement(text);
+    this.el.tabIndex = -1;
     this.el.setAttribute('data-value', value);
 
     /**
@@ -101,6 +107,19 @@ export default class Option {
   }
 
   /**
+   * Highlight or not highlight an option
+   * @param {boolean} highlight - if true, an option is highlighted. if false, an option is not highlighted.
+   * @private
+   */
+  changeHighlight(highlight) {
+    if (highlight) {
+      addClass(this.el, HIGHLIGHT_CLASS_NAME);
+    } else {
+      removeClass(this.el, HIGHLIGHT_CLASS_NAME);
+    }
+  }
+
+  /**
    * Disable an option
    */
   disable() {
@@ -129,12 +148,36 @@ export default class Option {
   }
 
   /**
+   * Highlight an option
+   */
+  highlight() {
+    this.changeHighlight(true);
+    this.el.focus();
+  }
+
+  /**
+   * Remove a highlight from an option
+   */
+  dehighlight() {
+    this.changeHighlight(false);
+    this.el.blur();
+  }
+
+  /**
    * whether an option has a same index with a parameter
    * @param {number|string} value - if string, the option's value. if number, the option's index.
    * @return {boolean}
    */
   compare(value) {
     return (isNumber(value) && this.index === value) || (isString(value) && this.value === value);
+  }
+
+  /**
+   * Return an option's index
+   * @return {number}
+   */
+  getIndex() {
+    return this.index;
   }
 
   /**
