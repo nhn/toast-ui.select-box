@@ -1,21 +1,38 @@
+/* Common */
 
 .hidden {
-  background: gray; /* for test */
+  display: none; /* for test */
 }
 
 .disabled {
   text-decoration-line: line-through; /* for test */
 }
 
+.no-cursor .option,
+.no-cursor .optgroup-label {
+  cursor: none;
+}
+
+/* Input */
+
 .input {
   border: 1px solid #ddd;
-  padding: 5px 10px;
+  box-sizing: border-box;
+  height: 29px;
+  padding: 4px 8px;
   cursor: pointer;
+}
+
+.input.open {
+  border-color: #aaa;
 }
 
 .placeholder {
   display: inline-block;
   margin: 0;
+  color: #333;
+  font-size: 13px;
+  line-height: 15px;
 }
 
 .ico-select {
@@ -31,13 +48,54 @@
   background-position: right center;
 }
 
+/* Dropdown */
+
 .dropdown,
 .optgroup {
-  list-style-type: none;
   margin: 0;
   padding: 0;
+  list-style-type: none;
+}
+
+.dropdown {
+  border: 1px solid #aaa;
+  border-top: none;
+  box-sizing: border-box;
+  /* max-height: 145px; */
+  overflow: auto;
+}
+
+/* Optgroup */
+
+.optgroup > .option {
+  padding-left: 1.5em;
+}
+
+.optgroup-label {
+  font-weight: bold;
+}
+
+/* Option */
+
+.optgroup-label,
+.option {
+  box-sizing: border-box;
+  height: 29px;
+  padding: 8px 7px;
+  color: #333;
+  font-size: 13px;
+  line-height: 15px;
+}
+
+.option {
+  cursor: pointer;
 }
 
 .selected {
-  color: red; /* for test */
+  background: #f4f4f4;
+}
+
+.highlight {
+  background: #e5f6ff;
+  outline: none;
 }

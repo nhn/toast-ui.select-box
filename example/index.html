@@ -14,7 +14,7 @@
     <div id="select-box"></div>
     <script type="text/javascript" src="../dist/toastui-select-box.js"></script>
     <script class="code-js">
-      var selectBox = new toastui.SelectBox('#select-box', {
+      var options = {
         placeholder: 'Please select an option.',
         data: [
           {
@@ -33,9 +33,35 @@
           {
             text: '없음',
             value: 'none'
+          },
+          {
+            text: '색상',
+            data: [
+              {
+                text: '빨강',
+                value: 'red'
+              }, 
+              {
+                text: '노랑',
+                value: 'yellow'
+              },
+              {
+                text: '초록',
+                value: 'green'
+              }, 
+              {
+                text: '파랑',
+                value: 'blue'
+              }, 
+              {
+                text: '보라',
+                value: 'purple'
+              }
+            ]
           }
         ]
-      });
+      };
+      var selectBox = new toastui.SelectBox('#select-box', options);
     </script>
   </body>
 </html>
