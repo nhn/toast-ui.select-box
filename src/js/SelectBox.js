@@ -173,7 +173,7 @@ export default class SelectBox {
    */
   handleKeydown(ev, classNames) {
     const target = getTarget(ev);
-    const key = identifyKey(ev.key);
+    const key = identifyKey(ev);
     const optionEl = closest(target, classNames.option);
 
     if (key === 'Escape') {

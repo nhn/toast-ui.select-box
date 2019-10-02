@@ -92,7 +92,7 @@ module.exports = (env, { mode = 'development' }) => {
       ]
     };
   } else {
-    config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    // config.plugins.push(new webpack.HotModuleReplacementPlugin());
     config.devtool = 'inline-source-map';
     config.devServer = {
       historyApiFallback: false,
