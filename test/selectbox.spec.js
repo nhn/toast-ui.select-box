@@ -165,6 +165,14 @@ describe('SelectBox', () => {
       document.body.click();
       expect(selectbox.opened).toBe(false);
     });
+
+    it('should highlight the option when mouseover the option.', () => {
+      selectbox.handleMouseover(
+        { target: selectbox.getOption(2).el },
+        { option: `.${OPTION_CLASS_NAME}` }
+      );
+      expect(selectbox.dropdown.getHighlightedOption()).toBe(selectbox.getOption(2));
+    });
   });
 
   describe('keyboard event', () => {
@@ -173,7 +181,7 @@ describe('SelectBox', () => {
       option: `.${OPTION_CLASS_NAME}`
     };
 
-    it('should open a dropdown list when press ArrowUp, ArrowDown, Space, or Enter on the input.', () => {
+    it('should open a dropdown list when press ArrowUp, ArrowDown, Space, or Enter on the input if a dropdown is closed.', () => {
       selectbox.handleKeydown(
         { target: selectbox.input.el, key: 'ArrowDown', preventDefault: () => {} },
         classNames
@@ -181,20 +189,38 @@ describe('SelectBox', () => {
       expect(selectbox.opened).toBe(true);
     });
 
-    it('should move a highlighted option when press ArrowUp and ArrowDown on the options.', () => {
+    it('should move a highlighted option when press ArrowUp and ArrowDown on the input if a dropdown is opened.', () => {
+      selectbox.open();
       spyOn(selectbox.dropdown, 'highlight');
 
       selectbox.handleKeydown(
-        { target: selectbox.getOption(0).el, key: 'ArrowDown', preventDefault: () => {} },
+        { target: selectbox.input.el, key: 'ArrowUp', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(1);
+      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(0);
 
       selectbox.handleKeydown(
-        { target: selectbox.getOption(0).el, key: 'ArrowUp', preventDefault: () => {} },
+        { target: selectbox.input.el, key: 'ArrowDown', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(-1);
+      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(0);
+    });
+
+    it('should move a highlighted option when press ArrowUp and ArrowDown on the options.', () => {
+      selectbox.dropdown.highlight(1);
+      spyOn(selectbox.dropdown, 'highlight');
+
+      selectbox.handleKeydown(
+        { target: selectbox.getOption(1).el, key: 'ArrowUp', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(0);
+
+      selectbox.handleKeydown(
+        { target: selectbox.getOption(1).el, key: 'ArrowDown', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(2);
     });
 
     it('should select a highlighted option when press Space or Enter on the option.', () => {
@@ -211,12 +237,21 @@ describe('SelectBox', () => {
       expect(selectbox.getSelectedOption()).toBe(selectbox.getOption(1));
     });
 
-    it('should close a dropdown list when press Escape on the options.', () => {
+    it('should close a dropdown list when press Escape on the input and options.', () => {
+      selectbox.open();
+      spyOn(selectbox, 'close');
+
       selectbox.handleKeydown(
         { target: selectbox.getOption(2).el, key: 'Escape', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.opened).toBe(false);
+      expect(selectbox.close).toHaveBeenCalled();
+
+      selectbox.handleKeydown(
+        { target: selectbox.input.el, key: 'Escape', preventDefault: () => {} },
+        classNames
+      );
+      expect(selectbox.close).toHaveBeenCalled();
     });
   });
 });

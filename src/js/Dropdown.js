@@ -156,6 +156,9 @@ export default class Dropdown {
   changeOpened(opened) {
     if (opened) {
       removeClass(this.el, HIDDEN_CLASS_NAME);
+      if (this.selectedOption) {
+        this.highlight();
+      }
     } else {
       addClass(this.el, HIDDEN_CLASS_NAME);
       this.dehighlight();
@@ -191,15 +194,15 @@ export default class Dropdown {
 
   /**
    * Highlight an option
-   * @param {number} direction - if negative, highlight moves upward. if positive, highlight moves downward.
+   * @param {number} index - index
    */
-  highlight(direction) {
-    let index = 0;
-    if (this.highlightedOption) {
-      index = this.highlightedOption.getIndex();
+  highlight(index) {
+    let highlightingOption;
+    if (isNumber(index)) {
+      highlightingOption = this.getOption(index);
+    } else {
+      highlightingOption = this.selectedOption || this.getOption(0);
     }
-
-    const highlightingOption = this.determineHighlightingOption(direction, index);
 
     if (highlightingOption !== this.highlightedOption) {
       this.dehighlight();
@@ -219,35 +222,27 @@ export default class Dropdown {
   }
 
   /**
-   * Determine which option will be highlighted
-   * @param {number} direction - if negative, highlight moves upward. if positive, highlight moves downward.
-   * @param {number} index - the reference index
-   * @return {Option} - the option to be highlighted
-   */
-  determineHighlightingOption(direction, index) {
-    let highlightingOption;
-
-    if (isNumber(direction)) {
-      index += direction;
-      if (index < 0) {
-        index = 0;
-      } else if (index > this.optionLength - 1) {
-        index = this.optionLength - 1;
-      }
-      highlightingOption = this.getOption(index);
-    } else {
-      highlightingOption = this.selectedOption || this.getOption(0);
-    }
-
-    return highlightingOption;
-  }
-
-  /**
    * Return the selected option
    * @return {Option}
    */
   getSelectedOption() {
     return this.selectedOption;
+  }
+
+  /**
+   * Return the highlighted option
+   * @return {Option}
+   */
+  getHighlightedOption() {
+    return this.highlightedOption;
+  }
+
+  /**
+   * Return the number of options
+   * @return {number}
+   */
+  getOptionLength() {
+    return this.optionLength;
   }
 
   /**

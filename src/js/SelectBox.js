@@ -7,6 +7,7 @@ import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import closest from 'tui-code-snippet/domUtil/closest';
 import on from 'tui-code-snippet/domEvent/on';
+import off from 'tui-code-snippet/domEvent/off';
 import preventDefault from 'tui-code-snippet/domEvent/preventDefault';
 import getTarget from 'tui-code-snippet/domEvent/getTarget';
 import { identifyKey } from './utils';
@@ -103,13 +104,8 @@ export default class SelectBox {
         this.close();
       }
     });
-    on(document, 'click', ev => {
-      const target = getTarget(ev);
-      if (!closest(target, classNames.input)) {
-        this.close();
-      }
-    });
     on(this.el, 'click', ev => this.handleClick(ev, classNames));
+    on(this.el, 'mouseover', ev => this.handleMouseover(ev, classNames));
     on(this.el, 'keydown', ev => this.handleKeydown(ev, classNames));
   }
 
@@ -144,11 +140,28 @@ export default class SelectBox {
    */
   handleClick(ev, classNames) {
     const target = getTarget(ev);
+    const optionEl = closest(target, classNames.option);
 
-    if (closest(target, classNames.input)) {
+    if (optionEl) {
+      this.select(optionEl.getAttribute('data-value'));
+    } else if (closest(target, classNames.input)) {
       this.toggle();
-    } else if (closest(target, classNames.option)) {
-      this.select(target.getAttribute('data-value'));
+    }
+  }
+
+  /**
+   * Handle mouseover events
+   * @param {Event} ev - an event
+   * @param {object} classNames - classNames
+   * @private
+   */
+  handleMouseover(ev, { option }) {
+    const target = getTarget(ev);
+    const optionEl = closest(target, option);
+
+    if (optionEl) {
+      const highlightingOption = this.dropdown.getOption(optionEl.getAttribute('data-value'));
+      this.dropdown.highlight(highlightingOption.getIndex());
     }
   }
 
@@ -161,13 +174,17 @@ export default class SelectBox {
   handleKeydown(ev, classNames) {
     const target = getTarget(ev);
     const key = identifyKey(ev.key);
+    const optionEl = closest(target, classNames.option);
 
-    if (closest(target, classNames.input)) {
+    if (key === 'Escape') {
+      this.close();
+      this.input.focus();
+    } else if (optionEl) {
+      preventDefault(ev);
+      this.moveHighlightedOption(key, optionEl);
+    } else if (closest(target, classNames.input)) {
       preventDefault(ev);
       this.openDropdownByKeydown(target, key);
-    } else if (closest(target, classNames.option)) {
-      preventDefault(ev);
-      this.moveHighlightedOption(target, key);
     }
   }
 
@@ -179,39 +196,46 @@ export default class SelectBox {
   openDropdownByKeydown(target, key) {
     const keys = ['ArrowUp', 'ArrowDown', ' ', 'Enter'];
     if (keys.indexOf(key) > -1) {
-      target.blur();
-      this.dropdown.highlight();
-      this.open();
-    } else if (key === 'Escape') {
-      this.close();
+      if (this.opened) {
+        this.moveHighlightedOption(key);
+      } else {
+        this.open();
+      }
     }
   }
 
   /**
    * Use arrow keys to move a highlighted option
-   * @param {HTMLElement} target - a highlighted option
    * @param {string} key - key pressed by the user
+   * @param {HTMLElement} [optionEl] - an option element
    */
-  moveHighlightedOption(target, key) {
+  moveHighlightedOption(key, optionEl) {
+    const highlightedOption = this.dropdown.getHighlightedOption();
+    let index = -1;
+    if (highlightedOption) {
+      index = highlightedOption.getIndex();
+    }
+
     switch (key) {
       case 'ArrowUp':
-        this.dropdown.highlight(-1);
+        this.dropdown.highlight(this.getValidIndex(index - 1));
         break;
       case 'ArrowDown':
-        this.dropdown.highlight(1);
+        this.dropdown.highlight(this.getValidIndex(index + 1));
         break;
       case 'Enter':
       case ' ':
-        this.select(target.getAttribute('data-value'));
-      // eslint-disable-next-line no-fallthrough
-      case 'Escape':
+        this.select(optionEl.getAttribute('data-value'));
         this.close();
-        target.blur();
         this.input.focus();
         break;
       default:
         break;
     }
+  }
+
+  getValidIndex(index) {
+    return Math.min(Math.max(index, 0), this.dropdown.getOptionLength() - 1);
   }
 
   /**
@@ -305,6 +329,9 @@ export default class SelectBox {
   destroy() {
     this.input.destroy();
     this.dropdown.destroy();
+
+    off(document, 'click');
+    off(this.el, 'click mouseover keydown');
     removeElement(this.el);
     this.container = this.el = null;
   }

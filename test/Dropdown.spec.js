@@ -85,18 +85,20 @@ describe('Dropdown', () => {
     expect(dropdown.highlightedOption).toBeNull();
   });
 
-  it('should determine which option will be highlighted by direction.', () => {
+  it('should highlight an option by its index.', () => {
+    dropdown.highlight(1);
+    expect(dropdown.highlightedOption).toBe(dropdown.getOption(1));
+
+    dropdown.highlight(2);
+    expect(dropdown.highlightedOption).toBe(dropdown.getOption(2));
+  });
+
+  it('should highlight the selected option or the first option.', () => {
     dropdown.highlight();
     expect(dropdown.highlightedOption).toBe(dropdown.getOption(0));
 
-    dropdown.select(1);
+    dropdown.select(2);
     dropdown.highlight();
-    expect(dropdown.highlightedOption).toBe(dropdown.getOption(1));
-
-    dropdown.highlight(1);
     expect(dropdown.highlightedOption).toBe(dropdown.getOption(2));
-
-    dropdown.highlight(-1);
-    expect(dropdown.highlightedOption).toBe(dropdown.getOption(1));
   });
 });
