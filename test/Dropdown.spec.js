@@ -25,7 +25,6 @@ describe('Dropdown', () => {
     expect(el.tagName).toBe('UL');
     expect(nativeEl.tagName).toBe('SELECT');
     expect(nativeEl.disabled).toBe(false);
-    expect(nativeEl.required).toBe(false);
   });
 
   it('should make Optgroups, Options and a placeholder.', () => {

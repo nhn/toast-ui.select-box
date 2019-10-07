@@ -23,10 +23,8 @@ export default class Dropdown {
    *   @param {string} [options.placeholder] - placeholder for an input
    *   @param {array<object>} options.data - data for optgroups and options
    *   @param {boolean} [options.disabled=false] - whether a dropdown should be disabled or not
-   *   @param {boolean} [options.required=false] - whether a dropdown should be required or not
-   *   @param {name} [options.name] - name of the select
    */
-  constructor({ placeholder, data, disabled = false, required = false, name }) {
+  constructor({ placeholder, data, disabled = false }) {
     /**
      * ul element for a custom dropdown
      * @type {HTMLElement}
@@ -45,10 +43,6 @@ export default class Dropdown {
     this.nativeEl.tabIndex = -1;
 
     this.disabled = this.nativeEl.disabled = disabled;
-    this.required = this.nativeEl.required = required;
-    if (name) {
-      this.name = this.nativeEl.name = name;
-    }
 
     /**
      * Options and Optgroups

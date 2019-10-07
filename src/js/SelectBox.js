@@ -27,8 +27,6 @@ export default class SelectBox {
    *   @param {string} [options.placeholder] - placeholder for an input
    *   @param {array<object>} options.data - data for optgroups and options
    *   @param {boolean} [options.disabled=false] - whether an option should be disabled or not
-   *   @param {boolean} [options.required=false] - whether an option should be required or not
-   *   @param {name} [options.name] - name of the select
    *   @param {boolean} [options.autofocus=false] - whether a selectbox should get focus when th page loads
    */
   constructor(container, { placeholder = '', disabled = false, autofocus = false, ...options }) {
