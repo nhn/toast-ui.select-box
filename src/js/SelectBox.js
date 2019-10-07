@@ -256,7 +256,7 @@ export default class SelectBox {
    * Open a dropdown list
    */
   open() {
-    if (!this.opened) {
+    if (!this.disabled && !this.opened) {
       this.opened = true;
       this.dropdown.changeOpened(true);
       this.input.changeOpened(true);
@@ -292,8 +292,12 @@ export default class SelectBox {
    * @return {Option} - selected option
    */
   select(value) {
-    const selectedOption = this.dropdown.select(value);
-    this.input.changeText(selectedOption);
+    let selectedOption;
+
+    if (!this.disabled) {
+      selectedOption = this.dropdown.select(value);
+      this.input.changeText(selectedOption);
+    }
 
     return selectedOption;
   }
@@ -302,8 +306,10 @@ export default class SelectBox {
    * Deselect an option
    */
   deselect() {
-    this.dropdown.deselect();
-    this.input.changeText();
+    if (!this.disabled) {
+      this.dropdown.deselect();
+      this.input.changeText();
+    }
   }
 
   /**
