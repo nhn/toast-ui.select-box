@@ -7,7 +7,8 @@ describe('Dropdown', () => {
   let dropdown;
 
   beforeEach(() => {
-    dropdown = new Dropdown({
+    const container = document.createElement('div');
+    dropdown = new Dropdown(container, {
       placeholder: '',
       data: [
         {

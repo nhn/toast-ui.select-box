@@ -20,11 +20,12 @@ export default class Input {
   /**
    * Create an input
    * @constructor
+   * @param {HTMLElement} container - container element
    * @param {object} options - options
    *   @param {string} [options.placeholder] - placeholder for a select box
    *   @param {string} [options.disabled] - whether an input should be disabled or not
    */
-  constructor({ placeholder, disabled }) {
+  constructor(container, { placeholder, disabled }) {
     /**
      * @type {HTMLElement}
      * @private
@@ -43,6 +44,7 @@ export default class Input {
     this.disabled = disabled;
 
     this.initialize();
+    container.appendChild(this.el);
   }
 
   /**

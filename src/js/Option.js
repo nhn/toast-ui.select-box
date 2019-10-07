@@ -23,14 +23,20 @@ export default class Option {
   /**
    * Create an option
    * @constructor
+   * @param {HTMLElement} container - container element
+   * @param {HTMLElement} nativeContainer - native container element
    * @param {object} options - options
    *   @param {string} [options.text] - label to be displayed in the drop-down list
    *   @param {string} options.value - value to be sent to a server
    *   @param {boolean} [options.disabled=false] - whether an option should be disabled or not
    *   @param {boolean} [options.selected=false] - whether an option should be pre-selected or not
-   * @param {number} index - option's index
+   *   @param {number} [options.index] - option's index
    */
-  constructor({ value, text, disabled = false, selected = false }, index) {
+  constructor(
+    container,
+    nativeContainer,
+    { value, text, disabled = false, selected = false, index }
+  ) {
     /**
      * li element for a custom dropdown item
      * @type {HTMLLIElement}
@@ -54,6 +60,10 @@ export default class Option {
     this.index = index;
 
     this.initialize();
+    if (container) {
+      container.appendChild(this.el);
+    }
+    nativeContainer.appendChild(this.nativeEl);
   }
 
   /**

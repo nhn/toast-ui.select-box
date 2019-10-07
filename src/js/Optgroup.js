@@ -19,13 +19,15 @@ export default class Optgroup {
   /**
    * Create an optgroup
    * @constructor
+   * @param {HTMLElement} container - container element
+   * @param {HTMLElement} nativeContainer - native container element
    * @param {object} options - options
    *   @param {string} [options.text] - label to be displayed in the drop-down list
    *   @param {array<object>} options.data - data for options to be included in the optgroup
    *   @param {boolean} [options.disabled=false] - whether an optgroup should be disabled or not
-   * @param {number} optgroupIndex - option's index
+   *   @param {number} [options.index] - optgroup's index
    */
-  constructor({ text = '', data, disabled = false }, optgroupIndex) {
+  constructor(container, nativeContainer, { text = '', data, disabled = false, index }) {
     /**
      * ul element for a custom dropdown item
      * @type {HTMLUListElement}
@@ -47,10 +49,14 @@ export default class Optgroup {
      * Options to be included in the optgroup
      * @type {array<Option>}
      */
-    this.options = data.map((datum, index) => new Option(datum, optgroupIndex + index));
+    this.options = data.map(
+      (datum, optionIndex) =>
+        new Option(this.el, this.nativeEl, { index: index + optionIndex, ...datum })
+    );
 
-    this.appendOptions();
     this.initialize();
+    container.appendChild(this.el);
+    nativeContainer.appendChild(this.nativeEl);
   }
 
   /**
@@ -64,17 +70,6 @@ export default class Optgroup {
     el.className = OPTGROUP_CLASS_NAME;
 
     return el;
-  }
-
-  /**
-   * Append options to an optgroup
-   * @private
-   */
-  appendOptions() {
-    this.options.forEach(option => {
-      this.el.appendChild(option.el);
-      this.nativeEl.appendChild(option.nativeEl);
-    });
   }
 
   /**

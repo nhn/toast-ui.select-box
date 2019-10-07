@@ -5,7 +5,7 @@ describe('Option', () => {
   let option;
 
   beforeEach(() => {
-    option = new Option({ value: 1, text: 'first' }, 0);
+    option = new Option(null, document.createElement('div'), { value: 1, text: 'first', index: 0 });
   });
 
   afterEach(() => {

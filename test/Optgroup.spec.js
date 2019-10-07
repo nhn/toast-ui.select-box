@@ -6,13 +6,13 @@ describe('Optgroup', () => {
   let optgroup;
 
   beforeEach(() => {
-    optgroup = new Optgroup(
-      {
-        text: 'fruit',
-        data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
-      },
-      0
-    );
+    const container = document.createElement('div');
+    const nativeContainer = document.createElement('select');
+    optgroup = new Optgroup(container, nativeContainer, {
+      text: 'fruit',
+      data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }],
+      index: 0
+    });
   });
 
   afterEach(() => {

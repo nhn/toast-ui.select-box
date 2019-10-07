@@ -6,7 +6,8 @@ describe('Input', () => {
   let input;
 
   beforeEach(() => {
-    input = new Input({ placeholder: 'Please select an option.' });
+    const container = document.createElement('div');
+    input = new Input(container, { placeholder: 'Please select an option.' });
   });
 
   it('should make a div and p elements.', () => {
@@ -28,7 +29,9 @@ describe('Input', () => {
   });
 
   it('should change text in the placeholder by the Option.', () => {
-    const option = new Option({ value: 1, text: 'first' }, 0);
+    const container = document.createElement('div');
+    const nativeContainer = document.createElement('select');
+    const option = new Option(container, nativeContainer, { value: 1, text: 'first', index: 0 });
     input.changeText(option);
     expect(input.placeholderEl.innerHTML).toBe('first');
   });

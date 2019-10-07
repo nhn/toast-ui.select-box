@@ -47,13 +47,13 @@ export default class SelectBox {
      * @type {Input}
      * @private
      */
-    this.input = new Input({ placeholder, disabled });
+    this.input = new Input(this.el, { placeholder, disabled });
 
     /**
      * @type {Dropdown}
      * @private
      */
-    this.dropdown = new Dropdown({ placeholder, disabled, ...options });
+    this.dropdown = new Dropdown(this.el, { placeholder, disabled, ...options });
 
     /**
      * whether a dropdown list open
@@ -78,8 +78,6 @@ export default class SelectBox {
    * @private
    */
   initialize(options) {
-    this.appendElements();
-
     if (!options.placeholder) {
       this.select(0);
     }
@@ -105,16 +103,6 @@ export default class SelectBox {
     on(this.el, 'click', ev => this.handleClick(ev, classNames));
     on(this.el, 'mouseover', ev => this.handleMouseover(ev, classNames));
     on(this.el, 'keydown', ev => this.handleKeydown(ev, classNames));
-  }
-
-  /**
-   * Append input, dropdown, and select
-   * @private
-   */
-  appendElements() {
-    this.el.appendChild(this.input.el);
-    this.el.appendChild(this.dropdown.el);
-    this.el.appendChild(this.dropdown.nativeEl);
   }
 
   /**
