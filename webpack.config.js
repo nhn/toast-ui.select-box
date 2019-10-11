@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const postcssPrefixer = require('postcss-prefixer');
+const autoprefixer = require('autoprefixer');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = (env, { mode = 'development' }) => {
@@ -21,7 +22,7 @@ module.exports = (env, { mode = 'development' }) => {
     mode,
     entry: './src/js/index.js',
     output: {
-      library: ['toastui', 'SelectBox'],
+      library: ['tui', 'SelectBox'],
       libraryTarget: 'umd',
       libraryExport: 'default',
       path: path.resolve(__dirname, 'dist'),
@@ -61,8 +62,10 @@ module.exports = (env, { mode = 'development' }) => {
                 sourceMap: true,
                 plugins: [
                   postcssPrefixer({
-                    prefix: `tui-select-box-`
-                  })
+                    prefix: 'tui-select-box-',
+                    ignore: ['tui-select-box']
+                  }),
+                  autoprefixer
                 ]
               }
             }
@@ -92,7 +95,7 @@ module.exports = (env, { mode = 'development' }) => {
       ]
     };
   } else {
-    // config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.plugins.push(new webpack.HotModuleReplacementPlugin());
     config.devtool = 'inline-source-map';
     config.devServer = {
       historyApiFallback: false,

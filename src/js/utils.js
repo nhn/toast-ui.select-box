@@ -3,26 +3,19 @@
  * @author NHN. FE dev team.<dl_javascript@nhn.com>
  */
 
-/**
- * Identify the key (polyfill for IE8)
- * @param {number} keyCode - keyCode
- * @return {string} - key
- */
-const identifyKeyCode = keyCode => {
-  switch (keyCode) {
-    case 38:
-      return 'ArrowUp';
-    case 40:
-      return 'ArrowDown';
-    case 32:
-      return ' ';
-    case 13:
-      return 'Enter';
-    case 27:
-      return 'Escape';
-    default:
-      return keyCode;
-  }
+const keyCodeMap = {
+  38: 'ArrowUp',
+  40: 'ArrowDown',
+  32: ' ',
+  13: 'Enter',
+  27: 'Escape'
+};
+
+const keyMap = {
+  Up: 'ArrowUp',
+  Down: 'ArrowDown',
+  Spacebar: ' ',
+  Esc: 'Escape'
 };
 
 /**
@@ -34,19 +27,8 @@ export const identifyKey = ev => {
   const { key, keyCode } = ev;
 
   if (key) {
-    switch (key) {
-      case 'Up':
-        return 'ArrowUp';
-      case 'Down':
-        return 'ArrowDown';
-      case 'Spacebar':
-        return ' ';
-      case 'Esc':
-        return 'Escape';
-      default:
-        return key;
-    }
-  } else {
-    return identifyKeyCode(keyCode);
+    return keyMap[key] || key;
   }
+
+  return keyCodeMap[keyCode] || keyCode;
 };

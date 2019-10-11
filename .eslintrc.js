@@ -14,6 +14,6 @@ module.exports = {
   extends: ['tui/es6', 'plugin:prettier/recommended'],
   globals: {
     toastui: true,
-    fixture: true
+    setFixtures: true
   }
 };

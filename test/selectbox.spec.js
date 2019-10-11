@@ -1,286 +1,244 @@
-import SelectBox from '@src/SelectBox';
-import {
-  OPTION_CLASS_NAME,
-  OPTGROUP_CLASS_NAME,
-  DROPDOWN_CLASS_NAME,
-  INPUT_CLASS_NAME
-} from '@src/statics';
+import SelectBox from '@src/selectBox';
+import { classNames } from '@src/constants';
 
 describe('SelectBox', () => {
-  let container, selectbox;
+  let selectBox;
 
-  function createSelectBoxWithoutPlaceholder() {
-    selectbox.destroy();
-    selectbox = new SelectBox(container, {
+  function createSelectBox(options = {}) {
+    if (selectBox) {
+      selectBox.destroy();
+    }
+
+    selectBox = new SelectBox('#select-box', {
       data: [
         {
           text: 'fruit',
           data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
         },
         { text: 'none', value: 0 }
-      ]
+      ],
+      ...options
     });
   }
 
   beforeEach(() => {
-    fixture.set('<div id="select-box"></div>');
-    container = document.querySelector('#select-box');
-    selectbox = new SelectBox(container, {
-      placeholder: 'Please select an option.',
-      data: [
-        {
-          text: 'fruit',
-          data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
-        },
-        { text: 'none', value: 0 }
-      ]
+    setFixtures('<div id="select-box"></div>');
+    createSelectBox({ placeholder: 'Please select an option.' });
+  });
+
+  it('should make Items, ItemGroups, Dropdown and Input.', () => {
+    const { input, dropdown } = selectBox;
+    expect(document.querySelector(`.${classNames.INPUT}`)).toBe(input.el);
+    expect(document.querySelector(`.${classNames.DROPDOWN}`)).toBe(dropdown.el);
+    expect(document.querySelectorAll(`.${classNames.ITEM_GROUP}`).length).toBe(1);
+    expect(document.querySelectorAll(`.${classNames.ITEM}`).length).toBe(3);
+  });
+
+  describe('initialization', () => {
+    it('should select the first Item when there is no placeholder.', () => {
+      createSelectBox();
+      expect(document.querySelector('option')).toBeSelected();
     });
   });
 
-  afterEach(() => {
-    selectbox.destroy();
-  });
-
-  it('should make Options, Optgroups, Dropdown and Input.', () => {
-    const { input, dropdown } = selectbox;
-    expect(container.querySelector(`.${INPUT_CLASS_NAME}`)).toBe(input.el);
-    expect(container.querySelector(`.${DROPDOWN_CLASS_NAME}`)).toBe(dropdown.el);
-    expect(container.querySelectorAll(`.${OPTGROUP_CLASS_NAME}`).length).toBe(1);
-    expect(container.querySelectorAll(`.${OPTION_CLASS_NAME}`).length).toBe(3);
-  });
-
-  it('should select the first option when there is no placeholder.', () => {
-    createSelectBoxWithoutPlaceholder();
-
-    const { dropdown } = selectbox;
-    expect(selectbox.getSelectedOption()).toBe(dropdown.options[0].options[0]);
-  });
-
   it('should disable and enable a select box.', () => {
-    const { input, dropdown } = selectbox;
-    spyOn(input, 'changeDisabled');
-    spyOn(dropdown, 'changeDisabled');
+    const { input, dropdown } = selectBox;
 
-    selectbox.disable();
-    expect(input.changeDisabled).toHaveBeenCalledWith(true);
-    expect(dropdown.changeDisabled).toHaveBeenCalledWith(true);
+    selectBox.disable();
+    expect(input.el).toHaveClass(classNames.DISABLED);
+    expect(dropdown.el).toHaveClass(classNames.DISABLED);
 
-    selectbox.enable();
-    expect(input.changeDisabled).toHaveBeenCalledWith(false);
-    expect(dropdown.changeDisabled).toHaveBeenCalledWith(false);
+    selectBox.enable();
+    expect(input.el).not.toHaveClass(classNames.DISABLED);
+    expect(dropdown.el).not.toHaveClass(classNames.DISABLED);
   });
 
   it('should open and close a dropdown list.', () => {
-    const { input, dropdown } = selectbox;
-    spyOn(input, 'changeOpened');
-    spyOn(dropdown, 'changeOpened');
+    const { input, dropdown } = selectBox;
 
-    selectbox.open();
-    expect(input.changeOpened).toHaveBeenCalledWith(true);
-    expect(dropdown.changeOpened).toHaveBeenCalledWith(true);
+    selectBox.open();
+    expect(input.el).toHaveClass(classNames.OPEN);
+    expect(dropdown.el).not.toHaveClass(classNames.HIDDEN);
 
-    selectbox.close();
-    expect(input.changeOpened).toHaveBeenCalledWith(false);
-    expect(dropdown.changeOpened).toHaveBeenCalledWith(false);
+    selectBox.close();
+    expect(input.el).not.toHaveClass(classNames.OPEN);
+    expect(dropdown.el).toHaveClass(classNames.HIDDEN);
   });
 
-  it('should select and deselect an option.', () => {
-    const { input } = selectbox;
-    const [, option] = selectbox.dropdown.options;
-    const result = selectbox.select('0');
-    expect(result).toBe(option);
-    expect(selectbox.getSelectedOption()).toBe(option);
-    expect(input.placeholderEl.innerHTML).toBe('none');
+  describe('selection', () => {
+    it('should select and deselect an Item.', () => {
+      const { input } = selectBox;
+      const [, item] = selectBox.dropdown.items;
+      const result = selectBox.select('0');
+      expect(result).toBe(item);
+      expect(selectBox.getSelectedItem()).toBe(item);
+      expect(input.placeholderEl).toContainText('none');
 
-    selectbox.deselect();
-    expect(selectbox.getSelectedOption()).toBe(null);
+      selectBox.deselect();
+      expect(selectBox.getSelectedItem()).toBe(null);
+    });
+
+    it('should select a placeholder when deselect or select a wrong Item if there is a placeholder.', () => {
+      const { input } = selectBox;
+
+      selectBox.select(0);
+      selectBox.deselect();
+      expect(input.placeholderEl).toContainText('Please select an option.');
+
+      selectBox.select(0);
+      selectBox.select('wrong value');
+      expect(input.placeholderEl).toContainText('Please select an option.');
+    });
+
+    it('should be empty when deselect or select a wrong Item if there is no placeholder.', () => {
+      createSelectBox();
+
+      const { input } = selectBox;
+
+      selectBox.select(0);
+      selectBox.deselect();
+      expect(input.placeholderEl.innerHTML).toBe('');
+
+      selectBox.select(0);
+      selectBox.select('wrong value');
+      expect(input.placeholderEl.innerHTML).toBe('');
+    });
+
+    it('should select an Item by its value (string) and index (number).', () => {
+      const [, item] = selectBox.dropdown.items;
+      expect(selectBox.select('0')).toBe(item);
+      expect(selectBox.select(2)).toBe(item);
+      expect(selectBox.getSelectedItem()).toBe(item);
+    });
+
+    it('should return null when a selection is not valid.', () => {
+      expect(selectBox.select('wrong value')).toBe(null);
+      expect(selectBox.select(100)).toBe(null);
+    });
   });
 
-  it('should select a placeholder when deselect or select a wrong option if there is a placeholder.', () => {
-    const { input } = selectbox;
-
-    selectbox.select(0);
-    selectbox.deselect();
-    expect(input.placeholderEl.innerHTML).toBe('Please select an option.');
-
-    selectbox.select(0);
-    selectbox.select('wrong value');
-    expect(input.placeholderEl.innerHTML).toBe('Please select an option.');
-  });
-
-  it('should be empty when deselect or select a wrong option if there is no placeholder.', () => {
-    createSelectBoxWithoutPlaceholder();
-
-    const { input } = selectbox;
-
-    selectbox.select(0);
-    selectbox.deselect();
-    expect(input.placeholderEl.innerHTML).toBe('');
-
-    selectbox.select(0);
-    selectbox.select('wrong value');
-    expect(input.placeholderEl.innerHTML).toBe('');
-  });
-
-  it('should get an option by its value (string) and index (number).', () => {
-    const [, option] = selectbox.dropdown.options;
-    expect(selectbox.getOption('0')).toBe(option);
-    expect(selectbox.getOption(2)).toBe(option);
-  });
-
-  it('should select an option by its value (string) and index (number).', () => {
-    const [, option] = selectbox.dropdown.options;
-    expect(selectbox.select('0')).toBe(option);
-    expect(selectbox.select(2)).toBe(option);
-    expect(selectbox.getSelectedOption()).toBe(option);
-  });
-
-  it('should return null when a selection is not valid.', () => {
-    expect(selectbox.select('wrong value')).toBe(null);
-    expect(selectbox.select(100)).toBe(null);
+  it('should get an Item by its value (string) and index (number).', () => {
+    const [, item] = selectBox.dropdown.items;
+    expect(selectBox.getItem('0')).toBe(item);
+    expect(selectBox.getItem(2)).toBe(item);
   });
 
   describe('mouse event', () => {
     it('should open and close a dropdown list when click the input.', () => {
-      const { input } = selectbox;
+      const { input, dropdown } = selectBox;
 
       input.el.click();
-      expect(selectbox.opened).toBe(true);
+      expect(input.el).toHaveClass(classNames.OPEN);
+      expect(dropdown.el).not.toHaveClass(classNames.HIDDEN);
 
       input.el.click();
-      expect(selectbox.opened).toBe(false);
+      expect(input.el).not.toHaveClass(classNames.OPEN);
+      expect(dropdown.el).toHaveClass(classNames.HIDDEN);
     });
 
-    it('should select an option when click the option.', () => {
-      const { dropdown } = selectbox;
-      const [, option] = dropdown.options;
+    it('should select an Item when click the Item.', () => {
+      const { input, dropdown } = selectBox;
+      const [, item] = dropdown.items;
 
-      const result = selectbox.select('0');
-      expect(result).toBe(option);
-      expect(selectbox.getSelectedOption()).toBe(option);
+      const result = selectBox.select('0');
+      expect(result).toBe(item);
+      expect(selectBox.getSelectedItem()).toBe(item);
+      expect(input.placeholderEl).toContainText('none');
     });
 
     it('should close a dropdown list when click anywhere except the select box.', () => {
-      selectbox.open();
+      const { input, dropdown } = selectBox;
+
+      selectBox.open();
       document.body.click();
-      expect(selectbox.opened).toBe(false);
+      expect(input.el).not.toHaveClass(classNames.OPEN);
+      expect(dropdown.el).toHaveClass(classNames.HIDDEN);
     });
 
-    it('should highlight the option when mouseover the option.', () => {
-      selectbox.handleMouseover(
-        { target: selectbox.getOption(2).el },
-        { option: `.${OPTION_CLASS_NAME}` }
-      );
-      expect(selectbox.dropdown.getHighlightedOption()).toBe(selectbox.getOption(2));
+    it('should highlight the Item when mouseover the Item.', () => {
+      const item = selectBox.getItem(2);
+
+      selectBox.handleMouseover({ target: item.el }, classNames);
+      expect(selectBox.dropdown.getHighlightedItem()).toBe(item);
+      expect(item.el).toHaveClass(classNames.HIGHLIGHT);
     });
   });
 
   describe('keyboard event', () => {
-    const classNames = {
-      input: `.${INPUT_CLASS_NAME}`,
-      option: `.${OPTION_CLASS_NAME}`
-    };
-
     it('should open a dropdown list when press ArrowUp, ArrowDown, Space, or Enter on the input if a dropdown is closed.', () => {
-      selectbox.handleKeydown(
-        { target: selectbox.input.el, key: 'ArrowDown', preventDefault: () => {} },
+      const { input, dropdown } = selectBox;
+
+      selectBox.handleKeydown(
+        { target: selectBox.input.el, key: 'ArrowDown', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.opened).toBe(true);
+      expect(input.el).toHaveClass(classNames.OPEN);
+      expect(dropdown.el).not.toHaveClass(classNames.HIDDEN);
     });
 
-    it('should move a highlighted option when press ArrowUp and ArrowDown on the input if a dropdown is opened.', () => {
-      selectbox.open();
-      spyOn(selectbox.dropdown, 'highlight');
+    it('should move a highlighted Item when press ArrowUp and ArrowDown on the input if a dropdown is opened.', () => {
+      selectBox.open();
+      spyOn(selectBox.dropdown, 'highlight');
 
-      selectbox.handleKeydown(
-        { target: selectbox.input.el, key: 'ArrowUp', preventDefault: () => {} },
+      selectBox.handleKeydown(
+        { target: selectBox.input.el, key: 'ArrowUp', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(0);
+      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
 
-      selectbox.handleKeydown(
-        { target: selectbox.input.el, key: 'ArrowDown', preventDefault: () => {} },
+      selectBox.handleKeydown(
+        { target: selectBox.input.el, key: 'ArrowDown', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(0);
+      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
     });
 
-    it('should move a highlighted option when press ArrowUp and ArrowDown on the options.', () => {
-      selectbox.dropdown.highlight(1);
-      spyOn(selectbox.dropdown, 'highlight');
+    it('should move a highlighted Item when press ArrowUp and ArrowDown on the Items.', () => {
+      selectBox.dropdown.highlight(1);
+      spyOn(selectBox.dropdown, 'highlight');
 
-      selectbox.handleKeydown(
-        { target: selectbox.getOption(1).el, key: 'ArrowUp', preventDefault: () => {} },
+      selectBox.handleKeydown(
+        { target: selectBox.getItem(1).el, key: 'ArrowUp', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(0);
+      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
 
-      selectbox.handleKeydown(
-        { target: selectbox.getOption(1).el, key: 'ArrowDown', preventDefault: () => {} },
+      selectBox.handleKeydown(
+        { target: selectBox.getItem(1).el, key: 'ArrowDown', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.dropdown.highlight).toHaveBeenCalledWith(2);
+      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(2);
     });
 
-    it('should select a highlighted option when press Space or Enter on the option.', () => {
-      selectbox.handleKeydown(
-        { target: selectbox.getOption(2).el, key: ' ', preventDefault: () => {} },
+    it('should select a highlighted Item when press Space or Enter on the Item.', () => {
+      selectBox.handleKeydown(
+        { target: selectBox.getItem(2).el, key: ' ', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.getSelectedOption()).toBe(selectbox.getOption(2));
+      expect(selectBox.getSelectedItem()).toBe(selectBox.getItem(2));
 
-      selectbox.handleKeydown(
-        { target: selectbox.getOption(1).el, key: 'Enter', preventDefault: () => {} },
+      selectBox.handleKeydown(
+        { target: selectBox.getItem(1).el, key: 'Enter', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.getSelectedOption()).toBe(selectbox.getOption(1));
+      expect(selectBox.getSelectedItem()).toBe(selectBox.getItem(1));
     });
 
-    it('should close a dropdown list when press Escape on the input and options.', () => {
-      selectbox.open();
-      spyOn(selectbox, 'close');
+    it('should close a dropdown list when press Escape on the input and Items.', () => {
+      selectBox.open();
+      spyOn(selectBox, 'close');
 
-      selectbox.handleKeydown(
-        { target: selectbox.getOption(2).el, key: 'Escape', preventDefault: () => {} },
+      selectBox.handleKeydown(
+        { target: selectBox.getItem(2).el, key: 'Escape', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.close).toHaveBeenCalled();
+      expect(selectBox.close).toHaveBeenCalled();
 
-      selectbox.handleKeydown(
-        { target: selectbox.input.el, key: 'Escape', preventDefault: () => {} },
+      selectBox.handleKeydown(
+        { target: selectBox.input.el, key: 'Escape', preventDefault: () => {} },
         classNames
       );
-      expect(selectbox.close).toHaveBeenCalled();
+      expect(selectBox.close).toHaveBeenCalled();
     });
-  });
-});
-
-describe('Selectbox options -', () => {
-  let container, selectbox, options;
-
-  beforeEach(() => {
-    fixture.set('<div id="select-box"></div>');
-    container = document.querySelector('#select-box');
-    options = {
-      data: [
-        {
-          text: 'fruit',
-          data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
-        },
-        { text: 'none', value: 0 }
-      ]
-    };
-  });
-
-  afterEach(() => {
-    selectbox.destroy();
-  });
-
-  it('autofocus should be automatically focus on the input.', () => {
-    options.autofocus = true;
-    selectbox = new SelectBox(container, options);
-    window.onload();
-    expect(document.activeElement).toBe(selectbox.input.el);
   });
 });

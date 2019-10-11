@@ -110,8 +110,15 @@ function setConfig(defaultConfig, server) {
 module.exports = function(config) {
   const defaultConfig = {
     basePath: './',
-    frameworks: ['fixture', 'jasmine', 'es5-shim'],
-    files: ['test/index.js'],
+    frameworks: ['jquery-1.11.0', 'jasmine', 'es5-shim'],
+    files: [
+      {
+        // karma-jasmine-jquery does not support IE8, so include jasmine-jquery directly
+        pattern: 'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+        watched: false
+      },
+      'test/index.js'
+    ],
     preprocessors: {
       'test/index.js': ['webpack', 'sourcemap']
     },

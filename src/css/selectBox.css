@@ -1,8 +1,18 @@
+.tui-select-box {
+  position: relative;
+}
+
+.input,
+.dropdown,
+.item-group-label,
+.item {
+  box-sizing: border-box;
+}
+
 /* Input */
 
 .input {
   border: 1px solid #ddd;
-  box-sizing: border-box;
   height: 29px;
   padding: 4px 8px;
   cursor: pointer;
@@ -12,6 +22,10 @@
   border-color: #aaa;
 }
 
+.input:focus {
+  border: 1px solid transparent;
+}
+
 .placeholder {
   display: inline-block;
   margin: 0;
@@ -19,13 +33,15 @@
   font-size: 13px;
   line-height: 15px;
   user-select: none;
+  width: calc(100% - 12px);
+  vertical-align: sub;
 }
 
 .ico-select {
   display: block;
   float: right;
   background: url(../img/ico_tui_select.png) left center no-repeat;
-  width: 8px;
+  width: 7px;
   overflow: hidden;
   text-indent: 100%;
 }
@@ -37,7 +53,7 @@
 /* Dropdown */
 
 .dropdown,
-.optgroup {
+.item-group {
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -46,26 +62,29 @@
 .dropdown {
   border: 1px solid #aaa;
   border-top: none;
-  box-sizing: border-box;
   /* max-height: 145px; */
   overflow: auto;
+  z-index: 1;
+  width: 100%;
+  position: absolute;
+  background: #fff;
 }
 
-/* Optgroup */
+/* ItemGroup */
 
-.optgroup > .option {
+.item-group > .item {
   padding-left: 1.5em;
 }
 
-.optgroup-label {
+.item-group-label {
+  display: block;
   font-weight: bold;
 }
 
-/* Option */
+/* Item */
 
-.optgroup-label,
-.option {
-  box-sizing: border-box;
+.item-group-label,
+.item {
   height: 29px;
   padding: 8px 7px;
   color: #333;
@@ -73,7 +92,7 @@
   line-height: 15px;
 }
 
-.option {
+.item {
   cursor: pointer;
 }
 
@@ -84,6 +103,14 @@
 .highlight {
   background: #e5f6ff;
   outline: none;
+}
+
+.placeholder,
+.item-group-label,
+.item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Common */
