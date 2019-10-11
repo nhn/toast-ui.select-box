@@ -33,6 +33,7 @@
   font-size: 13px;
   line-height: 15px;
   user-select: none;
+  width: 80%;
   width: calc(100% - 12px);
   vertical-align: sub;
 }
