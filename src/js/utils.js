@@ -8,7 +8,8 @@ const keyCodeMap = {
   40: 'ArrowDown',
   32: ' ',
   13: 'Enter',
-  27: 'Escape'
+  27: 'Escape',
+  61: 'Tab'
 };
 
 const keyMap = {

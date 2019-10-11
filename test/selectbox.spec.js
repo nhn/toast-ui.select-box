@@ -224,7 +224,7 @@ describe('SelectBox', () => {
       expect(selectBox.getSelectedItem()).toBe(selectBox.getItem(1));
     });
 
-    it('should close a dropdown list when press Escape on the input and Items.', () => {
+    it('should close a dropdown list when press Escape or Tab on the input and Items.', () => {
       selectBox.open();
       spyOn(selectBox, 'close');
 
@@ -235,7 +235,7 @@ describe('SelectBox', () => {
       expect(selectBox.close).toHaveBeenCalled();
 
       selectBox.handleKeydown(
-        { target: selectBox.input.el, key: 'Escape', preventDefault: () => {} },
+        { target: selectBox.input.el, key: 'Tab', preventDefault: () => {} },
         classNames
       );
       expect(selectBox.close).toHaveBeenCalled();

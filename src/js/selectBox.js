@@ -160,17 +160,23 @@ export default class SelectBox {
   handleKeydown(ev, { INPUT, ITEM }) {
     const target = getTarget(ev);
     const key = identifyKey(ev);
-    const itemEl = closest(target, `.${ITEM}`);
+    const keys = ['ArrowUp', 'ArrowDown', ' ', 'Enter', 'Escape'];
 
-    if (key === 'Escape') {
+    if (key === 'Tab') {
       this.close();
-      this.input.focus();
-    } else if (itemEl) {
+    } else if (keys.indexOf(key) > -1) {
       preventDefault(ev);
-      this.moveHighlightedItem(key, itemEl);
-    } else if (closest(target, `.${INPUT}`)) {
-      preventDefault(ev);
-      this.openDropdownByKeydown(key);
+
+      const itemEl = closest(target, `.${ITEM}`);
+
+      if (key === 'Escape') {
+        this.close();
+        this.input.focus();
+      } else if (itemEl) {
+        this.moveHighlightedItem(key, itemEl);
+      } else if (closest(target, `.${INPUT}`)) {
+        this.openDropdownByKeydown(key);
+      }
     }
   }
 
@@ -180,13 +186,10 @@ export default class SelectBox {
    * @private
    */
   openDropdownByKeydown(key) {
-    const keys = ['ArrowUp', 'ArrowDown', ' ', 'Enter'];
-    if (keys.indexOf(key) > -1) {
-      if (this.opened) {
-        this.moveHighlightedItem(key);
-      } else {
-        this.open();
-      }
+    if (this.opened) {
+      this.moveHighlightedItem(key);
+    } else {
+      this.open();
     }
   }
 
