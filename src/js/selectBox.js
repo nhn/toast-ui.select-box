@@ -23,9 +23,13 @@ import Dropdown from './dropdown';
  *   @param {array<object>} options.data - data for ItemGroups and Items
  *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
  *   @param {boolean} [options.autofocus=false] - whether a selectbox should get focus when th page loads
+ *   @param {boolean} [options.autoclose=true] - whether a selectbox should close after selection
  */
 export default class SelectBox {
-  constructor(container, { placeholder = '', disabled = false, autofocus = false, ...options }) {
+  constructor(
+    container,
+    { placeholder = '', disabled = false, autofocus = false, autoclose = true, ...options }
+  ) {
     /**
      * @type {HTMLElement}
      * @private
@@ -45,18 +49,21 @@ export default class SelectBox {
     this.dropdown = new Dropdown({ placeholder, disabled, ...options });
 
     /**
-     * whether a dropdown list open
      * @type {boolean}
      * @private
      */
     this.opened = false;
 
     /**
-     * whether a selectbox is disabled
      * @type {boolean}
      * @private
      */
     this.diabled = false;
+
+    /**
+     * @type {boolean}
+     */
+    this.autoclose = autoclose;
 
     this.initialize({ placeholder, disabled, autofocus });
     this.appendToContainer(container);
@@ -109,7 +116,7 @@ export default class SelectBox {
 
     on(document, 'click', ev => {
       const target = getTarget(ev);
-      if (!closest(target, `.${classNames.INPUT}`)) {
+      if (!closest(target, `.${classNames.SELECT_BOX}`)) {
         this.close();
       }
     });
@@ -288,16 +295,22 @@ export default class SelectBox {
 
   /**
    * Select an Item
+   * If select an Item that is already selected, return null
    * @param {string|number|Item} value - if string, find an Item by its value. if number, find an Item by its index.
-   * @return {Item} - selected Item
+   * @return {Item} - selected Item.
    */
   select(value) {
+    // const prevSelectedItem = this.getSelectedItem();
     let selectedItem = null;
 
     if (!this.disabled) {
       selectedItem = this.dropdown.select(value);
+
       if (selectedItem) {
         this.input.changeText(selectedItem);
+        if (this.autoclose) {
+          this.close();
+        }
       }
     }
 

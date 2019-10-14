@@ -198,10 +198,6 @@ export default class Dropdown {
   select(value) {
     const selectedItem = value instanceof Item ? value : this.getItem(value);
 
-    if (selectedItem === this.selectedItem) {
-      return selectedItem;
-    }
-
     if (selectedItem && selectedItem.select()) {
       this.deselect();
       this.selectedItem = selectedItem;
