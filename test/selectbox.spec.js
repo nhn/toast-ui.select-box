@@ -66,41 +66,41 @@ describe('SelectBox', () => {
   });
 
   describe('selection', () => {
-    it('should select and deselect an Item.', () => {
+    it('should select an Item.', () => {
       const { input } = selectBox;
       const [, item] = selectBox.dropdown.items;
       const result = selectBox.select('0');
       expect(result).toBe(item);
       expect(selectBox.getSelectedItem()).toBe(item);
-      expect(input.placeholderEl).toContainText('none');
+      expect(input.placeholderEl).toHaveText('none');
 
       selectBox.deselect();
       expect(selectBox.getSelectedItem()).toBe(null);
     });
 
-    it('should select a placeholder when deselect or select a wrong Item if there is a placeholder.', () => {
+    it('should not change a selected item when select a wrong Item.', () => {
+      const { input } = selectBox;
+
+      selectBox.select(0);
+      selectBox.select('wrong value');
+      expect(input.placeholderEl).toHaveText('apple');
+    });
+
+    it('should be a placeholder when deselect if there is a placeholder.', () => {
       const { input } = selectBox;
 
       selectBox.select(0);
       selectBox.deselect();
-      expect(input.placeholderEl).toContainText('Please select an option.');
-
-      selectBox.select(0);
-      selectBox.select('wrong value');
-      expect(input.placeholderEl).toContainText('Please select an option.');
+      expect(input.placeholderEl).toHaveText('Please select an option.');
     });
 
-    it('should be empty when deselect or select a wrong Item if there is no placeholder.', () => {
+    it('should be empty when deselect if there is no placeholder.', () => {
       createSelectBox();
 
       const { input } = selectBox;
 
       selectBox.select(0);
       selectBox.deselect();
-      expect(input.placeholderEl.innerHTML).toBe('');
-
-      selectBox.select(0);
-      selectBox.select('wrong value');
       expect(input.placeholderEl.innerHTML).toBe('');
     });
 
@@ -143,7 +143,7 @@ describe('SelectBox', () => {
       const result = selectBox.select('0');
       expect(result).toBe(item);
       expect(selectBox.getSelectedItem()).toBe(item);
-      expect(input.placeholderEl).toContainText('none');
+      expect(input.placeholderEl).toHaveText('none');
     });
 
     it('should close a dropdown list when click anywhere except the select box.', () => {

@@ -126,9 +126,34 @@ export default class Dropdown {
    */
   initialize(data, disabled) {
     this.initializeItems(data);
+
+    this.iterateItems(item => {
+      if (!this.selectedItem && item.isSelected()) {
+        this.selectedItem = item;
+      } else if (this.selectedItem && item.isSelected()) {
+        item.deselect();
+      }
+    });
+
     if (disabled) {
       this.disable();
     }
+  }
+
+  /**
+   * Execute a function while iterating items
+   * @param {Function} fn - function to execute
+   * @param  {...any} args - arguments
+   * @private
+   */
+  iterateItems(fn, ...args) {
+    this.items.forEach(item => {
+      if (item instanceof ItemGroup) {
+        item.getItems().forEach(itemInGroup => fn.apply(this, [itemInGroup, ...args]));
+      } else {
+        fn.apply(this, [item, ...args]);
+      }
+    });
   }
 
   /**
@@ -167,19 +192,24 @@ export default class Dropdown {
 
   /**
    * Select an Item
-   * @param {string|number} value - if string, find an Item by its value. if number, find an Item by its index.
+   * @param {string|number|Item} value - if string, find an Item by its value. if number, find an Item by its index.
    * @return {Item} result of selection
    */
   select(value) {
-    this.deselect();
+    const selectedItem = value instanceof Item ? value : this.getItem(value);
 
-    const selectedItem = this.getItem(value);
-    if (selectedItem) {
-      selectedItem.select();
-      this.selectedItem = selectedItem;
+    if (selectedItem === this.selectedItem) {
+      return selectedItem;
     }
 
-    return this.selectedItem;
+    if (selectedItem && selectedItem.select()) {
+      this.deselect();
+      this.selectedItem = selectedItem;
+
+      return selectedItem;
+    }
+
+    return null;
   }
 
   /**

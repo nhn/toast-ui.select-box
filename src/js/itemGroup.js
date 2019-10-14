@@ -23,19 +23,21 @@ export default class ItemGroup {
   constructor({ text = '', data, disabled = false, index }) {
     /**
      * ul element for a custom dropdown item
-     * @type {HTMLUListElement}
+     * @type {HTMLElement}
      * @private
      */
     this.el = this.createElement(text);
 
     /**
      * li element to wrap Items
+     * @type {HTMLElement}
+     * @private
      */
     this.itemContainerEl = this.createItemContainerEl();
 
     /**
      * optgroup element for a select element
-     * @type {HTMLOptGroupElement}
+     * @type {HTMLElement}
      * @private
      */
     this.nativeEl = this.createNativeElement(text);
@@ -43,6 +45,7 @@ export default class ItemGroup {
     /**
      * Items to be included in the ItemGroup
      * @type {array<Item>}
+     * @private
      */
     this.items = this.createItems(data, index);
 
@@ -149,6 +152,14 @@ export default class ItemGroup {
     }
 
     return result;
+  }
+
+  /**
+   * Get items in the ItemGroup
+   * @returns {array<Item>}
+   */
+  getItems() {
+    return this.items;
   }
 
   /**

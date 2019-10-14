@@ -19,7 +19,7 @@ import { classNames } from './constants';
  *   @param {number} [options.index] - Item's index
  */
 export default class Item {
-  constructor({ value, text, disabled = false, selected = false, index }) {
+  constructor({ value, text, disabled, selected, index }) {
     /**
      * value to be sent to a server
      * @type {string}
@@ -40,6 +40,18 @@ export default class Item {
      * @private
      */
     this.index = index;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.disabled = false;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.selected = false;
 
     /**
      * <li> element for a custom dropdown item
@@ -92,12 +104,12 @@ export default class Item {
    * @private
    */
   initialize(disabled, selected) {
-    if (disabled) {
-      this.disable();
-    }
-
     if (selected) {
       this.select();
+    }
+
+    if (disabled) {
+      this.disable();
     }
   }
 
@@ -105,7 +117,7 @@ export default class Item {
    * Disable an Item
    */
   disable() {
-    this.nativeEl.disabled = true;
+    this.disabled = this.nativeEl.disabled = true;
     addClass(this.el, classNames.DISABLED);
   }
 
@@ -113,23 +125,30 @@ export default class Item {
    * Enable an Item
    */
   enable() {
-    this.nativeEl.disabled = false;
+    this.disabled = this.nativeEl.disabled = false;
     removeClass(this.el, classNames.DISABLED);
   }
 
   /**
    * Select an Item
+   * @returns {boolean} result
    */
   select() {
-    this.nativeEl.selected = true;
-    addClass(this.el, classNames.SELECTED);
+    if (!this.disabled) {
+      this.selected = this.nativeEl.selected = true;
+      addClass(this.el, classNames.SELECTED);
+
+      return true;
+    }
+
+    return false;
   }
 
   /**
    * Deselect an Item
    */
   deselect() {
-    this.nativeEl.selected = false;
+    this.selected = this.nativeEl.selected = false;
     removeClass(this.el, classNames.SELECTED);
   }
 
@@ -171,6 +190,14 @@ export default class Item {
    */
   getIndex() {
     return this.index;
+  }
+
+  /**
+   * Return whether an Item is selected or not
+   * @return {boolean}
+   */
+  isSelected() {
+    return this.selected;
   }
 
   /**

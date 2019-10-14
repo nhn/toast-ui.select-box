@@ -90,7 +90,10 @@ export default class SelectBox {
    * @private
    */
   initialize(options) {
-    if (!options.placeholder) {
+    const selectedItem = this.getSelectedItem();
+    if (selectedItem) {
+      this.input.changeText(selectedItem);
+    } else if (!options.placeholder) {
       this.select(0);
     }
 
@@ -284,16 +287,18 @@ export default class SelectBox {
   }
 
   /**
-   * Select an Item.
-   * @param {string|number} value - if string, find an Item by its value. if number, find an Item by its index.
+   * Select an Item
+   * @param {string|number|Item} value - if string, find an Item by its value. if number, find an Item by its index.
    * @return {Item} - selected Item
    */
   select(value) {
-    let selectedItem;
+    let selectedItem = null;
 
     if (!this.disabled) {
       selectedItem = this.dropdown.select(value);
-      this.input.changeText(selectedItem);
+      if (selectedItem) {
+        this.input.changeText(selectedItem);
+      }
     }
 
     return selectedItem;
@@ -301,6 +306,7 @@ export default class SelectBox {
 
   /**
    * Deselect an Item
+   * If selectBox has a placeholder, the input is a placeholder. If no placeholder, ths input is empty.
    */
   deselect() {
     if (!this.disabled) {

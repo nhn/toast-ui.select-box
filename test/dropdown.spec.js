@@ -69,6 +69,7 @@ describe('Dropdown', () => {
     });
 
     it('should return null when a selection is not valid.', () => {
+      expect(dropdown.select()).toBe(null);
       expect(dropdown.select('wrong value')).toBe(null);
       expect(dropdown.select(100)).toBe(null);
     });

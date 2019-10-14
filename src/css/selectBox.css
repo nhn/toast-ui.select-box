@@ -123,8 +123,5 @@
 .disabled {
   background: #f9f9f9;
   cursor: default;
-}
-
-.disabled > * {
-  opacity: 0.3;
+  color: #c8c8c8;
 }
