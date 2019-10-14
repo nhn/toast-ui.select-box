@@ -54,7 +54,7 @@ export default class ItemGroup {
 
   /**
    * Create <ul> element
-   * @returns {HTMLElement}
+   * @return {HTMLElement}
    * @private
    */
   createElement(label) {
@@ -66,7 +66,7 @@ export default class ItemGroup {
 
   /**
    * Create <ul> element to wrap Items
-   * @returns {HTMLElement}
+   * @return {HTMLElement}
    * @private
    */
   createItemContainerEl() {
@@ -80,7 +80,7 @@ export default class ItemGroup {
 
   /**
    * Create <optgroup> element
-   * @returns {HTMLElement}
+   * @return {HTMLElement}
    * @private
    */
   createNativeElement(label) {
@@ -120,6 +120,7 @@ export default class ItemGroup {
   disable() {
     this.nativeEl.disabled = true;
     addClass(this.el, classNames.DISABLED);
+    this.items.forEach(item => item.disableItemGroup());
   }
 
   /**
@@ -128,6 +129,7 @@ export default class ItemGroup {
   enable() {
     this.nativeEl.disabled = false;
     removeClass(this.el, classNames.DISABLED);
+    this.items.forEach(item => item.enableItemGroup());
   }
 
   /**
@@ -156,7 +158,7 @@ export default class ItemGroup {
 
   /**
    * Get items in the ItemGroup
-   * @returns {array<Item>}
+   * @return {array<Item>}
    */
   getItems() {
     return this.items;
@@ -179,6 +181,6 @@ export default class ItemGroup {
     this.items.forEach(item => item.destroy());
     removeElement(this.el);
     removeElement(this.nativeEl);
-    this.el = this.nativeEl = this.items = null;
+    this.el = this.itemContainerEl = this.nativeEl = this.items = null;
   }
 }

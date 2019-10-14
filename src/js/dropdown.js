@@ -98,7 +98,7 @@ export default class Dropdown {
 
   /**
    * Create Items and ItemGroups and calculate the number of Items
-   * @returns {array<Item|ItemGroup>}
+   * @return {array<Item|ItemGroup>}
    * @private
    */
   initializeItems(data) {
@@ -246,7 +246,7 @@ export default class Dropdown {
 
   /**
    * Get all Items
-   * @returns {array<Item>}
+   * @return {array<Item>}
    */
   getItems() {
     const items = [];

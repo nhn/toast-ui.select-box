@@ -35,14 +35,43 @@ describe('ItemGroup', () => {
     expect(document.querySelectorAll(`.${classNames.ITEM}`).length).toBe(2);
   });
 
-  it('should disable and enable an ItemGroup.', () => {
-    itemGroup.disable();
-    expect(itemGroup.nativeEl).toBeDisabled();
-    expect(itemGroup.el).toHaveClass(classNames.DISABLED);
+  describe('disable', () => {
+    it('should disable and enable an ItemGroup and its Items.', () => {
+      itemGroup.destroy();
+      itemGroup = new ItemGroup({
+        text: 'fruit',
+        data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }],
+        index: 0,
+        disabled: true
+      });
+      expect(itemGroup.nativeEl).toBeDisabled();
+      expect(itemGroup.el).toHaveClass(classNames.DISABLED);
+      expect(itemGroup.items[0].nativeEl).toBeDisabled();
+      expect(itemGroup.items[1].nativeEl).toBeDisabled();
 
-    itemGroup.enable();
-    expect(itemGroup.nativeEl).not.toBeDisabled();
-    expect(itemGroup.el).not.toHaveClass(classNames.DISABLED);
+      itemGroup.enable();
+      expect(itemGroup.nativeEl).not.toBeDisabled();
+      expect(itemGroup.el).not.toHaveClass(classNames.DISABLED);
+      expect(itemGroup.items[0].nativeEl).not.toBeDisabled();
+      expect(itemGroup.items[1].nativeEl).not.toBeDisabled();
+    });
+
+    it('should enable ItemGroup only when the Item itself is disabled.', () => {
+      itemGroup.destroy();
+      itemGroup = new ItemGroup({
+        text: 'fruit',
+        data: [{ text: 'apple', value: 1, disabled: true }, { text: 'banana', value: 2 }],
+        index: 0
+      });
+
+      itemGroup.disable();
+      expect(itemGroup.items[0].nativeEl).toBeDisabled();
+      expect(itemGroup.items[1].nativeEl).toBeDisabled();
+
+      itemGroup.enable();
+      expect(itemGroup.items[0].nativeEl).toBeDisabled();
+      expect(itemGroup.items[1].nativeEl).not.toBeDisabled();
+    });
   });
 
   it('should get an Item by its value (string) and index (number).', () => {

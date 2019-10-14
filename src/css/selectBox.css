@@ -121,7 +121,8 @@
   display: none; /* for test */
 }
 
-.disabled {
+.disabled,
+.disabled > .item-group-label {
   background: #f9f9f9;
   cursor: default;
   color: #c8c8c8;

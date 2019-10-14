@@ -32,6 +32,14 @@ describe('Item', () => {
     item.enable();
     expect(item.nativeEl).not.toBeDisabled();
     expect(item.el).not.toHaveClass(classNames.DISABLED);
+
+    item.disableItemGroup();
+    expect(item.nativeEl).toBeDisabled();
+    expect(item.el).toHaveClass(classNames.DISABLED);
+
+    item.enableItemGroup();
+    expect(item.nativeEl).not.toBeDisabled();
+    expect(item.el).not.toHaveClass(classNames.DISABLED);
   });
 
   it('should select and deselect an Item.', () => {

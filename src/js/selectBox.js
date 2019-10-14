@@ -237,7 +237,7 @@ export default class SelectBox {
   /**
    * Get valid index (from 0 to length - 1)
    * @param {number} index - Item's index
-   * @returns {number}
+   * @return {number}
    * @private
    */
   getValidIndex(index) {
@@ -338,7 +338,7 @@ export default class SelectBox {
 
   /**
    * Get all Items
-   * @returns {array<Item>}
+   * @return {array<Item>}
    */
   getItems() {
     return this.dropdown.getItems();

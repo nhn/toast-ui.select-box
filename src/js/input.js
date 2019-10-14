@@ -42,7 +42,7 @@ export default class Input {
 
   /**
    * Create a li element
-   * @returns {HTMLElement}
+   * @return {HTMLElement}
    * @private
    */
   createElement() {
@@ -56,7 +56,7 @@ export default class Input {
 
   /**
    * Create a placeholder element
-   * @returns {HTMLElement}
+   * @return {HTMLElement}
    * @private
    */
   createPlaceholderElement(text) {

@@ -42,10 +42,18 @@ export default class Item {
     this.index = index;
 
     /**
+     * whether an ItemGroup of the Item is disabled or not
      * @type {boolean}
      * @private
      */
-    this.disabled = false;
+    this.itemGroupDisabled = false;
+
+    /**
+     * whether an Item is disabled or not
+     * @type {boolean}
+     * @private
+     */
+    this.itemDisabled = false;
 
     /**
      * @type {boolean}
@@ -72,7 +80,7 @@ export default class Item {
 
   /**
    * Create <li> element
-   * @returns {HTMLElement}
+   * @return {HTMLElement}
    * @private
    */
   createElement(value, label, index) {
@@ -88,7 +96,7 @@ export default class Item {
 
   /**
    * Create <option> element
-   * @returns {HTMLElement}
+   * @return {HTMLElement}
    * @private
    */
   createNativeElement(value, label) {
@@ -114,27 +122,69 @@ export default class Item {
   }
 
   /**
+   * Make an Item disable
+   * @private
+   */
+  makeDisable() {
+    this.nativeEl.disabled = true;
+    addClass(this.el, classNames.DISABLED);
+  }
+
+  /**
+   * Make an Item enable
+   * @private
+   */
+  makeEnable() {
+    this.nativeEl.disabled = false;
+    removeClass(this.el, classNames.DISABLED);
+  }
+
+  /**
+   * Disable an Item due to an ItemGroup
+   */
+  disableItemGroup() {
+    this.itemGroupDisabled = true;
+    if (this.isDisabled()) {
+      this.makeDisable();
+    }
+  }
+
+  /**
+   * Enable an Item due to an ItemGroup
+   */
+  enableItemGroup() {
+    this.itemGroupDisabled = false;
+    if (!this.isDisabled()) {
+      this.makeEnable();
+    }
+  }
+
+  /**
    * Disable an Item
    */
   disable() {
-    this.disabled = this.nativeEl.disabled = true;
-    addClass(this.el, classNames.DISABLED);
+    this.itemDisabled = true;
+    if (this.isDisabled()) {
+      this.makeDisable();
+    }
   }
 
   /**
    * Enable an Item
    */
   enable() {
-    this.disabled = this.nativeEl.disabled = false;
-    removeClass(this.el, classNames.DISABLED);
+    this.itemDisabled = false;
+    if (!this.isDisabled()) {
+      this.makeEnable();
+    }
   }
 
   /**
    * Select an Item
-   * @returns {boolean} result
+   * @return {boolean} result
    */
   select() {
-    if (!this.disabled) {
+    if (!this.isDisabled()) {
       this.selected = this.nativeEl.selected = true;
       addClass(this.el, classNames.SELECTED);
 
@@ -198,6 +248,15 @@ export default class Item {
    */
   isSelected() {
     return this.selected;
+  }
+
+  /**
+   * Return whether an Item is disabled or not
+   * The result is true if any of the items and item groups are disabled.
+   * @return {boolean}
+   */
+  isDisabled() {
+    return this.itemDisabled || this.itemGroupDisabled;
   }
 
   /**
