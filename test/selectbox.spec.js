@@ -123,6 +123,11 @@ describe('SelectBox', () => {
     expect(selectBox.getItem(2)).toBe(item);
   });
 
+  it('should get all Items.', () => {
+    const items = selectBox.getItems();
+    expect(items.length).toBe(3);
+  });
+
   describe('mouse event', () => {
     it('should open and close a dropdown list when click the input.', () => {
       const { input, dropdown } = selectBox;

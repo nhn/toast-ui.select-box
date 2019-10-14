@@ -249,6 +249,19 @@ export default class Dropdown {
   }
 
   /**
+   * Get all Items
+   * @returns {array<Item>}
+   */
+  getItems() {
+    const items = [];
+    this.iterateItems(item => {
+      items.push(item);
+    });
+
+    return items;
+  }
+
+  /**
    * Get an Item by its index or value
    * @param {number|string} value - if string, the Item's value. if number, the Item's index.
    * @return {Item}

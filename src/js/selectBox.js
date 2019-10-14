@@ -324,6 +324,14 @@ export default class SelectBox {
   }
 
   /**
+   * Get all Items
+   * @returns {array<Item>}
+   */
+  getItems() {
+    return this.dropdown.getItems();
+  }
+
+  /**
    * Get an Item by its index or value
    * @param {number|string} value - if string, the Item's value. if number, the Item's index.
    * @return {Item}

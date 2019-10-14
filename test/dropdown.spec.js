@@ -114,4 +114,9 @@ describe('Dropdown', () => {
     expect(dropdown.getItem('0')).toBe(item);
     expect(dropdown.getItem(2)).toBe(item);
   });
+
+  it('should get all Items.', () => {
+    const items = dropdown.getItems();
+    expect(items.length).toBe(3);
+  });
 });
