@@ -119,4 +119,14 @@ describe('Dropdown', () => {
     const items = dropdown.getItems();
     expect(items.length).toBe(3);
   });
+
+  it('should get an ItemGroup by index (number).', () => {
+    const [itemGroup] = dropdown.items;
+    expect(dropdown.getItemGroup(0)).toBe(itemGroup);
+  });
+
+  it('should get all ItemGroups.', () => {
+    const itemGroups = dropdown.getItemGroups();
+    expect(itemGroups.length).toBe(1);
+  });
 });

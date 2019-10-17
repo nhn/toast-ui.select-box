@@ -73,10 +73,4 @@ describe('ItemGroup', () => {
       expect(itemGroup.items[1].nativeEl).not.toBeDisabled();
     });
   });
-
-  it('should get an Item by its value (string) and index (number).', () => {
-    const [, item] = itemGroup.items;
-    expect(itemGroup.getItem('2', comparedItem => comparedItem.getValue() === '2')).toBe(item);
-    expect(itemGroup.getItem(1, comparedItem => comparedItem.getIndex() === 1)).toBe(item);
-  });
 });

@@ -65,6 +65,7 @@
     "webpack-dev-server": "^3.8.1"
   },
   "dependencies": {
+    "core-js": "^3.3.2",
     "tui-code-snippet": "^2.0.0"
   }
 }

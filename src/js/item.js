@@ -17,7 +17,7 @@ import { cls } from './constants';
  *   @param {string} options.value - value of an item
  *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
  *   @param {boolean} [options.selected=false] - whether an Item should be pre-selected or not
- *   @param {number} [options.index] - Item's index
+ *   @param {number} options.index - Item's index
  */
 export default class Item {
   constructor({ value, text, disabled, selected, index }) {

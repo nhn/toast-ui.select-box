@@ -41,16 +41,27 @@ describe('SelectBox', () => {
     });
   });
 
-  it('should disable and enable a select box.', () => {
-    const { input, dropdown } = selectBox;
+  describe('getItem/ItemGroup', () => {
+    it('should get an Item by its value (string) and index (number).', () => {
+      const [, item] = selectBox.dropdown.items;
+      expect(selectBox.getItem('0')).toBe(item);
+      expect(selectBox.getItem(2)).toBe(item);
+    });
 
-    selectBox.disable();
-    expect(input.el).toHaveClass(cls.DISABLED);
-    expect(dropdown.el).toHaveClass(cls.DISABLED);
+    it('should get all Items.', () => {
+      const items = selectBox.getItems();
+      expect(items.length).toBe(3);
+    });
 
-    selectBox.enable();
-    expect(input.el).not.toHaveClass(cls.DISABLED);
-    expect(dropdown.el).not.toHaveClass(cls.DISABLED);
+    it('should get an ItemGroup by index (number).', () => {
+      const [itemGroup] = selectBox.dropdown.items;
+      expect(selectBox.getItemGroup(0)).toBe(itemGroup);
+    });
+
+    it('should get all ItemGroups.', () => {
+      const itemGroups = selectBox.getItemGroups();
+      expect(itemGroups.length).toBe(1);
+    });
   });
 
   it('should open and close a dropdown list.', () => {
@@ -63,6 +74,54 @@ describe('SelectBox', () => {
     selectBox.close();
     expect(input.el).not.toHaveClass(cls.OPEN);
     expect(dropdown.el).toHaveClass(cls.HIDDEN);
+  });
+
+  describe('disable/enable', () => {
+    it('should disable and enable a select box.', () => {
+      const { input, dropdown } = selectBox;
+
+      selectBox.disable();
+      expect(input.el).toHaveClass(cls.DISABLED);
+      expect(dropdown.el).toHaveClass(cls.DISABLED);
+
+      selectBox.enable();
+      expect(input.el).not.toHaveClass(cls.DISABLED);
+      expect(dropdown.el).not.toHaveClass(cls.DISABLED);
+    });
+
+    it('should disable and enable an ItemGroup.', () => {
+      const itemGroup = selectBox.getItemGroup(0);
+
+      selectBox.disable(itemGroup);
+      expect(itemGroup.labelEl).toHaveClass(cls.DISABLED);
+
+      selectBox.enable();
+      // Although a select box is enable, the itemGroup is still disabled
+      expect(itemGroup.labelEl).toHaveClass(cls.DISABLED);
+
+      selectBox.enable(itemGroup);
+      expect(itemGroup.labelEl).not.toHaveClass(cls.DISABLED);
+    });
+
+    it('should disable and enable an Item.', () => {
+      const item = selectBox.getItem(0);
+
+      selectBox.disable(item);
+      expect(item.el).toHaveClass(cls.DISABLED);
+
+      selectBox.enable();
+      // Although a select box is enable, the item is still disabled
+      expect(item.el).toHaveClass(cls.DISABLED);
+
+      selectBox.enable(0);
+      expect(item.el).not.toHaveClass(cls.DISABLED);
+
+      selectBox.disable(item.value);
+      expect(item.el).toHaveClass(cls.DISABLED);
+
+      selectBox.enable(item);
+      expect(item.el).not.toHaveClass(cls.DISABLED);
+    });
   });
 
   describe('selection', () => {
@@ -115,17 +174,6 @@ describe('SelectBox', () => {
       expect(selectBox.select('wrong value')).toBe(null);
       expect(selectBox.select(100)).toBe(null);
     });
-  });
-
-  it('should get an Item by its value (string) and index (number).', () => {
-    const [, item] = selectBox.dropdown.items;
-    expect(selectBox.getItem('0')).toBe(item);
-    expect(selectBox.getItem(2)).toBe(item);
-  });
-
-  it('should get all Items.', () => {
-    const items = selectBox.getItems();
-    expect(items.length).toBe(3);
   });
 
   describe('mouse event', () => {
@@ -284,6 +332,31 @@ describe('SelectBox', () => {
 
       selectBox.select(0);
       expect(spy).toHaveBeenCalledWith({ prev: second, curr: first });
+    });
+
+    it('should occur disable/enable custom events.', () => {
+      const [itemGroup] = selectBox.getItemGroups();
+      const [item] = selectBox.getItems();
+      selectBox.on('disable', spy);
+      selectBox.on('enable', spy);
+
+      selectBox.disable();
+      expect(spy).toHaveBeenCalledWith({ target: selectBox });
+
+      selectBox.enable();
+      expect(spy).toHaveBeenCalledWith({ target: selectBox });
+
+      selectBox.disable(itemGroup);
+      expect(spy).toHaveBeenCalledWith({ target: itemGroup });
+
+      selectBox.enable(itemGroup);
+      expect(spy).toHaveBeenCalledWith({ target: itemGroup });
+
+      selectBox.disable(item);
+      expect(spy).toHaveBeenCalledWith({ target: item });
+
+      selectBox.enable(item);
+      expect(spy).toHaveBeenCalledWith({ target: item });
     });
   });
 

@@ -3,6 +3,7 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
+import 'core-js/features/array/find';
 import isNumber from 'tui-code-snippet/type/isNumber';
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
@@ -71,10 +72,12 @@ export default class Dropdown {
   initializeItems(data) {
     let item;
     let itemIndex = 0;
+    let itemGroupIndex = 0;
     data.forEach(datum => {
       if (datum.data) {
-        item = new ItemGroup({ index: itemIndex, ...datum });
+        item = new ItemGroup({ index: itemIndex, itemGroupIndex, ...datum });
         itemIndex += datum.data.length - 1;
+        itemGroupIndex += 1;
       } else {
         item = new Item({ index: itemIndex, ...datum });
       }
@@ -233,27 +236,30 @@ export default class Dropdown {
    * @return {Item}
    */
   getItem(value) {
-    let result, item;
-
     const isValidItem = isNumber(value)
       ? comparedItem => comparedItem.getIndex() === value
       : comparedItem => comparedItem.getValue() === value;
 
-    for (let i = 0, len = this.items.length; i < len; i += 1) {
-      item = this.items[i];
+    return this.getItems().find(item => isValidItem(item));
+  }
 
-      if (item instanceof ItemGroup) {
-        result = item.getItem(value, isValidItem);
-      } else if (isValidItem(item)) {
-        result = item;
-      }
+  /**
+   * Get all ItemGroups
+   * @return {array<ItemGroup>}
+   */
+  getItemGroups() {
+    return this.items.filter(item => {
+      return item instanceof ItemGroup;
+    });
+  }
 
-      if (result) {
-        return result;
-      }
-    }
-
-    return null;
+  /**
+   * Get an ItemGroup by its index
+   * @param {number} index - groupIndex of the ItemGroup
+   * @return {ItemGroup}
+   */
+  getItemGroup(index) {
+    return this.getItemGroups().find(itemGroup => itemGroup.getIndex() === index);
   }
 
   /**

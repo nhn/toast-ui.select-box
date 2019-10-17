@@ -10,12 +10,15 @@ import preventDefault from 'tui-code-snippet/domEvent/preventDefault';
 import getTarget from 'tui-code-snippet/domEvent/getTarget';
 import closest from 'tui-code-snippet/domUtil/closest';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import isEmpty from 'tui-code-snippet/type/isEmpty';
+import isObject from 'tui-code-snippet/type/isObject';
+import isExisty from 'tui-code-snippet/type/isExisty';
 import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import { createElement, identifyKey } from './utils';
 import { cls } from './constants';
 import Input from './input';
 import Dropdown from './dropdown';
+import ItemGroup from './itemGroup';
+import Item from './item';
 import Theme from './theme';
 
 /**
@@ -73,7 +76,7 @@ class SelectBox {
      * @type {Theme}
      * @private
      */
-    this.theme = isEmpty(theme) ? null : new Theme(theme, container);
+    this.theme = isObject(theme) ? new Theme(theme, container) : null;
 
     this.initialize({ placeholder, disabled, autofocus });
     this.appendToContainer(container);
@@ -257,20 +260,48 @@ class SelectBox {
 
   /**
    * Disable a select box
+   * @param {string|number|Item|ItemGroup} value - if string, find an Item by its value. if number, find an Item by its index.
    */
-  disable() {
-    this.disabled = true;
-    this.input.disable();
-    this.dropdown.disable();
+  disable(value) {
+    if (!isExisty(value)) {
+      this.disabled = true;
+      this.input.disable();
+      this.dropdown.disable();
+
+      this.fire('disable', { target: this });
+    } else if (value instanceof Item || value instanceof ItemGroup) {
+      value.disable();
+      this.fire('disable', { target: value });
+    } else {
+      const disabledItem = this.dropdown.getItem(value);
+      if (disabledItem) {
+        disabledItem.disable();
+        this.fire('disable', { target: disabledItem });
+      }
+    }
   }
 
   /**
    * Enable a select box
+   * @param {string|number|Item|ItemGroup} value - if string, find an Item by its value. if number, find an Item by its index.
    */
-  enable() {
-    this.disabled = false;
-    this.input.enable();
-    this.dropdown.enable();
+  enable(value) {
+    if (!isExisty(value)) {
+      this.disabled = false;
+      this.input.enable();
+      this.dropdown.enable();
+
+      this.fire('enable', { target: this });
+    } else if (value instanceof Item || value instanceof ItemGroup) {
+      value.enable();
+      this.fire('enable', { target: value });
+    } else {
+      const disabledItem = this.dropdown.getItem(value);
+      if (disabledItem) {
+        disabledItem.enable();
+        this.fire('enable', { target: disabledItem });
+      }
+    }
   }
 
   /**
@@ -376,6 +407,23 @@ class SelectBox {
    */
   getItem(value) {
     return this.dropdown.getItem(value);
+  }
+
+  /**
+   * Get all ItemGroups
+   * @return {array<ItemGroup>}
+   */
+  getItemGroups() {
+    return this.dropdown.getItemGroups();
+  }
+
+  /**
+   * Get an ItemGroup by its index
+   * @param {number} index - groupIndex of the ItemGroup
+   * @return {array<ItemGroup>}
+   */
+  getItemGroup(index) {
+    return this.dropdown.getItemGroup(index);
   }
 
   /**

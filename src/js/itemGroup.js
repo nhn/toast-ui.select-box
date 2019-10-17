@@ -17,15 +17,16 @@ import Item from './item';
  *   @param {string} [options.text] - label to be displayed in the dropdown list
  *   @param {array<object>} options.data - data for Items to be included in the ItemGroup
  *   @param {boolean} [options.disabled=false] - whether an ItemGroup should be disabled or not
- *   @param {number} [options.index] - ItemGroup's index
+ *   @param {number} options.index - index of the first Item in the ItemGroup
+ *   @param {number} options.itemGroupIndex - index of the ItemGroup
  */
 export default class ItemGroup {
-  constructor({ text = '', data, disabled = false, index }) {
+  constructor({ text = '', data, disabled = false, index, itemGroupIndex }) {
     /**
      * @type {HTMLElement}
      * @private
      */
-    this.el = createElement('li');
+    this.el = createElement('li', '', { 'data-group-index': itemGroupIndex });
 
     /**
      * @type {HTMLElement}
@@ -50,6 +51,12 @@ export default class ItemGroup {
      * @private
      */
     this.items = this.createItems(data, index);
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.index = itemGroupIndex;
 
     this.initialize(disabled);
   }
@@ -97,32 +104,19 @@ export default class ItemGroup {
   }
 
   /**
-   * Get an Item by its index or value
-   * @param {number|string} value - if string, the Item's value. if number, the Item's index.
-   * @param {function} isValidItem - function to determine whether it is valid or not
-   * @return {Item}
-   */
-  getItem(value, isValidItem) {
-    let result, item;
-
-    for (let i = 0, len = this.items.length; i < len; i += 1) {
-      item = this.items[i];
-
-      if (isValidItem(item)) {
-        result = item;
-        break;
-      }
-    }
-
-    return result;
-  }
-
-  /**
    * Get items in the ItemGroup
    * @return {array<Item>}
    */
   getItems() {
     return this.items;
+  }
+
+  /**
+   * Return an ItemGroup's index
+   * @return {number}
+   */
+  getIndex() {
+    return this.index;
   }
 
   /**
