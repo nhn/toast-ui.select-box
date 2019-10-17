@@ -247,6 +247,46 @@ describe('SelectBox', () => {
     });
   });
 
+  describe('customEvents', () => {
+    let spy;
+
+    beforeEach(() => {
+      spy = jasmine.createSpy();
+    });
+
+    afterEach(() => selectBox.off());
+
+    it('should occur open/close custom events.', () => {
+      selectBox.on('open', spy);
+      selectBox.on('close', spy);
+
+      selectBox.open();
+      expect(spy).toHaveBeenCalled();
+
+      selectBox.close();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should occur select custom events.', () => {
+      const [, curr] = selectBox.getItems();
+      selectBox.on('select', spy);
+
+      selectBox.select(1);
+      expect(spy).toHaveBeenCalledWith({ target: curr });
+    });
+
+    it('should occur change custom events.', () => {
+      const [first, second] = selectBox.getItems();
+      selectBox.on('change', spy);
+
+      selectBox.select(1);
+      expect(spy).toHaveBeenCalledWith({ prev: null, curr: second });
+
+      selectBox.select(0);
+      expect(spy).toHaveBeenCalledWith({ prev: second, curr: first });
+    });
+  });
+
   it('should make a theme to customize a select box.', () => {
     createSelectBox({
       theme: {

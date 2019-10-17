@@ -3,14 +3,15 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
-import isEmpty from 'tui-code-snippet/type/isEmpty';
-import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
-import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import closest from 'tui-code-snippet/domUtil/closest';
+import CustomEvents from 'tui-code-snippet/customEvents/customEvents';
 import on from 'tui-code-snippet/domEvent/on';
 import off from 'tui-code-snippet/domEvent/off';
 import preventDefault from 'tui-code-snippet/domEvent/preventDefault';
 import getTarget from 'tui-code-snippet/domEvent/getTarget';
+import closest from 'tui-code-snippet/domUtil/closest';
+import removeElement from 'tui-code-snippet/domUtil/removeElement';
+import isEmpty from 'tui-code-snippet/type/isEmpty';
+import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import { createElement, identifyKey } from './utils';
 import { cls } from './constants';
 import Input from './input';
@@ -28,7 +29,7 @@ import Theme from './theme';
  *   @param {boolean} [options.autoclose=true] - whether a selectbox should close after selection
  *   @param {object} [options.theme] - theme object for custom style
  */
-export default class SelectBox {
+class SelectBox {
   constructor(
     container,
     { placeholder = '', disabled = false, autofocus = false, autoclose = true, theme, ...options }
@@ -280,6 +281,8 @@ export default class SelectBox {
       this.opened = true;
       this.dropdown.open();
       this.input.open();
+
+      this.fire('open');
     }
   }
 
@@ -290,6 +293,8 @@ export default class SelectBox {
     this.opened = false;
     this.dropdown.close();
     this.input.close();
+
+    this.fire('close');
   }
 
   /**
@@ -311,6 +316,7 @@ export default class SelectBox {
    */
   select(value) {
     let selectedItem = null;
+    const prevSelectedItem = this.getSelectedItem();
 
     if (!this.disabled) {
       selectedItem = this.dropdown.select(value);
@@ -319,6 +325,16 @@ export default class SelectBox {
         this.input.changeText(selectedItem);
         if (this.autoclose) {
           this.close();
+        }
+
+        this.fire('select', {
+          target: selectedItem
+        });
+        if (prevSelectedItem !== selectedItem) {
+          this.fire('change', {
+            prev: prevSelectedItem,
+            curr: selectedItem
+          });
         }
       }
     }
@@ -378,3 +394,7 @@ export default class SelectBox {
     this.container = this.el = this.input = this.dropdown = this.theme = null;
   }
 }
+
+CustomEvents.mixin(SelectBox);
+
+export default SelectBox;
