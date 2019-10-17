@@ -200,62 +200,49 @@ class SelectBox {
         this.close();
         this.input.focus();
       } else if (itemEl) {
-        this.moveHighlightedItem(key, itemEl);
+        this.pressKeyOnItem(key, itemEl);
       } else if (closest(target, `.${INPUT}`)) {
-        this.openDropdownByKeydown(key);
+        this.pressKeyOnInput(key);
       }
     }
   }
 
   /**
-   * Use keyboard to open a dropdown list
-   * @param {string} key - key pressed by the user
+   * Handle keydown events when it occurs on the Input
+   * @param {string} key - key
    * @private
    */
-  openDropdownByKeydown(key) {
-    if (this.opened) {
-      this.moveHighlightedItem(key);
-    } else {
+  pressKeyOnInput(key) {
+    if (!this.opened) {
       this.open();
+    } else if (key === 'arrowUp' || key === 'arrowDown') {
+      this.dropdown.moveHighlightedItem(key === 'arrowUp' ? -1 : 1);
     }
   }
 
   /**
-   * Use arrow keys to move a highlighted Item
-   * @param {string} key - key pressed by the user
-   * @param {HTMLElement} [itemEl] - an Item element
+   * Handle keydown events when it occurs on the Item
+   * @param {string} key - key
+   * @param {HTMLElement} itemEl - Item.el
    * @private
    */
-  moveHighlightedItem(key, itemEl) {
-    const highlightedItem = this.dropdown.getHighlightedItem();
-    const index = highlightedItem ? highlightedItem.getIndex() : -1;
-
-    switch (key) {
-      case 'arrowUp':
-        this.dropdown.highlight(this.getValidIndex(index - 1));
-        break;
-      case 'arrowDown':
-        this.dropdown.highlight(this.getValidIndex(index + 1));
-        break;
-      case 'enter':
-      case 'space':
-        this.select(itemEl.getAttribute('data-value'));
-        this.close();
-        this.input.focus();
-        break;
-      default:
-        break;
+  pressKeyOnItem(key, itemEl) {
+    if (key === 'enter' || key === 'space') {
+      this.selectByKeydown(itemEl);
+    } else if (key === 'arrowUp' || key === 'arrowDown') {
+      this.dropdown.moveHighlightedItem(key === 'arrowUp' ? -1 : 1);
     }
   }
 
   /**
-   * Get valid index (from 0 to length - 1)
-   * @param {number} index - Item's index
-   * @return {number}
+   * Select an Item by space or enter
+   * @param {HTMLElement} itemEl - Item.el
    * @private
    */
-  getValidIndex(index) {
-    return Math.min(Math.max(index, 0), this.dropdown.getItemLength() - 1);
+  selectByKeydown(itemEl) {
+    this.select(itemEl.getAttribute('data-value'));
+    this.close();
+    this.input.focus();
   }
 
   /**
@@ -393,11 +380,13 @@ class SelectBox {
   }
 
   /**
-   * Get all Items
+   * Get all Items that pass the test implemented by the provided function
+   * If filter function is not passed, it returns all Items
+   * @param {function} fn - filter function
    * @return {array<Item>}
    */
-  getItems() {
-    return this.dropdown.getItems();
+  getItems(fn) {
+    return this.dropdown.getItems(fn);
   }
 
   /**
@@ -410,11 +399,13 @@ class SelectBox {
   }
 
   /**
-   * Get all ItemGroups
+   * Get all ItemGroups that pass the test implemented by the provided function
+   * If filter function is not passed, it returns all ItemGroups
+   * @param {function} fn - filter function
    * @return {array<ItemGroup>}
    */
-  getItemGroups() {
-    return this.dropdown.getItemGroups();
+  getItemGroups(fn) {
+    return this.dropdown.getItemGroups(fn);
   }
 
   /**

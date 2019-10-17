@@ -3,7 +3,7 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
-import 'core-js/features/array/find';
+import isExisty from 'tui-code-snippet/type/isExisty';
 import isNumber from 'tui-code-snippet/type/isNumber';
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
@@ -135,9 +135,11 @@ export default class Dropdown {
    */
   open() {
     removeClass(this.el, cls.HIDDEN);
-    if (this.selectedItem) {
-      this.highlight();
-    }
+    const highlightedItem =
+      !this.selectedItem || this.selectedItem.isDisabled()
+        ? this.getItems(item => !item.isDisabled())[0]
+        : this.selectedItem;
+    this.highlight(highlightedItem);
   }
 
   /**
@@ -195,12 +197,17 @@ export default class Dropdown {
 
   /**
    * Highlight an Item
-   * @param {number|string} value - if string, find an Item by its value. if number, find an Item by its index.
+   * @param {number|string|Item} value - if string, find an Item by its value. if number, find an Item by its index.
    */
   highlight(value) {
-    const highlightedItem = value ? this.getItem(value) : this.selectedItem || this.getItem(0);
+    let highlightedItem;
+    if (value instanceof Item) {
+      highlightedItem = value;
+    } else if (isExisty(value)) {
+      highlightedItem = this.getItem(value);
+    }
 
-    if (highlightedItem !== this.highlightedItem) {
+    if (highlightedItem && highlightedItem !== this.highlightedItem) {
       this.dehighlight();
       highlightedItem.highlight();
       this.highlightedItem = highlightedItem;
@@ -218,13 +225,37 @@ export default class Dropdown {
   }
 
   /**
-   * Get all Items
+   * Move a highlighted Item
+   * @param {number} direction - direction to move
+   */
+  moveHighlightedItem(direction) {
+    const highlightedItem = this.getHighlightedItem();
+    const items = this.getItems();
+
+    let index = items.indexOf(highlightedItem);
+    if (index > -1) {
+      index += direction;
+      for (; index < items.length && index >= 0; index += direction) {
+        if (!items[index].isDisabled()) {
+          this.highlight(items[index]);
+          break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Get all Items that pass the test implemented by the provided function
+   * If filter function is not passed, it returns all Items
+   * @param {function} fn - filter function
    * @return {array<Item>}
    */
-  getItems() {
+  getItems(fn = () => true) {
     const items = [];
     this.iterateItems(item => {
-      items.push(item);
+      if (fn(item)) {
+        items.push(item);
+      }
     });
 
     return items;
@@ -240,17 +271,24 @@ export default class Dropdown {
       ? comparedItem => comparedItem.getIndex() === value
       : comparedItem => comparedItem.getValue() === value;
 
-    return this.getItems().find(item => isValidItem(item));
+    return this.getItems(isValidItem)[0];
   }
 
   /**
-   * Get all ItemGroups
+   * Get all ItemGroups that pass the test implemented by the provided function
+   * If filter function is not passed, it returns all ItemGroups
+   * @param {function} fn - filter function
    * @return {array<ItemGroup>}
    */
-  getItemGroups() {
-    return this.items.filter(item => {
-      return item instanceof ItemGroup;
+  getItemGroups(fn = () => true) {
+    const itemGroups = [];
+    this.items.forEach(itemGroup => {
+      if (itemGroup instanceof ItemGroup && fn(itemGroup)) {
+        itemGroups.push(itemGroup);
+      }
     });
+
+    return itemGroups;
   }
 
   /**
@@ -259,7 +297,7 @@ export default class Dropdown {
    * @return {ItemGroup}
    */
   getItemGroup(index) {
-    return this.getItemGroups().find(itemGroup => itemGroup.getIndex() === index);
+    return this.getItemGroups(itemGroup => itemGroup.getIndex() === index)[0];
   }
 
   /**

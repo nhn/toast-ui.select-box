@@ -41,29 +41,6 @@ describe('SelectBox', () => {
     });
   });
 
-  describe('getItem/ItemGroup', () => {
-    it('should get an Item by its value (string) and index (number).', () => {
-      const [, item] = selectBox.dropdown.items;
-      expect(selectBox.getItem('0')).toBe(item);
-      expect(selectBox.getItem(2)).toBe(item);
-    });
-
-    it('should get all Items.', () => {
-      const items = selectBox.getItems();
-      expect(items.length).toBe(3);
-    });
-
-    it('should get an ItemGroup by index (number).', () => {
-      const [itemGroup] = selectBox.dropdown.items;
-      expect(selectBox.getItemGroup(0)).toBe(itemGroup);
-    });
-
-    it('should get all ItemGroups.', () => {
-      const itemGroups = selectBox.getItemGroups();
-      expect(itemGroups.length).toBe(1);
-    });
-  });
-
   it('should open and close a dropdown list.', () => {
     const { input, dropdown } = selectBox;
 
@@ -231,36 +208,19 @@ describe('SelectBox', () => {
 
     it('should move a highlighted Item when press ArrowUp and ArrowDown on the input if a dropdown is opened.', () => {
       selectBox.open();
-      spyOn(selectBox.dropdown, 'highlight');
+      spyOn(selectBox.dropdown, 'moveHighlightedItem');
 
       selectBox.handleKeydown(
         { target: selectBox.input.el, key: 'ArrowUp', preventDefault: () => {} },
         cls
       );
-      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
+      expect(selectBox.dropdown.moveHighlightedItem).toHaveBeenCalledWith(-1);
 
       selectBox.handleKeydown(
         { target: selectBox.input.el, key: 'ArrowDown', preventDefault: () => {} },
         cls
       );
-      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
-    });
-
-    it('should move a highlighted Item when press ArrowUp and ArrowDown on the Items.', () => {
-      selectBox.dropdown.highlight(1);
-      spyOn(selectBox.dropdown, 'highlight');
-
-      selectBox.handleKeydown(
-        { target: selectBox.getItem(1).el, key: 'ArrowUp', preventDefault: () => {} },
-        cls
-      );
-      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
-
-      selectBox.handleKeydown(
-        { target: selectBox.getItem(1).el, key: 'ArrowDown', preventDefault: () => {} },
-        cls
-      );
-      expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(2);
+      expect(selectBox.dropdown.moveHighlightedItem).toHaveBeenCalledWith(1);
     });
 
     it('should select a highlighted Item when press Space or Enter on the Item.', () => {

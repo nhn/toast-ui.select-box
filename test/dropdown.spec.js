@@ -77,35 +77,44 @@ describe('Dropdown', () => {
 
   describe('highlight', () => {
     it('should highlight and dehighlight an Item in the dropdown.', () => {
-      dropdown.highlight();
+      dropdown.highlight(0);
       expect(dropdown.highlightedItem).not.toBeNull();
       expect(dropdown.highlightedItem.el).toHaveClass(cls.HIGHLIGHT);
 
-      dropdown.dehighlight();
+      dropdown.dehighlight(0);
       expect(dropdown.highlightedItem).toBeNull();
     });
 
-    it('should highlight an Item by its index.', () => {
-      dropdown.highlight(1);
-      expect(dropdown.highlightedItem).toBe(dropdown.getItem(1));
+    it('should move a highlight among enabled items.', () => {
+      dropdown.items[0].items[1].disable();
+      dropdown.highlight(0);
 
-      dropdown.highlight(2);
+      dropdown.moveHighlightedItem(1);
       expect(dropdown.highlightedItem).toBe(dropdown.getItem(2));
-    });
 
-    it('should highlight the selected Item or the first Item.', () => {
-      dropdown.highlight();
+      dropdown.moveHighlightedItem(-1);
       expect(dropdown.highlightedItem).toBe(dropdown.getItem(0));
-
-      dropdown.select(2);
-      dropdown.highlight();
-      expect(dropdown.highlightedItem).toBe(dropdown.getItem(2));
     });
+  });
 
-    it('should highlight a selected option if it exists when a dropdown is open.', () => {
+  describe('open and highlight', () => {
+    it('should highlight a selected Item if it exists when a dropdown is open.', () => {
       dropdown.select(0);
       dropdown.open();
       expect(dropdown.highlightedItem).toBe(dropdown.getItem(0));
+    });
+
+    it('should highlight the first enabled Item if there is no a selected Item.', () => {
+      dropdown.items[0].items[0].disable();
+      dropdown.open();
+      expect(dropdown.highlightedItem).toBe(dropdown.getItem(1));
+    });
+
+    it('should highlight next enabled Item if the selected Item is disabled.', () => {
+      dropdown.select(0);
+      dropdown.items[0].disable();
+      dropdown.open();
+      expect(dropdown.highlightedItem).toBe(dropdown.getItem(2));
     });
   });
 
@@ -120,6 +129,14 @@ describe('Dropdown', () => {
     expect(items.length).toBe(3);
   });
 
+  it('should get particular Items by passing a function.', () => {
+    dropdown.items[0].items[1].disable();
+    const disabledItems = dropdown.getItems(item => item.isDisabled());
+
+    expect(disabledItems.length).toBe(1);
+    expect(disabledItems[0]).toBe(dropdown.items[0].items[1]);
+  });
+
   it('should get an ItemGroup by index (number).', () => {
     const [itemGroup] = dropdown.items;
     expect(dropdown.getItemGroup(0)).toBe(itemGroup);
@@ -128,5 +145,12 @@ describe('Dropdown', () => {
   it('should get all ItemGroups.', () => {
     const itemGroups = dropdown.getItemGroups();
     expect(itemGroups.length).toBe(1);
+  });
+
+  it('should get particular ItemGroups by passing a function.', () => {
+    dropdown.items[0].disable();
+
+    expect(dropdown.getItemGroups(item => item.isDisabled()).length).toBe(1);
+    expect(dropdown.getItemGroups(item => !item.isDisabled()).length).toBe(0);
   });
 });

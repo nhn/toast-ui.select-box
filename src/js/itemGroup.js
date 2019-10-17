@@ -58,6 +58,13 @@ export default class ItemGroup {
      */
     this.index = itemGroupIndex;
 
+    /**
+     * whether an ItemGroup is disabled or not
+     * @type {boolean}
+     * @private
+     */
+    this.disabled = false;
+
     this.initialize(disabled);
   }
 
@@ -89,7 +96,7 @@ export default class ItemGroup {
    * Disable an ItemGroup
    */
   disable() {
-    this.nativeEl.disabled = true;
+    this.disabled = this.nativeEl.disabled = true;
     addClass(this.labelEl, cls.DISABLED);
     this.items.forEach(item => item.disableItemGroup());
   }
@@ -98,7 +105,7 @@ export default class ItemGroup {
    * Enable an ItemGroup
    */
   enable() {
-    this.nativeEl.disabled = false;
+    this.disabled = this.nativeEl.disabled = false;
     removeClass(this.labelEl, cls.DISABLED);
     this.items.forEach(item => item.enableItemGroup());
   }
@@ -117,6 +124,14 @@ export default class ItemGroup {
    */
   getIndex() {
     return this.index;
+  }
+
+  /**
+   * Return whether an ItemGroup is disabled or not
+   * @return {boolean}
+   */
+  isDisabled() {
+    return this.disabled;
   }
 
   /**
