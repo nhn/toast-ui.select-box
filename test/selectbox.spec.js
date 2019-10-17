@@ -246,4 +246,20 @@ describe('SelectBox', () => {
       expect(selectBox.close).toHaveBeenCalled();
     });
   });
+
+  it('should make a theme to customize a select box.', () => {
+    createSelectBox({
+      theme: {
+        'common.border': '1px solid black',
+        'common.color': 'black',
+        'common.width': '200px',
+        'common.height': '50px',
+
+        'common.disabled.background': 'gray',
+        'common.disabled.color': 'white'
+      }
+    });
+
+    expect(selectBox.theme).not.toBeNull();
+  });
 });

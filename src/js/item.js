@@ -144,9 +144,7 @@ export default class Item {
    */
   disableItemGroup() {
     this.itemGroupDisabled = true;
-    if (this.isDisabled()) {
-      this.makeDisable();
-    }
+    this.makeDisable();
   }
 
   /**
@@ -164,9 +162,7 @@ export default class Item {
    */
   disable() {
     this.itemDisabled = true;
-    if (this.isDisabled()) {
-      this.makeDisable();
-    }
+    this.makeDisable();
   }
 
   /**
@@ -206,8 +202,10 @@ export default class Item {
    * Highlight an Item
    */
   highlight() {
-    addClass(this.el, classNames.HIGHLIGHT);
-    this.el.focus();
+    if (!this.isDisabled()) {
+      addClass(this.el, classNames.HIGHLIGHT);
+      this.el.focus();
+    }
   }
 
   /**

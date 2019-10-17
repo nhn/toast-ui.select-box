@@ -31,11 +31,16 @@ export default class Input {
     this.el = this.createElement();
 
     /**
-     * An element for a placeholder
      * @type {HTMLElement}
      * @private
      */
     this.placeholderEl = this.createPlaceholderElement(this.placeholderText);
+
+    /**
+     * @type {HTMLElement}
+     * @private
+     */
+    this.iconEl = this.createIconElement();
 
     this.initialize(disabled);
   }
@@ -47,7 +52,6 @@ export default class Input {
    */
   createElement() {
     const el = document.createElement('div');
-    el.innerHTML = `<span class="${classNames.ICON}">select</span>`;
     el.className = classNames.INPUT;
     el.tabIndex = 0;
 
@@ -64,9 +68,24 @@ export default class Input {
     placeholderEl.innerText = text;
     placeholderEl.className = classNames.PLACEHOLDER;
 
-    this.el.insertAdjacentElement('afterbegin', placeholderEl);
+    this.el.appendChild(placeholderEl);
 
     return placeholderEl;
+  }
+
+  /**
+   * Create an icon element
+   * @return {HTMLElement}
+   * @private
+   */
+  createIconElement() {
+    const iconEl = document.createElement('span');
+    iconEl.className = classNames.ICON;
+    iconEl.innerText = 'select';
+
+    this.el.appendChild(iconEl);
+
+    return iconEl;
   }
 
   /**
@@ -139,6 +158,6 @@ export default class Input {
    */
   destroy() {
     removeElement(this.el);
-    this.el = this.placeholderEl = null;
+    this.el = this.placeholderEl = this.iconEl = null;
   }
 }

@@ -22,28 +22,30 @@ import Item from './item';
 export default class ItemGroup {
   constructor({ text = '', data, disabled = false, index }) {
     /**
-     * ul element for a custom dropdown item
      * @type {HTMLElement}
      * @private
      */
-    this.el = this.createElement(text);
+    this.el = this.createElement();
 
     /**
-     * li element to wrap Items
+     * @type {HTMLElement}
+     * @private
+     */
+    this.labelEl = this.createLabelElement(text);
+
+    /**
      * @type {HTMLElement}
      * @private
      */
     this.itemContainerEl = this.createItemContainerEl();
 
     /**
-     * optgroup element for a select element
      * @type {HTMLElement}
      * @private
      */
     this.nativeEl = this.createNativeElement(text);
 
     /**
-     * Items to be included in the ItemGroup
      * @type {array<Item>}
      * @private
      */
@@ -57,11 +59,25 @@ export default class ItemGroup {
    * @return {HTMLElement}
    * @private
    */
-  createElement(label) {
+  createElement() {
     const el = document.createElement('li');
-    el.innerHTML = `<span class="${classNames.ITEM_GROUP_LABEL}">${label}</span>`;
 
     return el;
+  }
+
+  /**
+   * Create <span> element for a label
+   * @return {HTMLElement}
+   * @private
+   */
+  createLabelElement(label) {
+    const labelEl = document.createElement('span');
+    labelEl.className = classNames.ITEM_GROUP_LABEL;
+    labelEl.innerText = label;
+
+    this.el.appendChild(labelEl);
+
+    return labelEl;
   }
 
   /**
@@ -119,7 +135,7 @@ export default class ItemGroup {
    */
   disable() {
     this.nativeEl.disabled = true;
-    addClass(this.el, classNames.DISABLED);
+    addClass(this.labelEl, classNames.DISABLED);
     this.items.forEach(item => item.disableItemGroup());
   }
 
@@ -128,7 +144,7 @@ export default class ItemGroup {
    */
   enable() {
     this.nativeEl.disabled = false;
-    removeClass(this.el, classNames.DISABLED);
+    removeClass(this.labelEl, classNames.DISABLED);
     this.items.forEach(item => item.enableItemGroup());
   }
 
@@ -181,6 +197,6 @@ export default class ItemGroup {
     this.items.forEach(item => item.destroy());
     removeElement(this.el);
     removeElement(this.nativeEl);
-    this.el = this.itemContainerEl = this.nativeEl = this.items = null;
+    this.el = this.labelEl = this.itemContainerEl = this.nativeEl = this.items = null;
   }
 }

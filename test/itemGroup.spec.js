@@ -45,13 +45,13 @@ describe('ItemGroup', () => {
         disabled: true
       });
       expect(itemGroup.nativeEl).toBeDisabled();
-      expect(itemGroup.el).toHaveClass(classNames.DISABLED);
+      expect(itemGroup.labelEl).toHaveClass(classNames.DISABLED);
       expect(itemGroup.items[0].nativeEl).toBeDisabled();
       expect(itemGroup.items[1].nativeEl).toBeDisabled();
 
       itemGroup.enable();
       expect(itemGroup.nativeEl).not.toBeDisabled();
-      expect(itemGroup.el).not.toHaveClass(classNames.DISABLED);
+      expect(itemGroup.labelEl).not.toHaveClass(classNames.DISABLED);
       expect(itemGroup.items[0].nativeEl).not.toBeDisabled();
       expect(itemGroup.items[1].nativeEl).not.toBeDisabled();
     });

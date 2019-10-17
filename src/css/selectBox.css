@@ -9,36 +9,54 @@
   box-sizing: border-box;
 }
 
-/* Input */
-
 .input {
   border: 1px solid #ddd;
+}
+
+.input.open,
+.dropdown {
+  border: 1px solid #aaa;
+}
+
+.input,
+.dropdown {
+  background: #fff;
+}
+
+.input,
+.item-group-label,
+.item {
+  padding: 0 8px;
   height: 29px;
-  padding: 4px 8px;
+  font-size: 13px;
+  color: #333;
+  user-select: none;
   cursor: pointer;
 }
 
-.input.open {
-  border-color: #aaa;
+.placeholder,
+.item-group-label,
+.item {
+  line-height: 29px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.input:focus {
-  border: 1px solid transparent;
+.placeholder,
+.icon {
+  height: 100%
 }
 
 .placeholder {
   display: inline-block;
   margin: 0;
-  color: #333;
-  font-size: 13px;
-  line-height: 15px;
-  user-select: none;
   width: 80%;
   width: calc(100% - 12px);
   vertical-align: sub;
 }
 
-.ico-select {
+.icon {
   display: block;
   float: right;
   background: url(../img/ico_tui_select.png) left center no-repeat;
@@ -47,11 +65,9 @@
   text-indent: 100%;
 }
 
-.open > .ico-select {
+.open > .icon {
   background-position: right center;
 }
-
-/* Dropdown */
 
 .dropdown,
 .item-group {
@@ -61,41 +77,23 @@
 }
 
 .dropdown {
-  border: 1px solid #aaa;
+  position: absolute;
   border-top: none;
   /* max-height: 145px; */
   overflow: auto;
   z-index: 1;
   width: 100%;
-  position: absolute;
-  background: #fff;
-}
-
-/* ItemGroup */
-
-.item-group > .item {
-  padding-left: 1.5em;
+  overflow-x: hidden;
 }
 
 .item-group-label {
   display: block;
   font-weight: bold;
+  cursor: default;
 }
 
-/* Item */
-
-.item-group-label,
-.item {
-  height: 29px;
-  padding: 8px 7px;
-  color: #333;
-  font-size: 13px;
-  line-height: 15px;
-  user-select: none;
-}
-
-.item {
-  cursor: pointer;
+.item-group > .item {
+  padding-left: 20px;
 }
 
 .selected {
@@ -107,23 +105,12 @@
   outline: none;
 }
 
-.placeholder,
-.item-group-label,
-.item {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.disabled {
+  background: #f9f9f9;
+  color: #c8c8c8;
+  cursor: default;
 }
-
-/* Common */
 
 .hidden {
   display: none; /* for test */
-}
-
-.disabled,
-.disabled > .item-group-label {
-  background: #f9f9f9;
-  cursor: default;
-  color: #c8c8c8;
 }

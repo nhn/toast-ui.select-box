@@ -3,6 +3,7 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
+import isEmpty from 'tui-code-snippet/type/isEmpty';
 import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import closest from 'tui-code-snippet/domUtil/closest';
@@ -14,6 +15,7 @@ import { identifyKey } from './utils';
 import { classNames } from './constants';
 import Input from './input';
 import Dropdown from './dropdown';
+import Theme from './theme';
 
 /**
  * @class
@@ -24,11 +26,12 @@ import Dropdown from './dropdown';
  *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
  *   @param {boolean} [options.autofocus=false] - whether a selectbox should get focus when th page loads
  *   @param {boolean} [options.autoclose=true] - whether a selectbox should close after selection
+ *   @param {object} [options.theme] - theme object for custom style
  */
 export default class SelectBox {
   constructor(
     container,
-    { placeholder = '', disabled = false, autofocus = false, autoclose = true, ...options }
+    { placeholder = '', disabled = false, autofocus = false, autoclose = true, theme, ...options }
   ) {
     /**
      * @type {HTMLElement}
@@ -64,6 +67,12 @@ export default class SelectBox {
      * @type {boolean}
      */
     this.autoclose = autoclose;
+
+    /**
+     * @type {Theme}
+     * @private
+     */
+    this.theme = isEmpty(theme) ? null : new Theme(theme, container);
 
     this.initialize({ placeholder, disabled, autofocus });
     this.appendToContainer(container);
@@ -156,8 +165,7 @@ export default class SelectBox {
     const itemEl = closest(target, `.${ITEM}`);
 
     if (itemEl) {
-      const highlightedItem = this.dropdown.getItem(itemEl.getAttribute('data-value'));
-      this.dropdown.highlight(highlightedItem.getIndex());
+      this.dropdown.highlight(itemEl.getAttribute('data-value'));
     }
   }
 
@@ -211,10 +219,7 @@ export default class SelectBox {
    */
   moveHighlightedItem(key, itemEl) {
     const highlightedItem = this.dropdown.getHighlightedItem();
-    let index = -1;
-    if (highlightedItem) {
-      index = highlightedItem.getIndex();
-    }
+    const index = highlightedItem ? highlightedItem.getIndex() : -1;
 
     switch (key) {
       case 'ArrowUp':
@@ -300,7 +305,6 @@ export default class SelectBox {
    * @return {Item} - selected Item.
    */
   select(value) {
-    // const prevSelectedItem = this.getSelectedItem();
     let selectedItem = null;
 
     if (!this.disabled) {
@@ -359,10 +363,13 @@ export default class SelectBox {
   destroy() {
     this.input.destroy();
     this.dropdown.destroy();
+    if (this.theme) {
+      this.theme.destroy();
+    }
 
     off(document, 'click');
     off(this.el, 'click mouseover keydown');
     removeElement(this.el);
-    this.container = this.el = null;
+    this.container = this.el = this.theme = this.input = this.dropdown = this.theme = null;
   }
 }

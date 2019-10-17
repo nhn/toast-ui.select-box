@@ -13,7 +13,7 @@ export const classNames = {
   DROPDOWN: `${CSS_PREFIX}-dropdown`,
   INPUT: `${CSS_PREFIX}-input`,
   PLACEHOLDER: `${CSS_PREFIX}-placeholder`,
-  ICON: `${CSS_PREFIX}-ico-select`,
+  ICON: `${CSS_PREFIX}-icon`,
   OPEN: `${CSS_PREFIX}-open`,
   HIDDEN: `${CSS_PREFIX}-hidden`,
   DISABLED: `${CSS_PREFIX}-disabled`,

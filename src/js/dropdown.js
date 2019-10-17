@@ -22,14 +22,12 @@ import Item from './item';
 export default class Dropdown {
   constructor({ placeholder, data, disabled = false }) {
     /**
-     * ul element for a custom dropdown
      * @type {HTMLElement}
      * @private
      */
     this.el = this.createElement();
 
     /**
-     * select element
      * @type {HTMLElement}
      * @private
      */
@@ -50,14 +48,12 @@ export default class Dropdown {
     this.itemLength = 0;
 
     /**
-     * selected Item
      * @type {Item}
      * @private
      */
     this.selectedItem = null;
 
     /**
-     * highlighted Item
      * @type {Item}
      * @private
      */
@@ -220,12 +216,10 @@ export default class Dropdown {
 
   /**
    * Highlight an Item
-   * @param {number} index - index
+   * @param {number|string} value - if string, find an Item by its value. if number, find an Item by its index.
    */
-  highlight(index) {
-    const highlightedItem = isNumber(index)
-      ? this.getItem(index)
-      : this.selectedItem || this.getItem(0);
+  highlight(value) {
+    const highlightedItem = value ? this.getItem(value) : this.selectedItem || this.getItem(0);
 
     if (highlightedItem !== this.highlightedItem) {
       this.dehighlight();
