@@ -65,15 +65,15 @@ export default {
   'item.color': '#333',
   'item.height': '29px',
 
-  // disabled Item
-  'item.disabled.border': '0',
-  'item.disabled.background': '#f9f9f9',
-  'item.disabled.color': '#c8c8c8',
-
   // selected Item
   'item.selected.border': '0',
   'item.selected.background': '#f4f4f4',
   'item.selected.color': '#333',
+
+  // disabled Item
+  'item.disabled.border': '0',
+  'item.disabled.background': '#f9f9f9',
+  'item.disabled.color': '#c8c8c8',
 
   // highlighted Item
   'item.highlighted.border': '0',

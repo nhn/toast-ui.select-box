@@ -38,12 +38,8 @@ describe('Theme', () => {
   });
 
   it('should make css strings.', () => {
-    expect(theme.cssString).toContain(
-      `#container .${cls.ITEM_GROUP}>.${cls.ITEM}{padding-left:8px;}`
-    );
+    expect(theme.cssString).toContain(`#container .${cls.ITEM_GROUP}>.${cls.ITEM}`);
     expect(theme.cssString).toContain(`#container .${cls.ICON}{display:none;}`);
-    expect(theme.cssString).toContain(
-      `#container .${cls.ITEM}.${cls.HIGHLIGHT}{background:skyblue;}`
-    );
+    expect(theme.cssString).toContain(`background:skyblue;`);
   });
 });

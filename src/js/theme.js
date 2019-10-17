@@ -10,6 +10,7 @@ import isBoolean from 'tui-code-snippet/type/isBoolean';
 import isString from 'tui-code-snippet/type/isString';
 import { transform } from './utils';
 import { cls } from './constants';
+import baseTheme from './themeConfig';
 
 /**
  * @class
@@ -181,11 +182,18 @@ export default class Theme {
     if (theme.inItemGroup && !theme.inItemGroup.paddingLeft) {
       theme.inItemGroup.paddingLeft = '8px';
     }
+    if (theme.selected) {
+      const base = transform(baseTheme);
+
+      theme.selected = { ...base.item.selected, ...theme.selected };
+      theme.disabled = { ...base.item.disabled, ...theme.disabled };
+      theme.highlighted = { ...base.item.highlighted, ...theme.highlighted };
+    }
 
     return (
       this.buildCssString(cls.ITEM, theme) +
-      this.buildCssString([cls.ITEM, cls.DISABLED], theme.disabled) +
       this.buildCssString([cls.ITEM, cls.SELECTED], theme.selected) +
+      this.buildCssString([cls.ITEM, cls.DISABLED], theme.disabled) +
       this.buildCssString([cls.ITEM, cls.HIGHLIGHT], theme.highlighted) +
       this.buildCssString(`${cls.ITEM_GROUP}>.${cls.ITEM}`, theme.inItemGroup)
     );
