@@ -7,7 +7,8 @@ import isNumber from 'tui-code-snippet/type/isNumber';
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import { classNames } from './constants';
+import { createElement } from './utils';
+import { cls } from './constants';
 import ItemGroup from './itemGroup';
 import Item from './item';
 
@@ -25,13 +26,13 @@ export default class Dropdown {
      * @type {HTMLElement}
      * @private
      */
-    this.el = this.createElement();
+    this.el = createElement('ul', '', { className: `${cls.DROPDOWN} ${cls.HIDDEN}` });
 
     /**
      * @type {HTMLElement}
      * @private
      */
-    this.nativeEl = this.createNativeElement(placeholder);
+    this.nativeEl = createElement('select', '', { className: cls.HIDDEN, tabIndex: -1 });
 
     /**
      * Items and ItemGroups
@@ -59,37 +60,7 @@ export default class Dropdown {
      */
     this.highlightedItem = null;
 
-    this.initialize(data, disabled);
-  }
-
-  /**
-   * Create ul element
-   * @return {HTMLElement}
-   * @private
-   */
-  createElement() {
-    const el = document.createElement('ul');
-    el.className = `${classNames.DROPDOWN} ${classNames.HIDDEN}`;
-
-    return el;
-  }
-
-  /**
-   * Create select element
-   * @param {string} placeholder - placeholder for an input
-   * @return {HTMLElement}
-   * @private
-   */
-  createNativeElement(placeholder) {
-    const nativeEl = document.createElement('select');
-    nativeEl.className = classNames.HIDDEN;
-    nativeEl.tabIndex = -1;
-
-    if (placeholder) {
-      nativeEl.innerHTML = `<option label="${placeholder}" value=""></option>`;
-    }
-
-    return nativeEl;
+    this.initialize(data, disabled, placeholder);
   }
 
   /**
@@ -120,7 +91,11 @@ export default class Dropdown {
    * Initialize
    * @private
    */
-  initialize(data, disabled) {
+  initialize(data, disabled, placeholder) {
+    if (placeholder) {
+      createElement('option', '', { label: placeholder, value: '' }, this.nativeEl);
+    }
+
     this.initializeItems(data);
 
     this.iterateItems(item => {
@@ -156,7 +131,7 @@ export default class Dropdown {
    * Open a dropdown list
    */
   open() {
-    removeClass(this.el, classNames.HIDDEN);
+    removeClass(this.el, cls.HIDDEN);
     if (this.selectedItem) {
       this.highlight();
     }
@@ -166,7 +141,7 @@ export default class Dropdown {
    * Close a dropdown list
    */
   close() {
-    addClass(this.el, classNames.HIDDEN);
+    addClass(this.el, cls.HIDDEN);
     this.dehighlight();
   }
 
@@ -175,7 +150,7 @@ export default class Dropdown {
    */
   disable() {
     this.nativeEl.disabled = true;
-    addClass(this.el, classNames.DISABLED);
+    addClass(this.el, cls.DISABLED);
   }
 
   /**
@@ -183,7 +158,7 @@ export default class Dropdown {
    */
   enable() {
     this.nativeEl.disabled = false;
-    removeClass(this.el, classNames.DISABLED);
+    removeClass(this.el, cls.DISABLED);
   }
 
   /**
@@ -193,15 +168,16 @@ export default class Dropdown {
    */
   select(value) {
     const selectedItem = value instanceof Item ? value : this.getItem(value);
+    this.deselect();
 
-    if (selectedItem && selectedItem.select()) {
-      this.deselect();
-      this.selectedItem = selectedItem;
-
-      return selectedItem;
+    if (!selectedItem || (selectedItem && selectedItem.isDisabled())) {
+      return null;
     }
 
-    return null;
+    selectedItem.select();
+    this.selectedItem = selectedItem;
+
+    return selectedItem;
   }
 
   /**
@@ -267,17 +243,17 @@ export default class Dropdown {
       item = this.items[i];
 
       if (item instanceof ItemGroup) {
-        result = item.getItem(value);
+        result = item.getItem(value, isValidItem);
       } else if (isValidItem(item)) {
         result = item;
       }
 
       if (result) {
-        break;
+        return result;
       }
     }
 
-    return result;
+    return null;
   }
 
   /**

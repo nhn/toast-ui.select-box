@@ -3,20 +3,34 @@
  * @author NHN. FE dev team.<dl_javascript@nhn.com>
  */
 
+import forEachOwnProperties from 'tui-code-snippet/collection/forEachOwnProperties';
+
 const CSS_PREFIX = 'tui-select-box';
 
-export const classNames = {
-  SELECT_BOX: CSS_PREFIX,
-  ITEM: `${CSS_PREFIX}-item`,
-  ITEM_GROUP: `${CSS_PREFIX}-item-group`,
-  ITEM_GROUP_LABEL: `${CSS_PREFIX}-item-group-label`,
-  DROPDOWN: `${CSS_PREFIX}-dropdown`,
-  INPUT: `${CSS_PREFIX}-input`,
-  PLACEHOLDER: `${CSS_PREFIX}-placeholder`,
-  ICON: `${CSS_PREFIX}-icon`,
-  OPEN: `${CSS_PREFIX}-open`,
-  HIDDEN: `${CSS_PREFIX}-hidden`,
-  DISABLED: `${CSS_PREFIX}-disabled`,
-  SELECTED: `${CSS_PREFIX}-selected`,
-  HIGHLIGHT: `${CSS_PREFIX}-highlight`
+const classNames = {
+  SELECT_BOX: '',
+  ITEM: 'item',
+  ITEM_GROUP: 'item-group',
+  ITEM_GROUP_LABEL: 'item-group-label',
+  DROPDOWN: 'dropdown',
+  INPUT: 'input',
+  PLACEHOLDER: 'placeholder',
+  ICON: 'icon',
+  OPEN: 'open',
+  HIDDEN: 'hidden',
+  DISABLED: 'disabled',
+  SELECTED: 'selected',
+  HIGHLIGHT: 'highlight'
 };
+
+export const cls = (function() {
+  forEachOwnProperties(classNames, (value, key) => {
+    if (value) {
+      classNames[key] = `${CSS_PREFIX}-${value}`;
+    } else {
+      classNames[key] = CSS_PREFIX;
+    }
+  });
+
+  return classNames;
+})();

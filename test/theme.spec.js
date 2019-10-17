@@ -1,5 +1,5 @@
 import Theme from '@src/theme';
-import { classNames } from '@src/constants';
+import { cls } from '@src/constants';
 
 describe('Theme', () => {
   let theme;
@@ -39,11 +39,11 @@ describe('Theme', () => {
 
   it('should make css strings.', () => {
     expect(theme.cssString).toContain(
-      `#container .${classNames.ITEM_GROUP}>.${classNames.ITEM}{padding-left:8px;}`
+      `#container .${cls.ITEM_GROUP}>.${cls.ITEM}{padding-left:8px;}`
     );
-    expect(theme.cssString).toContain(`#container .${classNames.ICON}{display:none;}`);
+    expect(theme.cssString).toContain(`#container .${cls.ICON}{display:none;}`);
     expect(theme.cssString).toContain(
-      `#container .${classNames.ITEM}.${classNames.HIGHLIGHT}{background:skyblue;}`
+      `#container .${cls.ITEM}.${cls.HIGHLIGHT}{background:skyblue;}`
     );
   });
 });

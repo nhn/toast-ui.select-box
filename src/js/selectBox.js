@@ -11,8 +11,8 @@ import on from 'tui-code-snippet/domEvent/on';
 import off from 'tui-code-snippet/domEvent/off';
 import preventDefault from 'tui-code-snippet/domEvent/preventDefault';
 import getTarget from 'tui-code-snippet/domEvent/getTarget';
-import { identifyKey } from './utils';
-import { classNames } from './constants';
+import { createElement, identifyKey } from './utils';
+import { cls } from './constants';
 import Input from './input';
 import Dropdown from './dropdown';
 import Theme from './theme';
@@ -37,7 +37,7 @@ export default class SelectBox {
      * @type {HTMLElement}
      * @private
      */
-    this.el = this.createElement();
+    this.el = createElement('div', '', { className: cls.SELECT_BOX });
 
     /**
      * @type {Input}
@@ -79,18 +79,6 @@ export default class SelectBox {
   }
 
   /**
-   * Create div element
-   * @return {HTMLElement}
-   * @private
-   */
-  createElement() {
-    const el = document.createElement('div');
-    el.className = classNames.SELECT_BOX;
-
-    return el;
-  }
-
-  /**
    * Append the select box element to the container
    * @param {HTMLElement|string} container - container element or selector
    * @private
@@ -113,34 +101,51 @@ export default class SelectBox {
       this.select(0);
     }
 
-    if (options.autofocus) {
-      on(window, 'load', () => {
-        this.input.focus();
-      });
-    }
-
     if (options.disabled) {
       this.disable();
     }
 
-    on(document, 'click', ev => {
-      const target = getTarget(ev);
-      if (!closest(target, `.${classNames.SELECT_BOX}`)) {
-        this.close();
-      }
-    });
-    on(this.el, 'click', ev => this.handleClick(ev, classNames));
-    on(this.el, 'mouseover', ev => this.handleMouseover(ev, classNames));
-    on(this.el, 'keydown', ev => this.handleKeydown(ev, classNames));
+    this.bindEvents(options.autofocus);
 
     this.input.appendToContainer(this.el);
     this.dropdown.appendToContainer(this.el);
   }
 
   /**
+   * Bind events
+   * @private
+   */
+  bindEvents(autofocus) {
+    if (autofocus) {
+      on(window, 'load', () => {
+        this.input.focus();
+      });
+    }
+    on(document, 'click', ev => {
+      const target = getTarget(ev);
+      if (!closest(target, `.${cls.SELECT_BOX}`)) {
+        this.close();
+      }
+    });
+    on(this.el, 'click', ev => this.handleClick(ev, cls));
+    on(this.el, 'mouseover', ev => this.handleMouseover(ev, cls));
+    on(this.el, 'keydown', ev => this.handleKeydown(ev, cls));
+  }
+
+  /**
+   * Unbind events
+   * @private
+   */
+  unbindEvents() {
+    off(window, 'load');
+    off(document, 'click');
+    off(this.el, 'click mouseover keydown');
+  }
+
+  /**
    * Handle click events
    * @param {Event} ev - an event
-   * @param {object} classNames - classNames
+   * @param {object} cls - cls
    * @private
    */
   handleClick(ev, { INPUT, ITEM }) {
@@ -157,7 +162,7 @@ export default class SelectBox {
   /**
    * Handle mouseover events
    * @param {Event} ev - an event
-   * @param {object} classNames - classNames
+   * @param {object} cls - cls
    * @private
    */
   handleMouseover(ev, { ITEM }) {
@@ -172,22 +177,22 @@ export default class SelectBox {
   /**
    * Handle keydown events
    * @param {Event} ev - an event
-   * @param {object} classNames - classNames
+   * @param {object} cls - cls
    * @private
    */
   handleKeydown(ev, { INPUT, ITEM }) {
     const target = getTarget(ev);
     const key = identifyKey(ev);
-    const keys = ['ArrowUp', 'ArrowDown', ' ', 'Enter', 'Escape'];
+    const keys = ['arrowUp', 'arrowDown', 'space', 'enter', 'escape'];
 
-    if (key === 'Tab') {
+    if (key === 'tab') {
       this.close();
     } else if (keys.indexOf(key) > -1) {
       preventDefault(ev);
 
       const itemEl = closest(target, `.${ITEM}`);
 
-      if (key === 'Escape') {
+      if (key === 'escape') {
         this.close();
         this.input.focus();
       } else if (itemEl) {
@@ -222,14 +227,14 @@ export default class SelectBox {
     const index = highlightedItem ? highlightedItem.getIndex() : -1;
 
     switch (key) {
-      case 'ArrowUp':
+      case 'arrowUp':
         this.dropdown.highlight(this.getValidIndex(index - 1));
         break;
-      case 'ArrowDown':
+      case 'arrowDown':
         this.dropdown.highlight(this.getValidIndex(index + 1));
         break;
-      case 'Enter':
-      case ' ':
+      case 'enter':
+      case 'space':
         this.select(itemEl.getAttribute('data-value'));
         this.close();
         this.input.focus();
@@ -361,15 +366,15 @@ export default class SelectBox {
    * Destory a select box
    */
   destroy() {
+    this.unbindEvents();
+
     this.input.destroy();
     this.dropdown.destroy();
     if (this.theme) {
       this.theme.destroy();
     }
 
-    off(document, 'click');
-    off(this.el, 'click mouseover keydown');
     removeElement(this.el);
-    this.container = this.el = this.theme = this.input = this.dropdown = this.theme = null;
+    this.container = this.el = this.input = this.dropdown = this.theme = null;
   }
 }

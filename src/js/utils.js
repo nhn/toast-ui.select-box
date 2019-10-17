@@ -6,19 +6,25 @@
 import forEachOwnProperties from 'tui-code-snippet/collection/forEachOwnProperties';
 
 const keyCodeMap = {
-  38: 'ArrowUp',
-  40: 'ArrowDown',
-  32: ' ',
-  13: 'Enter',
-  27: 'Escape',
-  61: 'Tab'
+  38: 'arrowUp',
+  40: 'arrowDown',
+  32: 'space',
+  13: 'enter',
+  27: 'escape',
+  61: 'tab'
 };
 
 const keyMap = {
-  Up: 'ArrowUp',
-  Down: 'ArrowDown',
-  Spacebar: ' ',
-  Esc: 'Escape'
+  ArrowUp: 'arrowUp',
+  Up: 'arrowUp',
+  ArrowDown: 'arrowDown',
+  Down: 'arrowDown',
+  ' ': 'space',
+  Spacebar: 'space',
+  Enter: 'enter',
+  Escape: 'escape',
+  Esc: 'escape',
+  Tab: 'tab'
 };
 
 /**
@@ -59,4 +65,34 @@ export const transform = obj => {
   });
 
   return result;
+};
+
+/**
+ * Create a HTML element
+ * @param {string} tagName - tag name
+ * @param {string} content - content in the element
+ * @param {object} options - other properties for the element
+ * @param {HTMLElement} container - parent element for the element
+ * @return {HTMLElement}
+ */
+export const createElement = (tagName, content, options, container) => {
+  const el = document.createElement(tagName);
+
+  if (content) {
+    el.innerText = content;
+  }
+
+  forEachOwnProperties(options, (value, key) => {
+    if (key.indexOf('data-') > -1) {
+      el.setAttribute(key, value);
+    } else {
+      el[key] = value;
+    }
+  });
+
+  if (container) {
+    container.appendChild(el);
+  }
+
+  return el;
 };

@@ -9,7 +9,7 @@ import isArray from 'tui-code-snippet/type/isArray';
 import isBoolean from 'tui-code-snippet/type/isBoolean';
 import isString from 'tui-code-snippet/type/isString';
 import { transform } from './utils';
-import { classNames } from './constants';
+import { cls } from './constants';
 
 /**
  * @class
@@ -133,11 +133,11 @@ export default class Theme {
     }
 
     return (
-      this.buildCssString(classNames.INPUT, theme) +
-      this.buildCssString([classNames.INPUT, classNames.OPEN], theme.open) +
-      this.buildCssString([classNames.INPUT, classNames.DISABLED], theme.disabled) +
-      this.buildCssString(classNames.PLACEHOLDER, theme.placeholder) +
-      this.buildCssString(classNames.ICON, theme.icon)
+      this.buildCssString(cls.INPUT, theme) +
+      this.buildCssString([cls.INPUT, cls.OPEN], theme.open) +
+      this.buildCssString([cls.INPUT, cls.DISABLED], theme.disabled) +
+      this.buildCssString(cls.PLACEHOLDER, theme.placeholder) +
+      this.buildCssString(cls.ICON, theme.icon)
     );
   }
 
@@ -148,7 +148,7 @@ export default class Theme {
    * @private
    */
   buildDropdown(theme) {
-    return this.buildCssString(classNames.DROPDOWN, theme);
+    return this.buildCssString(cls.DROPDOWN, theme);
   }
 
   /**
@@ -163,8 +163,8 @@ export default class Theme {
     }
 
     return (
-      this.buildCssString(classNames.ITEM_GROUP_LABEL, theme) +
-      this.buildCssString([classNames.ITEM_GROUP_LABEL, classNames.DISABLED], theme.disabled)
+      this.buildCssString(cls.ITEM_GROUP_LABEL, theme) +
+      this.buildCssString([cls.ITEM_GROUP_LABEL, cls.DISABLED], theme.disabled)
     );
   }
 
@@ -183,11 +183,11 @@ export default class Theme {
     }
 
     return (
-      this.buildCssString(classNames.ITEM, theme) +
-      this.buildCssString([classNames.ITEM, classNames.DISABLED], theme.disabled) +
-      this.buildCssString([classNames.ITEM, classNames.SELECTED], theme.selected) +
-      this.buildCssString([classNames.ITEM, classNames.HIGHLIGHT], theme.highlighted) +
-      this.buildCssString(`${classNames.ITEM_GROUP}>.${classNames.ITEM}`, theme.inItemGroup)
+      this.buildCssString(cls.ITEM, theme) +
+      this.buildCssString([cls.ITEM, cls.DISABLED], theme.disabled) +
+      this.buildCssString([cls.ITEM, cls.SELECTED], theme.selected) +
+      this.buildCssString([cls.ITEM, cls.HIGHLIGHT], theme.highlighted) +
+      this.buildCssString(`${cls.ITEM_GROUP}>.${cls.ITEM}`, theme.inItemGroup)
     );
   }
 

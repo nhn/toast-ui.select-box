@@ -6,7 +6,8 @@
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import { classNames } from './constants';
+import { createElement } from './utils';
+import { cls } from './constants';
 
 /**
  * @class
@@ -28,64 +29,20 @@ export default class Input {
      * @type {HTMLElement}
      * @private
      */
-    this.el = this.createElement();
+    this.el = createElement('div', '', { className: cls.INPUT, tabIndex: 0 });
 
     /**
      * @type {HTMLElement}
      * @private
      */
-    this.placeholderEl = this.createPlaceholderElement(this.placeholderText);
-
-    /**
-     * @type {HTMLElement}
-     * @private
-     */
-    this.iconEl = this.createIconElement();
+    this.placeholderEl = createElement(
+      'p',
+      this.placeholderText,
+      { className: cls.PLACEHOLDER },
+      this.el
+    );
 
     this.initialize(disabled);
-  }
-
-  /**
-   * Create a li element
-   * @return {HTMLElement}
-   * @private
-   */
-  createElement() {
-    const el = document.createElement('div');
-    el.className = classNames.INPUT;
-    el.tabIndex = 0;
-
-    return el;
-  }
-
-  /**
-   * Create a placeholder element
-   * @return {HTMLElement}
-   * @private
-   */
-  createPlaceholderElement(text) {
-    const placeholderEl = document.createElement('p');
-    placeholderEl.innerText = text;
-    placeholderEl.className = classNames.PLACEHOLDER;
-
-    this.el.appendChild(placeholderEl);
-
-    return placeholderEl;
-  }
-
-  /**
-   * Create an icon element
-   * @return {HTMLElement}
-   * @private
-   */
-  createIconElement() {
-    const iconEl = document.createElement('span');
-    iconEl.className = classNames.ICON;
-    iconEl.innerText = 'select';
-
-    this.el.appendChild(iconEl);
-
-    return iconEl;
   }
 
   /**
@@ -93,6 +50,8 @@ export default class Input {
    * @private
    */
   initialize(disabled) {
+    createElement('span', 'select', { className: cls.ICON }, this.el);
+
     if (disabled) {
       this.disable();
     }
@@ -102,28 +61,28 @@ export default class Input {
    * Disable an input
    */
   disable() {
-    addClass(this.el, classNames.DISABLED);
+    addClass(this.el, cls.DISABLED);
   }
 
   /**
    * Enable an input
    */
   enable() {
-    removeClass(this.el, classNames.DISABLED);
+    removeClass(this.el, cls.DISABLED);
   }
 
   /**
    * Open an input
    */
   open() {
-    addClass(this.el, classNames.OPEN);
+    addClass(this.el, cls.OPEN);
   }
 
   /**
    * Close an input
    */
   close() {
-    removeClass(this.el, classNames.OPEN);
+    removeClass(this.el, cls.OPEN);
   }
 
   /**
@@ -141,7 +100,7 @@ export default class Input {
     if (item) {
       this.placeholderEl.innerText = item.getLabel();
     } else {
-      this.placeholderEl.innerHTML = this.placeholderText;
+      this.placeholderEl.innerText = this.placeholderText;
     }
   }
 
@@ -158,6 +117,6 @@ export default class Input {
    */
   destroy() {
     removeElement(this.el);
-    this.el = this.placeholderEl = this.iconEl = null;
+    this.el = this.placeholderEl = null;
   }
 }

@@ -6,14 +6,15 @@
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import { classNames } from './constants';
+import { createElement } from './utils';
+import { cls } from './constants';
 
 /**
  * @class
  * @ignore
  * @param {object} options - options
  *   @param {string} [options.text] - label to be displayed in the drop-down list
- *   @param {string} options.value - value to be sent to a server
+ *   @param {string} options.value - value of an item
  *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
  *   @param {boolean} [options.selected=false] - whether an Item should be pre-selected or not
  *   @param {number} [options.index] - Item's index
@@ -21,11 +22,11 @@ import { classNames } from './constants';
 export default class Item {
   constructor({ value, text, disabled, selected, index }) {
     /**
-     * value to be sent to a server
+     * value of an item
      * @type {string}
      * @private
      */
-    this.value = value.toString();
+    this.value = `${value}`;
 
     /**
      * label to be displayed in the drop-down list
@@ -66,45 +67,24 @@ export default class Item {
      * @type {HTMLElement}
      * @private
      */
-    this.el = this.createElement(this.value, this.label, this.index);
+    this.el = createElement('li', this.label, {
+      className: cls.ITEM,
+      tabIndex: -1,
+      'data-value': this.value,
+      'data-index': this.index
+    });
 
     /**
      * <option> element for a select element
      * @type {HTMLElement}
      * @private
      */
-    this.nativeEl = this.createNativeElement(this.value, this.label);
+    this.nativeEl = createElement('option', '', {
+      value: this.value,
+      label: this.label
+    });
 
     this.initialize(disabled, selected);
-  }
-
-  /**
-   * Create <li> element
-   * @return {HTMLElement}
-   * @private
-   */
-  createElement(value, label, index) {
-    const el = document.createElement('li');
-    el.innerText = label;
-    el.className = classNames.ITEM;
-    el.tabIndex = -1;
-    el.setAttribute('data-value', value);
-    el.setAttribute('data-index', index);
-
-    return el;
-  }
-
-  /**
-   * Create <option> element
-   * @return {HTMLElement}
-   * @private
-   */
-  createNativeElement(value, label) {
-    const nativeEl = document.createElement('option');
-    nativeEl.value = value;
-    nativeEl.label = label;
-
-    return nativeEl;
   }
 
   /**
@@ -127,7 +107,7 @@ export default class Item {
    */
   makeDisable() {
     this.nativeEl.disabled = true;
-    addClass(this.el, classNames.DISABLED);
+    addClass(this.el, cls.DISABLED);
   }
 
   /**
@@ -136,7 +116,7 @@ export default class Item {
    */
   makeEnable() {
     this.nativeEl.disabled = false;
-    removeClass(this.el, classNames.DISABLED);
+    removeClass(this.el, cls.DISABLED);
   }
 
   /**
@@ -182,12 +162,8 @@ export default class Item {
   select() {
     if (!this.isDisabled()) {
       this.selected = this.nativeEl.selected = true;
-      addClass(this.el, classNames.SELECTED);
-
-      return true;
+      addClass(this.el, cls.SELECTED);
     }
-
-    return false;
   }
 
   /**
@@ -195,7 +171,7 @@ export default class Item {
    */
   deselect() {
     this.selected = this.nativeEl.selected = false;
-    removeClass(this.el, classNames.SELECTED);
+    removeClass(this.el, cls.SELECTED);
   }
 
   /**
@@ -203,7 +179,7 @@ export default class Item {
    */
   highlight() {
     if (!this.isDisabled()) {
-      addClass(this.el, classNames.HIGHLIGHT);
+      addClass(this.el, cls.HIGHLIGHT);
       this.el.focus();
     }
   }
@@ -212,7 +188,7 @@ export default class Item {
    * Remove a highlight from an Item
    */
   dehighlight() {
-    removeClass(this.el, classNames.HIGHLIGHT);
+    removeClass(this.el, cls.HIGHLIGHT);
     this.el.blur();
   }
 

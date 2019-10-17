@@ -3,11 +3,11 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
-import isNumber from 'tui-code-snippet/type/isNumber';
 import addClass from 'tui-code-snippet/domUtil/addClass';
 import removeClass from 'tui-code-snippet/domUtil/removeClass';
 import removeElement from 'tui-code-snippet/domUtil/removeElement';
-import { classNames } from './constants';
+import { createElement } from './utils';
+import { cls } from './constants';
 import Item from './item';
 
 /**
@@ -25,25 +25,25 @@ export default class ItemGroup {
      * @type {HTMLElement}
      * @private
      */
-    this.el = this.createElement();
+    this.el = createElement('li');
 
     /**
      * @type {HTMLElement}
      * @private
      */
-    this.labelEl = this.createLabelElement(text);
+    this.labelEl = createElement('span', text, { className: cls.ITEM_GROUP_LABEL }, this.el);
 
     /**
      * @type {HTMLElement}
      * @private
      */
-    this.itemContainerEl = this.createItemContainerEl();
+    this.itemContainerEl = createElement('ul', '', { className: cls.ITEM_GROUP }, this.el);
 
     /**
      * @type {HTMLElement}
      * @private
      */
-    this.nativeEl = this.createNativeElement(text);
+    this.nativeEl = createElement('optgroup', text);
 
     /**
      * @type {array<Item>}
@@ -52,58 +52,6 @@ export default class ItemGroup {
     this.items = this.createItems(data, index);
 
     this.initialize(disabled);
-  }
-
-  /**
-   * Create <ul> element
-   * @return {HTMLElement}
-   * @private
-   */
-  createElement() {
-    const el = document.createElement('li');
-
-    return el;
-  }
-
-  /**
-   * Create <span> element for a label
-   * @return {HTMLElement}
-   * @private
-   */
-  createLabelElement(label) {
-    const labelEl = document.createElement('span');
-    labelEl.className = classNames.ITEM_GROUP_LABEL;
-    labelEl.innerText = label;
-
-    this.el.appendChild(labelEl);
-
-    return labelEl;
-  }
-
-  /**
-   * Create <ul> element to wrap Items
-   * @return {HTMLElement}
-   * @private
-   */
-  createItemContainerEl() {
-    const itemContainerEl = document.createElement('ul');
-    itemContainerEl.className = classNames.ITEM_GROUP;
-
-    this.el.appendChild(itemContainerEl);
-
-    return itemContainerEl;
-  }
-
-  /**
-   * Create <optgroup> element
-   * @return {HTMLElement}
-   * @private
-   */
-  createNativeElement(label) {
-    const nativeEl = document.createElement('optgroup');
-    nativeEl.label = label;
-
-    return nativeEl;
   }
 
   /**
@@ -135,7 +83,7 @@ export default class ItemGroup {
    */
   disable() {
     this.nativeEl.disabled = true;
-    addClass(this.labelEl, classNames.DISABLED);
+    addClass(this.labelEl, cls.DISABLED);
     this.items.forEach(item => item.disableItemGroup());
   }
 
@@ -144,21 +92,18 @@ export default class ItemGroup {
    */
   enable() {
     this.nativeEl.disabled = false;
-    removeClass(this.labelEl, classNames.DISABLED);
+    removeClass(this.labelEl, cls.DISABLED);
     this.items.forEach(item => item.enableItemGroup());
   }
 
   /**
    * Get an Item by its index or value
    * @param {number|string} value - if string, the Item's value. if number, the Item's index.
+   * @param {function} isValidItem - function to determine whether it is valid or not
    * @return {Item}
    */
-  getItem(value) {
+  getItem(value, isValidItem) {
     let result, item;
-
-    const isValidItem = isNumber(value)
-      ? comparedItem => comparedItem.getIndex() === value
-      : comparedItem => comparedItem.getValue() === value;
 
     for (let i = 0, len = this.items.length; i < len; i += 1) {
       item = this.items[i];

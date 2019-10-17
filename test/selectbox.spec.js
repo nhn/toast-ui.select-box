@@ -1,5 +1,5 @@
 import SelectBox from '@src/selectBox';
-import { classNames } from '@src/constants';
+import { cls } from '@src/constants';
 
 describe('SelectBox', () => {
   let selectBox;
@@ -28,10 +28,10 @@ describe('SelectBox', () => {
 
   it('should make Items, ItemGroups, Dropdown and Input.', () => {
     const { input, dropdown } = selectBox;
-    expect(document.querySelector(`.${classNames.INPUT}`)).toBe(input.el);
-    expect(document.querySelector(`.${classNames.DROPDOWN}`)).toBe(dropdown.el);
-    expect(document.querySelectorAll(`.${classNames.ITEM_GROUP}`).length).toBe(1);
-    expect(document.querySelectorAll(`.${classNames.ITEM}`).length).toBe(3);
+    expect(document.querySelector(`.${cls.INPUT}`)).toBe(input.el);
+    expect(document.querySelector(`.${cls.DROPDOWN}`)).toBe(dropdown.el);
+    expect(document.querySelectorAll(`.${cls.ITEM_GROUP}`).length).toBe(1);
+    expect(document.querySelectorAll(`.${cls.ITEM}`).length).toBe(3);
   });
 
   describe('initialization', () => {
@@ -45,24 +45,24 @@ describe('SelectBox', () => {
     const { input, dropdown } = selectBox;
 
     selectBox.disable();
-    expect(input.el).toHaveClass(classNames.DISABLED);
-    expect(dropdown.el).toHaveClass(classNames.DISABLED);
+    expect(input.el).toHaveClass(cls.DISABLED);
+    expect(dropdown.el).toHaveClass(cls.DISABLED);
 
     selectBox.enable();
-    expect(input.el).not.toHaveClass(classNames.DISABLED);
-    expect(dropdown.el).not.toHaveClass(classNames.DISABLED);
+    expect(input.el).not.toHaveClass(cls.DISABLED);
+    expect(dropdown.el).not.toHaveClass(cls.DISABLED);
   });
 
   it('should open and close a dropdown list.', () => {
     const { input, dropdown } = selectBox;
 
     selectBox.open();
-    expect(input.el).toHaveClass(classNames.OPEN);
-    expect(dropdown.el).not.toHaveClass(classNames.HIDDEN);
+    expect(input.el).toHaveClass(cls.OPEN);
+    expect(dropdown.el).not.toHaveClass(cls.HIDDEN);
 
     selectBox.close();
-    expect(input.el).not.toHaveClass(classNames.OPEN);
-    expect(dropdown.el).toHaveClass(classNames.HIDDEN);
+    expect(input.el).not.toHaveClass(cls.OPEN);
+    expect(dropdown.el).toHaveClass(cls.HIDDEN);
   });
 
   describe('selection', () => {
@@ -101,7 +101,7 @@ describe('SelectBox', () => {
 
       selectBox.select(0);
       selectBox.deselect();
-      expect(input.placeholderEl.innerHTML).toBe('');
+      expect(input.placeholderEl).toHaveText('');
     });
 
     it('should select an Item by its value (string) and index (number).', () => {
@@ -133,12 +133,12 @@ describe('SelectBox', () => {
       const { input, dropdown } = selectBox;
 
       input.el.click();
-      expect(input.el).toHaveClass(classNames.OPEN);
-      expect(dropdown.el).not.toHaveClass(classNames.HIDDEN);
+      expect(input.el).toHaveClass(cls.OPEN);
+      expect(dropdown.el).not.toHaveClass(cls.HIDDEN);
 
       input.el.click();
-      expect(input.el).not.toHaveClass(classNames.OPEN);
-      expect(dropdown.el).toHaveClass(classNames.HIDDEN);
+      expect(input.el).not.toHaveClass(cls.OPEN);
+      expect(dropdown.el).toHaveClass(cls.HIDDEN);
     });
 
     it('should select an Item when click the Item.', () => {
@@ -156,16 +156,16 @@ describe('SelectBox', () => {
 
       selectBox.open();
       document.body.click();
-      expect(input.el).not.toHaveClass(classNames.OPEN);
-      expect(dropdown.el).toHaveClass(classNames.HIDDEN);
+      expect(input.el).not.toHaveClass(cls.OPEN);
+      expect(dropdown.el).toHaveClass(cls.HIDDEN);
     });
 
     it('should highlight the Item when mouseover the Item.', () => {
       const item = selectBox.getItem(2);
 
-      selectBox.handleMouseover({ target: item.el }, classNames);
+      selectBox.handleMouseover({ target: item.el }, cls);
       expect(selectBox.dropdown.getHighlightedItem()).toBe(item);
-      expect(item.el).toHaveClass(classNames.HIGHLIGHT);
+      expect(item.el).toHaveClass(cls.HIGHLIGHT);
     });
   });
 
@@ -175,10 +175,10 @@ describe('SelectBox', () => {
 
       selectBox.handleKeydown(
         { target: selectBox.input.el, key: 'ArrowDown', preventDefault: () => {} },
-        classNames
+        cls
       );
-      expect(input.el).toHaveClass(classNames.OPEN);
-      expect(dropdown.el).not.toHaveClass(classNames.HIDDEN);
+      expect(input.el).toHaveClass(cls.OPEN);
+      expect(dropdown.el).not.toHaveClass(cls.HIDDEN);
     });
 
     it('should move a highlighted Item when press ArrowUp and ArrowDown on the input if a dropdown is opened.', () => {
@@ -187,13 +187,13 @@ describe('SelectBox', () => {
 
       selectBox.handleKeydown(
         { target: selectBox.input.el, key: 'ArrowUp', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
 
       selectBox.handleKeydown(
         { target: selectBox.input.el, key: 'ArrowDown', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
     });
@@ -204,13 +204,13 @@ describe('SelectBox', () => {
 
       selectBox.handleKeydown(
         { target: selectBox.getItem(1).el, key: 'ArrowUp', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(0);
 
       selectBox.handleKeydown(
         { target: selectBox.getItem(1).el, key: 'ArrowDown', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.dropdown.highlight).toHaveBeenCalledWith(2);
     });
@@ -218,13 +218,13 @@ describe('SelectBox', () => {
     it('should select a highlighted Item when press Space or Enter on the Item.', () => {
       selectBox.handleKeydown(
         { target: selectBox.getItem(2).el, key: ' ', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.getSelectedItem()).toBe(selectBox.getItem(2));
 
       selectBox.handleKeydown(
         { target: selectBox.getItem(1).el, key: 'Enter', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.getSelectedItem()).toBe(selectBox.getItem(1));
     });
@@ -235,13 +235,13 @@ describe('SelectBox', () => {
 
       selectBox.handleKeydown(
         { target: selectBox.getItem(2).el, key: 'Escape', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.close).toHaveBeenCalled();
 
       selectBox.handleKeydown(
         { target: selectBox.input.el, key: 'Tab', preventDefault: () => {} },
-        classNames
+        cls
       );
       expect(selectBox.close).toHaveBeenCalled();
     });

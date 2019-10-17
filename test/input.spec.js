@@ -1,6 +1,6 @@
 import Input from '@src/input';
 import Item from '@src/item';
-import { classNames } from '@src/constants';
+import { cls } from '@src/constants';
 
 describe('Input', () => {
   let input;
@@ -17,24 +17,24 @@ describe('Input', () => {
 
   it('should make a div and p elements.', () => {
     const { el, placeholderEl } = input;
-    expect(document.querySelector(`.${classNames.INPUT}`)).toBe(el);
-    expect(document.querySelector(`.${classNames.PLACEHOLDER}`)).toBe(placeholderEl);
+    expect(document.querySelector(`.${cls.INPUT}`)).toBe(el);
+    expect(document.querySelector(`.${cls.PLACEHOLDER}`)).toBe(placeholderEl);
   });
 
   it('should disable and enable an input.', () => {
     input.disable();
-    expect(input.el).toHaveClass(classNames.DISABLED);
+    expect(input.el).toHaveClass(cls.DISABLED);
 
     input.enable();
-    expect(input.el).not.toHaveClass(classNames.DISABLED);
+    expect(input.el).not.toHaveClass(cls.DISABLED);
   });
 
   it('should open and close an input.', () => {
     input.open();
-    expect(input.el).toHaveClass(classNames.OPEN);
+    expect(input.el).toHaveClass(cls.OPEN);
 
     input.close();
-    expect(input.el).not.toHaveClass(classNames.OPEN);
+    expect(input.el).not.toHaveClass(cls.OPEN);
   });
 
   it('should focus an input.', () => {

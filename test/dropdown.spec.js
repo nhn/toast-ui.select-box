@@ -1,5 +1,5 @@
 import Dropdown from '@src/dropdown';
-import { classNames } from '@src/constants';
+import { cls } from '@src/constants';
 
 describe('Dropdown', () => {
   let dropdown;
@@ -21,7 +21,7 @@ describe('Dropdown', () => {
 
   it('should make an select and ul elements.', () => {
     const { el, nativeEl } = dropdown;
-    expect(document.querySelector(`.${classNames.DROPDOWN}`)).toBe(el);
+    expect(document.querySelector(`.${cls.DROPDOWN}`)).toBe(el);
     expect(document.querySelector('select')).toBe(nativeEl);
   });
 
@@ -29,25 +29,25 @@ describe('Dropdown', () => {
     const { items, itemLength } = dropdown;
     expect(items.length).toBe(2);
     expect(itemLength).toBe(3);
-    expect(document.querySelectorAll(`.${classNames.ITEM}`).length).toBe(3);
+    expect(document.querySelectorAll(`.${cls.ITEM}`).length).toBe(3);
   });
 
   it('should open and close a dropdown.', () => {
     dropdown.open();
-    expect(dropdown.el).not.toHaveClass(classNames.HIDDEN);
+    expect(dropdown.el).not.toHaveClass(cls.HIDDEN);
 
     dropdown.close();
-    expect(dropdown.el).toHaveClass(classNames.HIDDEN);
+    expect(dropdown.el).toHaveClass(cls.HIDDEN);
   });
 
   it('should disable and enable a dropdown.', () => {
     dropdown.disable();
     expect(dropdown.nativeEl).toBeDisabled();
-    expect(dropdown.el).toHaveClass(classNames.DISABLED);
+    expect(dropdown.el).toHaveClass(cls.DISABLED);
 
     dropdown.enable();
     expect(dropdown.nativeEl).not.toBeDisabled();
-    expect(dropdown.el).not.toHaveClass(classNames.DISABLED);
+    expect(dropdown.el).not.toHaveClass(cls.DISABLED);
   });
 
   describe('selection', () => {
@@ -56,7 +56,7 @@ describe('Dropdown', () => {
       const result = dropdown.select(item.value);
       expect(result).toBe(item);
       expect(dropdown.selectedItem).toBe(dropdown.items[1]);
-      expect(dropdown.selectedItem.el).toHaveClass(classNames.SELECTED);
+      expect(dropdown.selectedItem.el).toHaveClass(cls.SELECTED);
 
       dropdown.deselect();
       expect(dropdown.selectedItem).toBe(null);
@@ -79,7 +79,7 @@ describe('Dropdown', () => {
     it('should highlight and dehighlight an Item in the dropdown.', () => {
       dropdown.highlight();
       expect(dropdown.highlightedItem).not.toBeNull();
-      expect(dropdown.highlightedItem.el).toHaveClass(classNames.HIGHLIGHT);
+      expect(dropdown.highlightedItem.el).toHaveClass(cls.HIGHLIGHT);
 
       dropdown.dehighlight();
       expect(dropdown.highlightedItem).toBeNull();
