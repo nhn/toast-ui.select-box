@@ -188,7 +188,7 @@ describe('SelectBox', () => {
     it('should highlight the Item when mouseover the Item.', () => {
       const item = selectBox.getItem(2);
 
-      selectBox.handleMouseover({ target: item.el }, cls);
+      selectBox.handleMouseover({ target: item.el, clientX: 0, clientY: 0 }, cls);
       expect(selectBox.dropdown.getHighlightedItem()).toBe(item);
       expect(item.el).toHaveClass(cls.HIGHLIGHT);
     });

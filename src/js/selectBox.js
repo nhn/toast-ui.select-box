@@ -170,12 +170,32 @@ class SelectBox {
    * @private
    */
   handleMouseover(ev, { ITEM }) {
-    const target = getTarget(ev);
-    const itemEl = closest(target, `.${ITEM}`);
+    if (this.checkMousemove(ev.clientX, ev.clientY)) {
+      const target = getTarget(ev);
+      const itemEl = closest(target, `.${ITEM}`);
 
-    if (itemEl) {
-      this.dropdown.highlight(itemEl.getAttribute('data-value'));
+      if (itemEl) {
+        this.dropdown.highlight(itemEl.getAttribute('data-value'));
+      }
     }
+  }
+
+  /**
+   * Check if a pointer is moved
+   * @param {number} x - mouseEvent.clientX
+   * @param {number} y - mouseEvent.clientY
+   * @return {boolean}
+   * @private
+   */
+  checkMousemove(x, y) {
+    if (this.prevX !== x || this.prevY !== y) {
+      this.prevX = x;
+      this.prevY = y;
+
+      return true;
+    }
+
+    return false;
   }
 
   /**
