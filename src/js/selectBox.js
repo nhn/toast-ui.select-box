@@ -155,8 +155,12 @@ class SelectBox {
      */
     this.theme = isObject(theme) ? new Theme(theme, container) : null;
 
-    this.initialize({ placeholder, disabled, autofocus });
+    this.initialize({ placeholder, disabled });
     this.appendToContainer(container);
+
+    if (autofocus) {
+      this.input.focus();
+    }
 
     if (usageStatistics) {
       sendHostName();
@@ -190,7 +194,7 @@ class SelectBox {
       this.disable();
     }
 
-    this.bindEvents(options.autofocus);
+    this.bindEvents();
 
     this.input.appendToContainer(this.el);
     this.dropdown.appendToContainer(this.el);
@@ -200,12 +204,7 @@ class SelectBox {
    * Bind events
    * @private
    */
-  bindEvents(autofocus) {
-    if (autofocus) {
-      on(window, 'load', () => {
-        this.input.focus();
-      });
-    }
+  bindEvents() {
     on(document, 'click', ev => {
       const target = getTarget(ev);
       if (!closest(target, `.${cls.SELECT_BOX}`)) {
@@ -222,7 +221,6 @@ class SelectBox {
    * @private
    */
   unbindEvents() {
-    off(window, 'load');
     off(document, 'click');
     off(this.el, 'click mouseover keydown');
   }
