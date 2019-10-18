@@ -62,7 +62,7 @@ import Theme from './theme';
  */
 
 /**
- * SelectBox provides some custom events: ({@link SelectBox#event-open open}, {@link SelectBox#event-close close}, {@link SelectBox#event-disable disable}, {@link SelectBox#event-enable enable}, {@link SelectBox#event-select select}, {@link SelectBox#event-change change}).
+ * SelectBox provides some custom events: ({@link SelectBox#event-open open}, {@link SelectBox#event-close close}, {@link SelectBox#event-disable disable}, {@link SelectBox#event-enable enable}, {@link SelectBox#event-change change}).
  * Refer to the {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} document at {@link https://github.com/nhn/tui.code-snippet tui-code-snippet} to know how to bind, unbind, and fire custom events.
  * @typedef {class} CustomEvents
  */
@@ -516,6 +516,7 @@ class SelectBox {
          * @event SelectBox#select
          * @type {object} ev
          * @property {Item} target - selected item
+         * @ignore
          * @example
          * selectBox.on('select', function(ev) {
          *   console.log(ev.target.getLabel() + 'is selected.');
