@@ -29,7 +29,7 @@ import Theme from './theme';
  *   @param {string} [options.placeholder] - placeholder for an input
  *   @param {array<object>} options.data - array of {@link itemData} and {@link itemGroupData}
  *   @param {boolean} [options.disabled] - whether an Item should be disabled or not
- *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when the page loads
+ *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when the select box appends to the container
  *   @param {boolean} [options.autoclose] - whether a selectbox should close after selection
  *   @param {object} [options.theme] - {@link themeConfig} for custom style
  *   @param {boolean} [options.usageStatistics] - whether send hostname to google analytics. If you don't want to send the hostname, please set to false.

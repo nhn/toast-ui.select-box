@@ -40,6 +40,11 @@ describe('SelectBox', () => {
       createSelectBox();
       expect(document.querySelector('option')).toBeSelected();
     });
+
+    it('should focus input after it appends to the container when autofocus is true.', () => {
+      createSelectBox({ autofocus: true });
+      expect(selectBox.input.el).toBeFocused();
+    });
   });
 
   it('should open and close a dropdown list.', () => {
@@ -281,7 +286,7 @@ describe('SelectBox', () => {
       selectBox.on('select', spy);
 
       selectBox.select(1);
-      expect(spy).toHaveBeenCalledWith({ target: curr });
+      expect(spy).toHaveBeenCalledWith({ type: 'select', target: curr });
     });
 
     it('should occur change custom events.', () => {
@@ -289,10 +294,10 @@ describe('SelectBox', () => {
       selectBox.on('change', spy);
 
       selectBox.select(1);
-      expect(spy).toHaveBeenCalledWith({ prev: null, curr: second });
+      expect(spy).toHaveBeenCalledWith({ type: 'change', prev: null, curr: second });
 
       selectBox.select(0);
-      expect(spy).toHaveBeenCalledWith({ prev: second, curr: first });
+      expect(spy).toHaveBeenCalledWith({ type: 'change', prev: second, curr: first });
     });
 
     it('should occur disable/enable custom events.', () => {
@@ -302,22 +307,22 @@ describe('SelectBox', () => {
       selectBox.on('enable', spy);
 
       selectBox.disable();
-      expect(spy).toHaveBeenCalledWith({ target: selectBox });
+      expect(spy).toHaveBeenCalledWith({ type: 'disable', target: selectBox });
 
       selectBox.enable();
-      expect(spy).toHaveBeenCalledWith({ target: selectBox });
+      expect(spy).toHaveBeenCalledWith({ type: 'enable', target: selectBox });
 
       selectBox.disable(itemGroup);
-      expect(spy).toHaveBeenCalledWith({ target: itemGroup });
+      expect(spy).toHaveBeenCalledWith({ type: 'disable', target: itemGroup });
 
       selectBox.enable(itemGroup);
-      expect(spy).toHaveBeenCalledWith({ target: itemGroup });
+      expect(spy).toHaveBeenCalledWith({ type: 'enable', target: itemGroup });
 
       selectBox.disable(item);
-      expect(spy).toHaveBeenCalledWith({ target: item });
+      expect(spy).toHaveBeenCalledWith({ type: 'disable', target: item });
 
       selectBox.enable(item);
-      expect(spy).toHaveBeenCalledWith({ target: item });
+      expect(spy).toHaveBeenCalledWith({ type: 'enable', target: item });
     });
   });
 
