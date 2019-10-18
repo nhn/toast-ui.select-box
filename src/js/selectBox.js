@@ -13,7 +13,7 @@ import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import isObject from 'tui-code-snippet/type/isObject';
 import isExisty from 'tui-code-snippet/type/isExisty';
 import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
-import { createElement, identifyKey } from './utils';
+import { createElement, identifyKey, sendHostName } from './utils';
 import { cls } from './constants';
 import Input from './input';
 import Dropdown from './dropdown';
@@ -25,13 +25,14 @@ import Theme from './theme';
  * @class
  * @param {HTMLElement|string} container - container element or selector
  * @mixes CustomEvents
- * @param {object} options - options
+ * @param {object} options
  *   @param {string} [options.placeholder] - placeholder for an input
  *   @param {array<object>} options.data - data for ItemGroups and Items
  *   @param {boolean} [options.disabled] - whether an Item should be disabled or not
- *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when th page loads
+ *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when the page loads
  *   @param {boolean} [options.autoclose] - whether a selectbox should close after selection
  *   @param {object} [options.theme] - {@link themeConfig} for custom style
+ *   @param {boolean} [options.usageStatistics] - whether send hostname to google analytics. If you don't want to send the hostname, please set to false.
  * @example
  * var SelectBox = tui.SelectBox;
  * // or require('tui-date-picker');
@@ -68,7 +69,15 @@ import Theme from './theme';
 class SelectBox {
   constructor(
     container,
-    { placeholder = '', disabled = false, autofocus = false, autoclose = true, theme, ...options }
+    {
+      placeholder = '',
+      disabled = false,
+      autofocus = false,
+      autoclose = true,
+      theme,
+      usageStatistics = true,
+      ...options
+    }
   ) {
     /**
      * @type {HTMLElement}
@@ -113,6 +122,10 @@ class SelectBox {
 
     this.initialize({ placeholder, disabled, autofocus });
     this.appendToContainer(container);
+
+    if (usageStatistics) {
+      sendHostName();
+    }
   }
 
   /**

@@ -4,6 +4,7 @@
  */
 
 import forEachOwnProperties from 'tui-code-snippet/collection/forEachOwnProperties';
+// import sendHostname from 'tui-code-snippet/request/sendHostname';
 
 const keyCodeMap = {
   38: 'arrowUp',
@@ -95,4 +96,12 @@ export const createElement = (tagName, content, options, container) => {
   }
 
   return el;
+};
+
+/**
+ * Send hostname for statistics
+ * @ignore
+ */
+export const sendHostName = () => {
+  // TODO: sendHostname('select-box', 'UA-129987462-1');
 };

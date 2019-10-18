@@ -1,5 +1,6 @@
 import SelectBox from '@src/selectBox';
 import { cls } from '@src/constants';
+import * as utils from '@src/utils';
 
 describe('SelectBox', () => {
   let selectBox;
@@ -334,5 +335,19 @@ describe('SelectBox', () => {
     });
 
     expect(selectBox.theme).not.toBeNull();
+  });
+
+  describe('usageStatistics', () => {
+    beforeEach(() => spyOn(utils, 'sendHostName'));
+
+    it('should send a hostname by default.', () => {
+      createSelectBox();
+      expect(utils.sendHostName).toHaveBeenCalled();
+    });
+
+    it('should not send a hostname when usageStatistics option is false', () => {
+      createSelectBox({ usageStatistics: false });
+      expect(utils.sendHostName).not.toHaveBeenCalled();
+    });
   });
 });
