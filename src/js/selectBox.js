@@ -27,7 +27,7 @@ import Theme from './theme';
  * @mixes CustomEvents
  * @param {object} options
  *   @param {string} [options.placeholder] - placeholder for an input
- *   @param {array<object>} options.data - data for ItemGroups and Items
+ *   @param {array<object>} options.data - array of {@link itemData} and {@link itemGroupData}
  *   @param {boolean} [options.disabled] - whether an Item should be disabled or not
  *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when the page loads
  *   @param {boolean} [options.autoclose] - whether a selectbox should close after selection
@@ -43,7 +43,7 @@ import Theme from './theme';
  *   data: [
  *     {
  *       text: 'Fruits',
- *       data: [ { text: 'Apple', value: 'apple' }, { text: 'Banana', value: 'banana' }]
+ *       data: [ { text: 'Apple', value: 'apple' }, { text: 'Banana', value: 'banana' } ]
  *     },
  *     { text: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
  *     {
@@ -65,6 +65,41 @@ import Theme from './theme';
  * SelectBox provides some custom events: ({@link SelectBox#event-open open}, {@link SelectBox#event-close close}, {@link SelectBox#event-disable disable}, {@link SelectBox#event-enable enable}, {@link SelectBox#event-select select}, {@link SelectBox#event-change change}).
  * Refer to the {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} document at {@link https://github.com/nhn/tui.code-snippet tui-code-snippet} to know how to bind, unbind, and fire custom events.
  * @typedef {class} CustomEvents
+ */
+
+/**
+ * Data of an {@link Item item}.
+ * It is used for creating a {@link SelectBox}.
+ * @typedef {object} itemData - data for {@link Item item}
+ * @property {string} text - label to be displayed
+ * @property {string} value - value of an item
+ * @property {boolean} [disabled=false] - whether an item should be disabled or not
+ * @property {boolean} [selected=false] - whether an item should be pre-selected or not
+ * @example
+ * var itemData = {
+ *   text: 'disabled item',
+ *   value: '0',
+ *   disabled: true,
+ *   selected: false
+ * };
+ */
+
+/**
+ * Data of an {@link ItemGroup item group}.
+ * It is used for creating a {@link SelectBox}.
+ * @typedef {object} itemGroupData - data for {@link ItemGroup item group}
+ * @property {string} text - label to be displayed
+ * @property {array} data - {@link itemData data for item}
+ * @property {boolean} [disabled=false] - whether an item group should be disabled or not
+ * @example
+ * var itemGroupData = {
+ *   text: 'disabled items',
+ *   data: [
+ *     { text: 'disable', value: 'disable' },
+ *     { text: 'none', value: '0' }
+ *   ]
+ *   disabled: true
+ * };
  */
 class SelectBox {
   constructor(
