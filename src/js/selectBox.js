@@ -367,21 +367,22 @@ class SelectBox {
        * Occurs when a select box, {@link ItemGroup item group} or {@link Item item} is disabled.
        * @event SelectBox#disable
        * @type {object} ev
+       * @property {string} type - event name ('disable')
        * @property {SelectBox|ItemGroup|Item} target - disabled target
        * @example
        * selectBox.on('disable', function(ev) {
        *   console.log(ev.target);
        * });
        */
-      this.fire('disable', { target: this });
+      this.fire('disable', { type: 'disable', target: this });
     } else if (value instanceof Item || value instanceof ItemGroup) {
       value.disable();
-      this.fire('disable', { target: value });
+      this.fire('disable', { type: 'disable', target: value });
     } else {
       const disabledItem = this.dropdown.getItem(value);
       if (disabledItem) {
         disabledItem.disable();
-        this.fire('disable', { target: disabledItem });
+        this.fire('disable', { type: 'disable', target: disabledItem });
       }
     }
   }
@@ -409,21 +410,22 @@ class SelectBox {
        * Occurs when a select box, {@link ItemGroup item group} or {@link Item item} is enabled.
        * @event SelectBox#enable
        * @type {object} ev
+       * @property {string} type - event name ('enable')
        * @property {SelectBox|ItemGroup|Item} target - enable target
        * @example
        * selectBox.on('enable', function(ev) {
        *   console.log(ev.target);
        * });
        */
-      this.fire('enable', { target: this });
+      this.fire('enable', { type: 'enable', target: this });
     } else if (value instanceof Item || value instanceof ItemGroup) {
       value.enable();
-      this.fire('enable', { target: value });
+      this.fire('enable', { type: 'enable', target: value });
     } else {
       const disabledItem = this.dropdown.getItem(value);
       if (disabledItem) {
         disabledItem.enable();
-        this.fire('enable', { target: disabledItem });
+        this.fire('enable', { type: 'enable', target: disabledItem });
       }
     }
   }
@@ -442,12 +444,13 @@ class SelectBox {
       /**
        * Occurs when a select box opens.
        * @event SelectBox#open
+       * @property {string} type - event name ('open')
        * @example
        * selectBox.on('open', function(ev) {
        *   console.log('open');
        * });
        */
-      this.fire('open');
+      this.fire('open', { type: 'open' });
     }
   }
 
@@ -464,12 +467,13 @@ class SelectBox {
     /**
      * Occurs when a select box closes.
      * @event SelectBox#close
+     * @property {string} type - event name ('close')
      * @example
      * selectBox.on('close', function(ev) {
      *   console.log('close');
      * });
      */
-    this.fire('close');
+    this.fire('close', { type: 'close' });
   }
 
   /**
@@ -505,14 +509,12 @@ class SelectBox {
 
       if (selectedItem) {
         this.input.changeText(selectedItem);
-        if (this.autoclose) {
-          this.close();
-        }
 
         /**
          * Occurs when an {@link Item item} is selected.
          * @event SelectBox#select
          * @type {object} ev
+         * @property {string} type - event name ('select')
          * @property {Item} target - selected item
          * @ignore
          * @example
@@ -520,14 +522,14 @@ class SelectBox {
          *   console.log(ev.target.getLabel() + 'is selected.');
          * });
          */
-        this.fire('select', {
-          target: selectedItem
-        });
+        this.fire('select', { type: 'select', target: selectedItem });
+
         if (prevSelectedItem !== selectedItem) {
           /**
            * Occurs when a selected {@link Item item} is changed.
            * @event SelectBox#change
            * @type {object} ev
+           * @property {string} type - event name ('change')
            * @property {Item} prev - previous selected item
            * @property {Item} curr - current selected item
            * @example
@@ -536,9 +538,14 @@ class SelectBox {
            * });
            */
           this.fire('change', {
+            type: 'change',
             prev: prevSelectedItem,
             curr: selectedItem
           });
+        }
+
+        if (this.autoclose) {
+          this.close();
         }
       }
     }

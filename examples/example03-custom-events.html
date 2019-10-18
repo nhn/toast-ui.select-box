@@ -10,19 +10,13 @@
         margin-top: 20px;
         line-height: 1.5em;
       }
-      code {
-        color: crimson;
-        background-color: #f1f1f1;
-        padding-left: 4px;
-        padding-right: 4px;
-      }
     </style>
   </head>
   <body>
     <div class="code-html">
       <div id="select-box" style="width: 200px"></div>
       <div id="result">
-        <b>Result of <code>select</code> and <code>change</code></b><br>
+        <b>Result of events</b><br>
       </div>
     </div>
     
@@ -49,15 +43,18 @@
         ],
       });
       
-      function print(text) {
-        resultDiv.innerHTML += text + '<br>'
+      function print(type, text) {
+        resultDiv.innerHTML += type + ': ' + text + '<br>'
       }
 
-      selectBox.on('select', function(ev) {
-        print('select: ' + ev.target.label);
-      });
       selectBox.on('change', function(ev) {
-        print('change: ' + ev.prev.label + ' -> ' + ev.curr.label);
+        print(ev.type, ev.prev.label + ' -> ' + ev.curr.label);
+      });
+      selectBox.on('open', function(ev) {
+        print(ev.type, 'select box');
+      });
+      selectBox.on('close', function(ev) {
+        print(ev.type, 'select box');
       });
     </script>
   </body>
