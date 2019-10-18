@@ -12,15 +12,20 @@ import Item from './item';
 
 /**
  * @class
- * @ignore
- * @param {object} options - options
- *   @param {string} [options.text] - label to be displayed in the dropdown list
- *   @param {array<object>} options.data - data for Items to be included in the ItemGroup
- *   @param {boolean} [options.disabled=false] - whether an ItemGroup should be disabled or not
- *   @param {number} options.index - index of the first Item in the ItemGroup
- *   @param {number} options.itemGroupIndex - index of the ItemGroup
+ * @description
+ * A group of items.
+ * You can get ItemGroup by {@link SelectBox#getItemGroup SelectBox.getItemGroup} and {@link SelectBox#getItemGroups SelectBox.getItemGroups}.
  */
 export default class ItemGroup {
+  /**
+   * @hideconstructor
+   * @param {object} options - options
+   *   @param {string} [options.text] - label to be displayed in the dropdown list
+   *   @param {array<object>} options.data - data for Items to be included in the ItemGroup
+   *   @param {boolean} [options.disabled=false] - whether an ItemGroup should be disabled or not
+   *   @param {number} options.index - index of the first Item in the ItemGroup
+   *   @param {number} options.itemGroupIndex - index of the ItemGroup
+   */
   constructor({ text = '', data, disabled = false, index, itemGroupIndex }) {
     /**
      * @type {HTMLElement}
@@ -94,6 +99,7 @@ export default class ItemGroup {
 
   /**
    * Disable an ItemGroup
+   * @ignore
    */
   disable() {
     this.disabled = this.nativeEl.disabled = true;
@@ -103,6 +109,7 @@ export default class ItemGroup {
 
   /**
    * Enable an ItemGroup
+   * @ignore
    */
   enable() {
     this.disabled = this.nativeEl.disabled = false;
@@ -111,15 +118,19 @@ export default class ItemGroup {
   }
 
   /**
-   * Get items in the ItemGroup
+   * Get {@link Item items} in the item group.
    * @return {array<Item>}
+   * @example
+   * var items = itemGroup.getItems();
+   * console.log(items[0]); // first item in the item group
+   * console.log(items.length); // the number of items in the item group
    */
   getItems() {
     return this.items;
   }
 
   /**
-   * Return an ItemGroup's index
+   * Return an item group's index.
    * @return {number}
    */
   getIndex() {
@@ -127,7 +138,7 @@ export default class ItemGroup {
   }
 
   /**
-   * Return whether an ItemGroup is disabled or not
+   * Return whether an ItemGroup is disabled or not.
    * @return {boolean}
    */
   isDisabled() {
@@ -138,6 +149,7 @@ export default class ItemGroup {
    * Append the element and native element to the containers
    * @param {HTMLElement} container - container element
    * @param {HTMLElement} nativeContainer - native container element
+   * @ignore
    */
   appendToContainer(container, nativeContainer) {
     container.appendChild(this.el);
@@ -146,6 +158,7 @@ export default class ItemGroup {
 
   /**
    * Destory an ItemGroup
+   * @ignore
    */
   destroy() {
     this.items.forEach(item => item.destroy());

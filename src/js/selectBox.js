@@ -24,13 +24,46 @@ import Theme from './theme';
 /**
  * @class
  * @param {HTMLElement|string} container - container element or selector
+ * @mixes CustomEvents
  * @param {object} options - options
  *   @param {string} [options.placeholder] - placeholder for an input
  *   @param {array<object>} options.data - data for ItemGroups and Items
- *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
- *   @param {boolean} [options.autofocus=false] - whether a selectbox should get focus when th page loads
- *   @param {boolean} [options.autoclose=true] - whether a selectbox should close after selection
- *   @param {object} [options.theme] - theme object for custom style
+ *   @param {boolean} [options.disabled] - whether an Item should be disabled or not
+ *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when th page loads
+ *   @param {boolean} [options.autoclose] - whether a selectbox should close after selection
+ *   @param {object} [options.theme] - {@link themeConfig} for custom style
+ * @example
+ * var SelectBox = tui.SelectBox;
+ * // or require('tui-date-picker');
+ * // or import SelectBox from '@toast-ui/select-box';
+ *
+ * var selectBox = new SelectBox('#select-box', {
+ *   placeholder: 'Please select an option.',
+ *   data: [
+ *     {
+ *       text: 'Fruits',
+ *       data: [ { text: 'Apple', value: 'apple' }, { text: 'Banana', value: 'banana' }]
+ *     },
+ *     { text: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
+ *     {
+ *       text: 'Colors',
+ *       data: [
+ *         { text: 'Red', value: 'red' },
+ *         { text: 'Yellow', value: 'yellow' },
+ *         { text: 'Green', value: 'green', disabled: true },
+ *         { text: 'Blue', value: 'blue', disabled: true },
+ *         { text: 'Purple', value: 'purple' }
+ *       ]
+ *     }
+ *   ],
+ *   autofocus: true
+ * });
+ */
+
+/**
+ * SelectBox provides some custom events: ({@link SelectBox#event-open open}, {@link SelectBox#event-close close}, {@link SelectBox#event-disable disable}, {@link SelectBox#event-enable enable}, {@link SelectBox#event-select select}, {@link SelectBox#event-change change}).
+ * Refer to the {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} document at {@link https://github.com/nhn/tui.code-snippet tui-code-snippet} to know how to bind, unbind, and fire custom events.
+ * @typedef {class} CustomEvents
  */
 class SelectBox {
   constructor(
@@ -266,8 +299,17 @@ class SelectBox {
   }
 
   /**
-   * Disable a select box
+   * Disable a select box, {@link ItemGroup item group} or {@link Item item}.
+   * If it takes no arguments, a select box is disabled.
+   * If it takes string, an item with the same value as the argument is disabled.
+   * If it takes number, an item with the same index as the argument is disabled.
+   * If it takes Item or ItemGroup, an argument itself is disabled.
    * @param {string|number|Item|ItemGroup} value - if string, find an Item by its value. if number, find an Item by its index.
+   * @example
+   * selectBox.disable(); // select box is disabled.
+   * selectBox.disable(1); // second item is disabled.
+   * selectBox.disable('value') // item which of value is 'value' is disabled.
+   * selectBox.disable(selectBox.getSelectedItem()); // selected item is disabled.
    */
   disable(value) {
     if (!isExisty(value)) {
@@ -275,6 +317,16 @@ class SelectBox {
       this.input.disable();
       this.dropdown.disable();
 
+      /**
+       * Occurs when a select box, {@link ItemGroup item group} or {@link Item item} is disabled.
+       * @event SelectBox#disable
+       * @type {object} ev
+       * @property {SelectBox|ItemGroup|Item} target - disabled target
+       * @example
+       * selectBox.on('disable', function(ev) {
+       *   console.log(ev.target);
+       * });
+       */
       this.fire('disable', { target: this });
     } else if (value instanceof Item || value instanceof ItemGroup) {
       value.disable();
@@ -289,8 +341,17 @@ class SelectBox {
   }
 
   /**
-   * Enable a select box
+   * Enable a select box, {@link ItemGroup item group} or {@link Item item}.
+   * If it takes no arguments, a select box is enabled.
+   * If it takes string, an item with the same value as the argument is enabled.
+   * If it takes number, an item with the same index as the argument is enabled.
+   * If it takes Item or ItemGroup, an argument itself is enabled.
    * @param {string|number|Item|ItemGroup} value - if string, find an Item by its value. if number, find an Item by its index.
+   * @example
+   * selectBox.enable(); // select box is enabled.
+   * selectBox.enable(1); // second item is enabled.
+   * selectBox.enable('value') // item which of value is 'value' is enabled.
+   * selectBox.enable(selectBox.getSelectedItem()); // selected item is enabled.
    */
   enable(value) {
     if (!isExisty(value)) {
@@ -298,6 +359,16 @@ class SelectBox {
       this.input.enable();
       this.dropdown.enable();
 
+      /**
+       * Occurs when a select box, {@link ItemGroup item group} or {@link Item item} is enabled.
+       * @event SelectBox#enable
+       * @type {object} ev
+       * @property {SelectBox|ItemGroup|Item} target - enable target
+       * @example
+       * selectBox.on('enable', function(ev) {
+       *   console.log(ev.target);
+       * });
+       */
       this.fire('enable', { target: this });
     } else if (value instanceof Item || value instanceof ItemGroup) {
       value.enable();
@@ -312,7 +383,9 @@ class SelectBox {
   }
 
   /**
-   * Open a dropdown list
+   * Open a dropdown list.
+   * @example
+   * selectBox.open();
    */
   open() {
     if (!this.disabled) {
@@ -320,23 +393,43 @@ class SelectBox {
       this.dropdown.open();
       this.input.open();
 
+      /**
+       * Occurs when a select box opens.
+       * @event SelectBox#open
+       * @example
+       * selectBox.on('open', function(ev) {
+       *   console.log('open');
+       * });
+       */
       this.fire('open');
     }
   }
 
   /**
-   * Close a dropdown list
+   * Close a dropdown list.
+   * @example
+   * selectBox.close();
    */
   close() {
     this.opened = false;
     this.dropdown.close();
     this.input.close();
 
+    /**
+     * Occurs when a select box closes.
+     * @event SelectBox#close
+     * @example
+     * selectBox.on('close', function(ev) {
+     *   console.log('close');
+     * });
+     */
     this.fire('close');
   }
 
   /**
-   * Toggle a dropdown list
+   * Toggle a dropdown list.
+   * @example
+   * selectBox.toggle();
    */
   toggle() {
     if (this.opened) {
@@ -347,10 +440,15 @@ class SelectBox {
   }
 
   /**
-   * Select an Item
-   * If select an Item that is already selected, return null
+   * Select an {@link Item item}.
+   * If it takes string, an item with the same value as the argument is selected.
+   * If it takes number, an item with the same index as the argument is selected.
+   * If it takes Item, an argument itself is selected.
    * @param {string|number|Item} value - if string, find an Item by its value. if number, find an Item by its index.
    * @return {Item} - selected Item.
+   * @example
+   * selectBox.select(1); // second item is selected.
+   * selectBox.select('value') // item which of value is 'value' is selected.
    */
   select(value) {
     let selectedItem = null;
@@ -365,10 +463,31 @@ class SelectBox {
           this.close();
         }
 
+        /**
+         * Occurs when an {@link Item item} is selected.
+         * @event SelectBox#select
+         * @type {object} ev
+         * @property {Item} target - selected item
+         * @example
+         * selectBox.on('select', function(ev) {
+         *   console.log(ev.target.getLabel() + 'is selected.');
+         * });
+         */
         this.fire('select', {
           target: selectedItem
         });
         if (prevSelectedItem !== selectedItem) {
+          /**
+           * Occurs when a selected {@link Item item} is changed.
+           * @event SelectBox#change
+           * @type {object} ev
+           * @property {Item} prev - previous selected item
+           * @property {Item} curr - current selected item
+           * @example
+           * selectBox.on('change', function(ev) {
+           *   console.log('selected item is changed from ' + ev.prev.getLabel() + 'to' + ev.curr.getLabel());
+           * });
+           */
           this.fire('change', {
             prev: prevSelectedItem,
             curr: selectedItem
@@ -381,8 +500,11 @@ class SelectBox {
   }
 
   /**
-   * Deselect an Item
-   * If selectBox has a placeholder, the input is a placeholder. If no placeholder, ths input is empty.
+   * Deselect an item.
+   * If selectBox has a placeholder, the input's text is a placeholder.
+   * If no placeholder, ths input is empty.
+   * @example
+   * selectBox.deselect();
    */
   deselect() {
     if (!this.disabled) {
@@ -392,7 +514,7 @@ class SelectBox {
   }
 
   /**
-   * Return the selected Item
+   * Return the selected {@link Item item}.
    * @return {Item}
    */
   getSelectedItem() {
@@ -400,45 +522,62 @@ class SelectBox {
   }
 
   /**
-   * Get all Items that pass the test implemented by the provided function
-   * If filter function is not passed, it returns all Items
+   * Get all {@link Item items} that pass the test implemented by the provided function.
+   * If filter function is not passed, it returns all items.
    * @param {function} fn - filter function
    * @return {array<Item>}
+   * @example
+   * selectBox.getItems(); // all items
+   * selectBox.getItems(function(item) {
+   *  return !item.isDisabled();
+   * }); // all enabled items
    */
   getItems(fn) {
     return this.dropdown.getItems(fn);
   }
 
   /**
-   * Get an Item by its index or value
+   * Get an {@link Item item} by its index or value.
    * @param {number|string} value - if string, the Item's value. if number, the Item's index.
    * @return {Item}
+   * @example
+   * selectBox.getItem(0); // first item
+   * selectBox.getItem('value') // item which of value is 'value'
    */
   getItem(value) {
     return this.dropdown.getItem(value);
   }
 
   /**
-   * Get all ItemGroups that pass the test implemented by the provided function
-   * If filter function is not passed, it returns all ItemGroups
+   * Get all {@link ItemGroup item groups} that pass the test implemented by the provided function.
+   * If filter function is not passed, it returns all item groups.
    * @param {function} fn - filter function
    * @return {array<ItemGroup>}
+   * @example
+   * selectBox.getItemGroups(); // all item groups
+   * selectBox.getItemGroups(function(itemGroup) {
+   *  return !itemGroup.isDisabled();
+   * }); // all enabled item groups
    */
   getItemGroups(fn) {
     return this.dropdown.getItemGroups(fn);
   }
 
   /**
-   * Get an ItemGroup by its index
+   * Get an {@link ItemGroup item group} by its index.
    * @param {number} index - groupIndex of the ItemGroup
-   * @return {array<ItemGroup>}
+   * @return {ItemGroup}
+   * @example
+   * selectBox.getItemGroup(0); // first item group
    */
   getItemGroup(index) {
     return this.dropdown.getItemGroup(index);
   }
 
   /**
-   * Destory a select box
+   * Destory a select box.
+   * @example
+   * selectBox.destroy();
    */
   destroy() {
     this.unbindEvents();

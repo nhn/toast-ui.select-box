@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>2. Theme</title>
+    <link rel="stylesheet" type="text/css" href="./css/tui-example-style.css" />
+    <link href="../dist/toastui-select-box.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="code-html">
+      <div id="select-box" style="width: 200px"></div>
+    </div>
+    
+    <script type="text/javascript" src="../dist/toastui-select-box.js"></script>
+    <script class="code-js">
+      var selectBox = new tui.SelectBox('#select-box', {
+        data: [
+          {
+            text: 'Fruits',
+            data: [ { text: 'Apple', value: 'apple' }, { text: 'Banana', value: 'banana' }]
+          },
+          { text: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
+          {
+            text: 'Colors',
+            data: [ 
+              { text: 'Red', value: 'red' }, 
+              { text: 'Yellow', value: 'yellow' },
+              { text: 'Green', value: 'green', disabled: true }, 
+              { text: 'Blue', value: 'blue', disabled: true }, 
+              { text: 'Purple', value: 'purple' }
+            ]
+          }
+        ],
+        theme: {
+          'common.border': '1px solid black',
+          'common.color': 'black',
+          'common.width': '200px',
+          'common.height': '50px',
+
+          'common.disabled.background': 'gray',
+          'common.disabled.color': 'lightgray',
+
+          'input.showIcon': false,
+
+          'dropdown.maxHeight': '300px',
+
+          'itemGroup.items.paddingLeft': false,
+
+          'item.selected.background': 'black',
+          'item.selected.color': 'white',
+
+          'item.highlighted.background': 'yellow',
+          'item.highlighted.color': 'gray'
+        }
+      });
+    </script>
+  </body>
+</html>

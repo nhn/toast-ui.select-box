@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>3. Custom Events</title>
+    <link rel="stylesheet" type="text/css" href="./css/tui-example-style.css" />
+    <link href="../dist/toastui-select-box.css" rel="stylesheet" />
+    <style>
+      #result {
+        margin-top: 20px;
+        line-height: 1.5em;
+      }
+      code {
+        color: crimson;
+        background-color: #f1f1f1;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="code-html">
+      <div id="select-box" style="width: 200px"></div>
+      <div id="result">
+        <b>Result of <code>select</code> and <code>change</code></b><br>
+      </div>
+    </div>
+    
+    <script type="text/javascript" src="../dist/toastui-select-box.js"></script>
+    <script class="code-js">
+      var resultDiv = document.querySelector('#result');
+      var selectBox = new tui.SelectBox('#select-box', {
+        data: [
+          {
+            text: 'Fruits',
+            data: [ { text: 'Apple', value: 'apple' }, { text: 'Banana', value: 'banana' }]
+          },
+          { text: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
+          {
+            text: 'Colors',
+            data: [ 
+              { text: 'Red', value: 'red' }, 
+              { text: 'Yellow', value: 'yellow' },
+              { text: 'Green', value: 'green', disabled: true }, 
+              { text: 'Blue', value: 'blue', disabled: true }, 
+              { text: 'Purple', value: 'purple' }
+            ]
+          }
+        ],
+      });
+      
+      function print(text) {
+        resultDiv.innerHTML += text + '<br>'
+      }
+
+      selectBox.on('select', function(ev) {
+        print('select: ' + ev.target.label);
+      });
+      selectBox.on('change', function(ev) {
+        print('change: ' + ev.prev.label + ' -> ' + ev.curr.label);
+      });
+    </script>
+  </body>
+</html>

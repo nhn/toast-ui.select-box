@@ -11,15 +11,20 @@ import { cls } from './constants';
 
 /**
  * @class
- * @ignore
- * @param {object} options - options
- *   @param {string} [options.text] - label to be displayed in the drop-down list
- *   @param {string} options.value - value of an item
- *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
- *   @param {boolean} [options.selected=false] - whether an Item should be pre-selected or not
- *   @param {number} options.index - Item's index
+ * @description
+ * An item.
+ * You can get Item by {@link SelectBox#getItem SelectBox.getItem} and {@link SelectBox#getItems SelectBox.getItems}.
  */
 export default class Item {
+  /**
+   * @hideconstructor
+   * @param {object} options - options
+   *   @param {string} [options.text] - label to be displayed in the drop-down list
+   *   @param {string} options.value - value of an item
+   *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
+   *   @param {boolean} [options.selected=false] - whether an Item should be pre-selected or not
+   *   @param {number} options.index - Item's index
+   */
   constructor({ value, text, disabled, selected, index }) {
     /**
      * value of an item
@@ -121,6 +126,7 @@ export default class Item {
 
   /**
    * Disable an Item due to an ItemGroup
+   * @ignore
    */
   disableItemGroup() {
     this.itemGroupDisabled = true;
@@ -129,6 +135,7 @@ export default class Item {
 
   /**
    * Enable an Item due to an ItemGroup
+   * @ignore
    */
   enableItemGroup() {
     this.itemGroupDisabled = false;
@@ -139,6 +146,7 @@ export default class Item {
 
   /**
    * Disable an Item
+   * @ignore
    */
   disable() {
     this.itemDisabled = true;
@@ -147,6 +155,7 @@ export default class Item {
 
   /**
    * Enable an Item
+   * @ignore
    */
   enable() {
     this.itemDisabled = false;
@@ -157,7 +166,7 @@ export default class Item {
 
   /**
    * Select an Item
-   * @return {boolean} result
+   * @ignore
    */
   select() {
     if (!this.isDisabled()) {
@@ -168,6 +177,7 @@ export default class Item {
 
   /**
    * Deselect an Item
+   * @ignore
    */
   deselect() {
     this.selected = this.nativeEl.selected = false;
@@ -176,6 +186,7 @@ export default class Item {
 
   /**
    * Highlight an Item
+   * @ignore
    */
   highlight() {
     if (!this.isDisabled()) {
@@ -186,6 +197,7 @@ export default class Item {
 
   /**
    * Remove a highlight from an Item
+   * @ignore
    */
   dehighlight() {
     removeClass(this.el, cls.HIGHLIGHT);
@@ -193,7 +205,7 @@ export default class Item {
   }
 
   /**
-   * Return an Item's value
+   * Return an item's value.
    * @return {string}
    */
   getValue() {
@@ -201,7 +213,7 @@ export default class Item {
   }
 
   /**
-   * Return an Item's label
+   * Return an item's label.
    * @return {string}
    */
   getLabel() {
@@ -209,7 +221,7 @@ export default class Item {
   }
 
   /**
-   * Return an Item's index
+   * Return an item's index.
    * @return {number}
    */
   getIndex() {
@@ -217,7 +229,7 @@ export default class Item {
   }
 
   /**
-   * Return whether an Item is selected or not
+   * Return whether an item is selected or not.
    * @return {boolean}
    */
   isSelected() {
@@ -225,7 +237,7 @@ export default class Item {
   }
 
   /**
-   * Return whether an Item is disabled or not
+   * Return whether an item is disabled or not.
    * The result is true if any of the items and item groups are disabled.
    * @return {boolean}
    */
@@ -237,6 +249,7 @@ export default class Item {
    * Append the element and native element to the containers
    * @param {HTMLElement} container - container element
    * @param {HTMLElement} nativeContainer - native container element
+   * @ignore
    */
   appendToContainer(container, nativeContainer) {
     container.appendChild(this.el);
@@ -245,6 +258,7 @@ export default class Item {
 
   /**
    * Destroy an Item
+   * @ignore
    */
   destroy() {
     removeElement(this.el);
