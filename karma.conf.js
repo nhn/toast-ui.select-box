@@ -22,12 +22,6 @@ const name = 'toastui-select-box';
 function setConfig(defaultConfig, server) {
   if (server === 'ne') {
     defaultConfig.customLaunchers = {
-      IE8: {
-        base: 'WebDriver',
-        config: webdriverConfig,
-        browserName: 'internet explorer',
-        version: '8'
-      },
       IE9: {
         base: 'WebDriver',
         config: webdriverConfig,
@@ -69,7 +63,6 @@ function setConfig(defaultConfig, server) {
       }
     };
     defaultConfig.browsers = [
-      // 'IE8'
       'IE9',
       'IE10',
       'IE11',
@@ -110,15 +103,8 @@ function setConfig(defaultConfig, server) {
 module.exports = function(config) {
   const defaultConfig = {
     basePath: './',
-    frameworks: ['jquery-1.11.0', 'jasmine', 'es5-shim'],
-    files: [
-      {
-        // karma-jasmine-jquery does not support IE8, so include jasmine-jquery directly
-        pattern: 'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-        watched: false
-      },
-      'test/index.js'
-    ],
+    frameworks: ['jasmine-jquery', 'jasmine'],
+    files: ['test/index.js'],
     preprocessors: {
       'test/index.js': ['webpack', 'sourcemap']
     },
