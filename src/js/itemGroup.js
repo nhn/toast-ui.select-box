@@ -14,14 +14,14 @@ import Item from './item';
  * @class
  * @description
  * A group of items.
- * You can get ItemGroup by {@link SelectBox#getItemGroup SelectBox.getItemGroup} and {@link SelectBox#getItemGroups SelectBox.getItemGroups}.
+ * You can get ItemGroup by {@link SelectBox#getItemGroup SelectBox.getItemGroup()} and {@link SelectBox#getItemGroups SelectBox.getItemGroups()}.
  */
 export default class ItemGroup {
   /**
    * @hideconstructor
    * @param {object} options - options
    *   @param {string} [options.text] - label to be displayed in the dropdown list
-   *   @param {array<object>} options.data - data for Items to be included in the ItemGroup
+   *   @param {array<itemData>} options.data - data for Items to be included in the ItemGroup
    *   @param {boolean} [options.disabled=false] - whether an ItemGroup should be disabled or not
    *   @param {number} options.index - index of the first Item in the ItemGroup
    *   @param {number} options.itemGroupIndex - index of the ItemGroup

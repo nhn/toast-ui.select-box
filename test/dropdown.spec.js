@@ -78,11 +78,11 @@ describe('Dropdown', () => {
   describe('highlight', () => {
     it('should highlight and dehighlight an Item in the dropdown.', () => {
       dropdown.highlight(0);
-      expect(dropdown.highlightedItem).not.toBeNull();
-      expect(dropdown.highlightedItem.el).toHaveClass(cls.HIGHLIGHT);
+      const highlightedEl = dropdown.highlightedItem.el;
+      expect(highlightedEl).toHaveClass(cls.HIGHLIGHT);
 
       dropdown.dehighlight(0);
-      expect(dropdown.highlightedItem).toBeNull();
+      expect(highlightedEl).not.toHaveClass(cls.HIGHLIGHT);
     });
 
     it('should move a highlight among enabled items.', () => {

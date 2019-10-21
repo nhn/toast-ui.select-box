@@ -4,44 +4,7 @@
  */
 
 import forEachOwnProperties from 'tui-code-snippet/collection/forEachOwnProperties';
-// import sendHostname from 'tui-code-snippet/request/sendHostname';
-
-const keyCodeMap = {
-  38: 'arrowUp',
-  40: 'arrowDown',
-  32: 'space',
-  13: 'enter',
-  27: 'escape',
-  61: 'tab'
-};
-
-const keyMap = {
-  ArrowUp: 'arrowUp',
-  Up: 'arrowUp',
-  ArrowDown: 'arrowDown',
-  Down: 'arrowDown',
-  ' ': 'space',
-  Spacebar: 'space',
-  Enter: 'enter',
-  Escape: 'escape',
-  Esc: 'escape',
-  Tab: 'tab'
-};
-
-/**
- * Identify the key (polyfill for IE)
- * @param {string} ev - keyboard event
- * @return {string} - key
- */
-export const identifyKey = ev => {
-  const { key, keyCode } = ev;
-
-  if (key) {
-    return keyMap[key] || key;
-  }
-
-  return keyCodeMap[keyCode] || keyCode;
-};
+import isString from 'tui-code-snippet/type/isString';
 
 /**
  * Transform an object using dot notation
@@ -99,9 +62,47 @@ export const createElement = (tagName, content, options, container) => {
 };
 
 /**
- * Send hostname for statistics
- * @ignore
+ * Get selectors for an element
+ * @param {HTMLElement} el - element
+ * @return {string}
  */
-export const sendHostName = () => {
-  // TODO: sendHostname('select-box', 'UA-129987462-1');
+export const getSelector = el => {
+  if (isString(el)) {
+    return el;
+  }
+
+  if (el.id) {
+    return `#${el.id}`;
+  }
+
+  const className = `.${el.className.replace(/ +/g, '.')}`;
+  if (className) {
+    const elems = document.querySelectorAll(className);
+
+    if (elems.length === 1) {
+      return className;
+    }
+  }
+
+  const tagName = el.tagName.toLowerCase();
+
+  return `${tagName}${className}`;
+};
+
+/**
+ * Calculate a line height to align vertically
+ * @param {string} height - height value with an unit (ex. '29px')
+ * @return {string}
+ * @private
+ */
+export const getLineHeight = height => {
+  let result;
+
+  if (height) {
+    const lineHeight = parseFloat(height);
+    const unit = height.replace(lineHeight, '');
+    result = lineHeight + unit;
+  }
+
+  return result;
 };

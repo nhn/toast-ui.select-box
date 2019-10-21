@@ -13,7 +13,8 @@ import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import isObject from 'tui-code-snippet/type/isObject';
 import isExisty from 'tui-code-snippet/type/isExisty';
 import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
-import { createElement, identifyKey, sendHostName } from './utils';
+import sendHostname from 'tui-code-snippet/request/sendHostname';
+import { createElement, identifyKey } from './utils';
 import { cls } from './constants';
 import Input from './input';
 import Dropdown from './dropdown';
@@ -27,18 +28,18 @@ import Theme from './theme';
  * @mixes CustomEvents
  * @param {object} options
  *   @param {string} [options.placeholder] - placeholder for an input
- *   @param {array<object>} options.data - array of {@link itemData} and {@link itemGroupData}
+ *   @param {array<itemData|itemGroupData>} options.data - array of {@link itemData} and {@link itemGroupData}
  *   @param {boolean} [options.disabled] - whether an Item should be disabled or not
  *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when the select box appends to the container
  *   @param {boolean} [options.autoclose] - whether a selectbox should close after selection
  *   @param {object} [options.theme] - {@link themeConfig} for custom style
  *   @param {boolean} [options.usageStatistics] - whether send hostname to google analytics. If you don't want to send the hostname, please set to false.
  * @example
- * var SelectBox = tui.SelectBox;
- * // or require('tui-date-picker');
- * // or import SelectBox from '@toast-ui/select-box';
+ * import SelectBox from '@toast-ui/select-box';
+ * // or const SelectBox = require('tui-date-picker');
+ * // or const SelectBox = tui.SelectBox;
  *
- * var selectBox = new SelectBox('#select-box', {
+ * const selectBox = new SelectBox('#select-box', {
  *   placeholder: 'Please select an option.',
  *   data: [
  *     {
@@ -163,7 +164,7 @@ class SelectBox {
     }
 
     if (usageStatistics) {
-      sendHostName();
+      sendHostname('select-box', 'UA-129987462-1');
     }
   }
 
@@ -578,7 +579,8 @@ class SelectBox {
   /**
    * Get all {@link Item items} that pass the test implemented by the provided function.
    * If filter function is not passed, it returns all items.
-   * @param {function} fn - filter function
+   * @param {function} callback - callback function to filter items
+   * @param {number} number - the number of items to find. If it is not passed, iterate all items.
    * @return {array<Item>}
    * @example
    * selectBox.getItems(); // all items
@@ -586,8 +588,8 @@ class SelectBox {
    *  return !item.isDisabled();
    * }); // all enabled items
    */
-  getItems(fn) {
-    return this.dropdown.getItems(fn);
+  getItems(callback, number) {
+    return this.dropdown.getItems(callback, number);
   }
 
   /**
@@ -605,7 +607,8 @@ class SelectBox {
   /**
    * Get all {@link ItemGroup item groups} that pass the test implemented by the provided function.
    * If filter function is not passed, it returns all item groups.
-   * @param {function} fn - filter function
+   * @param {function} callback - callback function to filter item groups
+   * @param {number} number - the number of items to find. If it is not passed, iterate all item groups.
    * @return {array<ItemGroup>}
    * @example
    * selectBox.getItemGroups(); // all item groups
@@ -613,8 +616,8 @@ class SelectBox {
    *  return !itemGroup.isDisabled();
    * }); // all enabled item groups
    */
-  getItemGroups(fn) {
-    return this.dropdown.getItemGroups(fn);
+  getItemGroups(callback, number) {
+    return this.dropdown.getItemGroups(callback, number);
   }
 
   /**

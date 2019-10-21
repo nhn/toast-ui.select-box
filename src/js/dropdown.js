@@ -3,6 +3,7 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
+import forEachArray from 'tui-code-snippet/collection/forEachArray';
 import isExisty from 'tui-code-snippet/type/isExisty';
 import isNumber from 'tui-code-snippet/type/isNumber';
 import addClass from 'tui-code-snippet/domUtil/addClass';
@@ -18,7 +19,7 @@ import Item from './item';
  * @ignore
  * @param {object} options - options
  *   @param {string} [options.placeholder] - placeholder for an input
- *   @param {array<object>} options.data - data for ItemGroups and Items
+ *   @param {array<itemData|itemGroupData>} options.data - data for ItemGroups and Items
  *   @param {boolean} [options.disabled=false] - whether a dropdown should be disabled or not
  */
 export default class Dropdown {
@@ -116,17 +117,30 @@ export default class Dropdown {
 
   /**
    * Execute a function while iterating items
-   * @param {Function} fn - function to execute
+   * @param {Function} callback - function to execute
    * @param  {...any} args - arguments
    * @private
    */
-  iterateItems(fn, ...args) {
-    this.items.forEach(item => {
+  iterateItems(callback, ...args) {
+    let index = 0;
+
+    forEachArray(this.items, item => {
+      let result = true;
       if (item instanceof ItemGroup) {
-        item.getItems().forEach(itemInGroup => fn.apply(this, [itemInGroup, ...args]));
-      } else {
-        fn.apply(this, [item, ...args]);
+        forEachArray(item.getItems(), itemInGroup => {
+          result = callback.apply(this, [itemInGroup, index, ...args]);
+          index += 1;
+
+          return result;
+        });
+
+        return result;
       }
+
+      result = callback.apply(this, [item, index, ...args]);
+      index += 1;
+
+      return result;
     });
   }
 
@@ -247,15 +261,21 @@ export default class Dropdown {
   /**
    * Get all Items that pass the test implemented by the provided function
    * If filter function is not passed, it returns all Items
-   * @param {function} fn - filter function
+   * @param {function} callback - callback function to filter items
+   * @param {number} number - the number of items to find. -1 means all items.
    * @return {array<Item>}
    */
-  getItems(fn = () => true) {
+  getItems(callback = () => true, number = -1) {
     const items = [];
     this.iterateItems(item => {
-      if (fn(item)) {
+      if (callback(item)) {
         items.push(item);
+        number -= 1;
+
+        return number !== 0;
       }
+
+      return true;
     });
 
     return items;
@@ -271,21 +291,27 @@ export default class Dropdown {
       ? comparedItem => comparedItem.getIndex() === value
       : comparedItem => comparedItem.getValue() === value;
 
-    return this.getItems(isValidItem)[0];
+    return this.getItems(isValidItem, 1)[0];
   }
 
   /**
    * Get all ItemGroups that pass the test implemented by the provided function
    * If filter function is not passed, it returns all ItemGroups
-   * @param {function} fn - filter function
+   * @param {function} callback - callback function to filter item groups
+   * @param {number} number - the number of item groups to find. -1 means all item groups.
    * @return {array<ItemGroup>}
    */
-  getItemGroups(fn = () => true) {
+  getItemGroups(callback = () => true, number = -1) {
     const itemGroups = [];
-    this.items.forEach(itemGroup => {
-      if (itemGroup instanceof ItemGroup && fn(itemGroup)) {
+    forEachArray(this.items, itemGroup => {
+      if (itemGroup instanceof ItemGroup && callback(itemGroup)) {
         itemGroups.push(itemGroup);
+        number -= 1;
+
+        return number !== 0;
       }
+
+      return true;
     });
 
     return itemGroups;
@@ -297,7 +323,7 @@ export default class Dropdown {
    * @return {ItemGroup}
    */
   getItemGroup(index) {
-    return this.getItemGroups(itemGroup => itemGroup.getIndex() === index)[0];
+    return this.getItemGroups(itemGroup => itemGroup.getIndex() === index, 1)[0];
   }
 
   /**

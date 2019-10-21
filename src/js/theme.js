@@ -8,7 +8,7 @@ import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import isArray from 'tui-code-snippet/type/isArray';
 import isBoolean from 'tui-code-snippet/type/isBoolean';
 import isString from 'tui-code-snippet/type/isString';
-import { transform } from './utils';
+import { transform, getSelector, getLineHeight } from './utils';
 import { cls } from './constants';
 import baseTheme from './themeConfig';
 
@@ -20,40 +20,11 @@ import baseTheme from './themeConfig';
  */
 export default class Theme {
   constructor(customTheme, container) {
-    this.containerSelector = this.getSelector(container);
+    this.containerSelector = getSelector(container);
     this.cssString = this.buildAll(transform(customTheme));
     this.styleEl = this.createStyleElement();
 
     document.getElementsByTagName('head')[0].appendChild(this.styleEl);
-  }
-
-  /**
-   * Get selectors for an element
-   * @param {HTMLElement} el - element
-   * @return {string}
-   * @private
-   */
-  getSelector(el) {
-    if (isString(el)) {
-      return el;
-    }
-
-    if (el.id) {
-      return `#${el.id}`;
-    }
-
-    const className = `.${el.className.replace(/ /g, '.')}`;
-    if (className) {
-      const elems = document.querySelectorAll(className);
-
-      if (elems.length === 1) {
-        return className;
-      }
-    }
-
-    const tagName = el.tagName.toLowerCase();
-
-    return `${tagName}${className}`;
   }
 
   /**
@@ -100,24 +71,6 @@ export default class Theme {
   }
 
   /**
-   * Calculate a line height to align vertically
-   * @param {string} height - height value with an unit (ex. '29px')
-   * @return {string}
-   * @private
-   */
-  getLineHeight(height) {
-    let result;
-
-    if (height) {
-      const lineHeight = parseFloat(height);
-      const unit = height.replace(lineHeight, '');
-      result = lineHeight + unit;
-    }
-
-    return result;
-  }
-
-  /**
    * Build css strings for Input
    * @param {object} theme - theme object
    * @return {string}
@@ -126,7 +79,7 @@ export default class Theme {
   buildInput(theme) {
     theme.placeholder = {};
     if (theme.height) {
-      theme.placeholder.lineHeight = this.getLineHeight(theme.height);
+      theme.placeholder.lineHeight = getLineHeight(theme.height);
     }
     if (isBoolean(theme.showIcon) && !theme.showIcon) {
       theme.icon = { display: 'none' };
@@ -160,7 +113,7 @@ export default class Theme {
    */
   buildItemGroup(theme) {
     if (theme.height) {
-      theme.lineHeight = this.getLineHeight(theme.height);
+      theme.lineHeight = getLineHeight(theme.height);
     }
 
     return (
@@ -177,7 +130,7 @@ export default class Theme {
    */
   buildItem(theme) {
     if (theme.height) {
-      theme.lineHeight = this.getLineHeight(theme.height);
+      theme.lineHeight = getLineHeight(theme.height);
     }
     if (theme.inItemGroup && !theme.inItemGroup.paddingLeft) {
       theme.inItemGroup.paddingLeft = '8px';

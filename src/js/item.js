@@ -13,7 +13,7 @@ import { cls } from './constants';
  * @class
  * @description
  * An item.
- * You can get Item by {@link SelectBox#getItem SelectBox.getItem} and {@link SelectBox#getItems SelectBox.getItems}.
+ * You can get Item by {@link SelectBox#getItem SelectBox.getItem()} and {@link SelectBox#getItems SelectBox.getItems()}.
  */
 export default class Item {
   /**
