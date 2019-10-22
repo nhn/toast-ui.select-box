@@ -14,7 +14,8 @@ import isObject from 'tui-code-snippet/type/isObject';
 import isExisty from 'tui-code-snippet/type/isExisty';
 import isHTMLNode from 'tui-code-snippet/type/isHTMLNode';
 import sendHostname from 'tui-code-snippet/request/sendHostname';
-import { createElement, identifyKey } from './utils';
+import { createElement } from './utils';
+import { identifyKey } from './keyEventUtils';
 import { cls } from './constants';
 import Input from './input';
 import Dropdown from './dropdown';
@@ -27,8 +28,8 @@ import Theme from './theme';
  * @param {HTMLElement|string} container - container element or selector
  * @mixes CustomEvents
  * @param {object} options
- *   @param {string} [options.placeholder] - placeholder for an input
  *   @param {array<itemData|itemGroupData>} options.data - array of {@link itemData} and {@link itemGroupData}
+ *   @param {string} [options.placeholder] - placeholder for an input
  *   @param {boolean} [options.disabled] - whether an Item should be disabled or not
  *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when the select box appends to the container
  *   @param {boolean} [options.autoclose] - whether a selectbox should close after selection
@@ -36,7 +37,7 @@ import Theme from './theme';
  *   @param {boolean} [options.usageStatistics] - whether send hostname to google analytics. If you don't want to send the hostname, please set to false.
  * @example
  * import SelectBox from '@toast-ui/select-box';
- * // or const SelectBox = require('tui-date-picker');
+ * // or const SelectBox = require('@toast-ui/select-box');
  * // or const SelectBox = tui.SelectBox;
  *
  * const selectBox = new SelectBox('#select-box', {
@@ -58,13 +59,20 @@ import Theme from './theme';
  *       ]
  *     }
  *   ],
- *   autofocus: true
+ *   autofocus: true,
+ *   theme: {
+ *     'common.border': '1px solid black',
+ *     'common.color': 'black',
+ *     'input.showIcon': false,
+ *     'item.highlighted.background': 'yellow'
+ *   }
  * });
  */
 
 /**
  * SelectBox provides some custom events: ({@link SelectBox#event-open open}, {@link SelectBox#event-close close}, {@link SelectBox#event-disable disable}, {@link SelectBox#event-enable enable}, {@link SelectBox#event-change change}).
- * Refer to the {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} document at {@link https://github.com/nhn/tui.code-snippet tui-code-snippet} to know how to bind, unbind, and fire custom events.
+ * You can bind event handlers by {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on selectBox.on(eventName, handler)} and unbind by {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off selectBox.off(eventName, handler)}.
+ * Refer to the {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} document at {@link https://github.com/nhn/tui.code-snippet tui-code-snippet} to know how to bind, and unbind custom events.
  * @typedef {class} CustomEvents
  */
 
@@ -88,6 +96,7 @@ import Theme from './theme';
 /**
  * Data of an {@link ItemGroup item group}.
  * It is used for creating a {@link SelectBox}.
+ * ItemGroup supports only 1 level choices, so it does not work to add item groups in the item group.
  * @typedef {object} itemGroupData - data for {@link ItemGroup item group}
  * @property {string} text - label to be displayed
  * @property {array} data - {@link itemData data for item}
@@ -106,13 +115,13 @@ class SelectBox {
   constructor(
     container,
     {
+      data,
       placeholder = '',
       disabled = false,
       autofocus = false,
       autoclose = true,
       theme,
-      usageStatistics = true,
-      ...options
+      usageStatistics = true
     }
   ) {
     /**
@@ -131,7 +140,7 @@ class SelectBox {
      * @type {Dropdown}
      * @private
      */
-    this.dropdown = new Dropdown({ placeholder, disabled, ...options });
+    this.dropdown = new Dropdown({ placeholder, disabled, data });
 
     /**
      * @type {boolean}
