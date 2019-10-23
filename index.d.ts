@@ -8,8 +8,10 @@ export interface IItemData {
   selected?: boolean;
 }
 
+export type ItemOptionsType = IItemData & { index: number };
+
 export class Item {
-  constructor(options: IItemData & { index: number });
+  constructor(options: ItemOptionsType);
 
   public getIndex(): number;
   public getLabel(): string;
@@ -24,8 +26,10 @@ export interface IItemGroupData {
   disabled?: boolean;
 }
 
+export type ItemGroupOptionsType = IItemGroupData & { index: number; itemGroupIndex: number };
+
 export class ItemGroup {
-  constructor(options: IItemGroupData & { index: number; itemGroupIndex: number });
+  constructor(options: ItemGroupOptionsType);
 
   public getIndex(): number;
   public getLabel(): string;
@@ -59,7 +63,7 @@ export interface IThemeConfig {
   'dropdown.background'?: string;
   'dropdown.width'?: string;
   'dropdown.maxHeight'?: string;
-  'itemGroup.items.paddingLeft'?: string | boolean;
+  'itemGroup.items.paddingLeft'?: string;
   'itemGroup.label.border'?: string;
   'itemGroup.label.background'?: string;
   'itemGroup.label.color'?: string;
@@ -115,13 +119,7 @@ export interface IEventObjects {
   };
 }
 
-export interface IEvents {
-  change?: (ev: IEventObjects['change']) => void;
-  close?: (ev: IEventObjects['close']) => void;
-  disable?: (ev: IEventObjects['disable']) => void;
-  enable?: (ev: IEventObjects['enable']) => void;
-  open?: (ev: IEventObjects['open']) => void;
-}
+export type IEvents = { [P in keyof IEventObjects]?: (ev: IEventObjects[P]) => void };
 
 export type EventNameType = keyof IEvents;
 

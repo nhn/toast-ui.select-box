@@ -45,7 +45,7 @@ const selectBox = new SelectBox(container, {
 
     'dropdown.maxHeight': '300px',
 
-    'itemGroup.items.paddingLeft': false,
+    'itemGroup.items.paddingLeft': '8px',
 
     'item.selected.background': 'black',
     'item.selected.color': 'white',
@@ -89,9 +89,9 @@ selectBox.close();
 selectBox.deselect();
 selectBox.disable(value || item || itemGroup);
 selectBox.enable(value || item || itemGroup);
-selectBox.getItemGroups(ig => ig.isDisabled(), 0);
+selectBox.getItemGroups((ig: ItemGroup) => ig.isDisabled(), 0);
 selectBox.getItemGroups();
-selectBox.getItems(i => i.isDisabled(), 0);
+selectBox.getItems((i: Item) => i.isDisabled(), 0);
 selectBox.getItems();
 selectBox.getSelectedItem();
 selectBox.open();

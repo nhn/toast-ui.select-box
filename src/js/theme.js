@@ -132,9 +132,6 @@ export default class Theme {
     if (theme.height) {
       theme.lineHeight = theme.height;
     }
-    if (theme.inItemGroup && !theme.inItemGroup.paddingLeft) {
-      theme.inItemGroup.paddingLeft = '8px';
-    }
     if (theme.selected) {
       const base = transform(baseTheme);
 

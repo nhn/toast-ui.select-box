@@ -46,7 +46,8 @@
  *   'dropdown.maxHeight': '',
  *
  *   // ItemGroup's items
- *   'itemGroup.items.paddingLeft': '20px', // if false, there is no indentation for items in itemGroup.
+ *   // if you want to set the same padding value as the itemGroup.label, set to '8px'.
+ *   'itemGroup.items.paddingLeft': '20px',
  *
  *   // ItemGroup's label
  *   'itemGroup.label.border': '0',
@@ -120,7 +121,8 @@ export default {
   'dropdown.maxHeight': '',
 
   // ItemGroup's items
-  'itemGroup.items.paddingLeft': '20px', // if false, there is no indentation for items in itemGroup.
+  // if you want to set the same padding value as the itemGroup.label, set to '8px'.
+  'itemGroup.items.paddingLeft': '20px',
 
   // ItemGroup's label
   'itemGroup.label.border': '0',
