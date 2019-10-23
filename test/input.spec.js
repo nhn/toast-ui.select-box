@@ -43,7 +43,7 @@ describe('Input', () => {
   });
 
   it('should change text in the placeholder by the Item.', () => {
-    const item = new Item({ value: 1, text: 'first', index: 0 });
+    const item = new Item({ value: 1, label: 'first', index: 0 });
     input.changeText(item);
     expect(input.placeholderEl).toContainText('first');
   });
