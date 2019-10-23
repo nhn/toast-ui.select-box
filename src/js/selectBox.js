@@ -85,7 +85,7 @@ import Theme from './theme';
  * @property {boolean} [disabled=false] - whether an item should be disabled or not
  * @property {boolean} [selected=false] - whether an item should be pre-selected or not
  * @example
- * var itemData = {
+ * const itemData = {
  *   label: 'disabled item',
  *   value: '0',
  *   disabled: true,
@@ -102,7 +102,7 @@ import Theme from './theme';
  * @property {array} data - {@link itemData data for item}
  * @property {boolean} [disabled=false] - whether an item group should be disabled or not
  * @example
- * var itemGroupData = {
+ * const itemGroupData = {
  *   label: 'disabled items',
  *   data: [
  *     { label: 'disable', value: 'disable' },
@@ -380,7 +380,7 @@ class SelectBox {
        * @property {string} type - event name ('disable')
        * @property {SelectBox|ItemGroup|Item} target - disabled target
        * @example
-       * selectBox.on('disable', function(ev) {
+       * selectBox.on('disable', ev => {
        *   console.log(ev.target);
        * });
        */
@@ -423,7 +423,7 @@ class SelectBox {
        * @property {string} type - event name ('enable')
        * @property {SelectBox|ItemGroup|Item} target - enable target
        * @example
-       * selectBox.on('enable', function(ev) {
+       * selectBox.on('enable', ev => {
        *   console.log(ev.target);
        * });
        */
@@ -456,7 +456,7 @@ class SelectBox {
        * @event SelectBox#open
        * @property {string} type - event name ('open')
        * @example
-       * selectBox.on('open', function(ev) {
+       * selectBox.on('open', ev => {
        *   console.log('open');
        * });
        */
@@ -479,7 +479,7 @@ class SelectBox {
      * @event SelectBox#close
      * @property {string} type - event name ('close')
      * @example
-     * selectBox.on('close', function(ev) {
+     * selectBox.on('close', ev => {
      *   console.log('close');
      * });
      */
@@ -528,8 +528,8 @@ class SelectBox {
          * @property {Item} target - selected item
          * @ignore
          * @example
-         * selectBox.on('select', function(ev) {
-         *   console.log(ev.target.getLabel() + 'is selected.');
+         * selectBox.on('select', ev => {
+         *   console.log(`${ev.target.getLabel()} is selected.`);
          * });
          */
         this.fire('select', { type: 'select', target: selectedItem });
@@ -543,8 +543,8 @@ class SelectBox {
            * @property {Item} prev - previous selected item
            * @property {Item} curr - current selected item
            * @example
-           * selectBox.on('change', function(ev) {
-           *   console.log('selected item is changed from ' + ev.prev.getLabel() + 'to' + ev.curr.getLabel());
+           * selectBox.on('change', ev => {
+           *   console.log(`selected item is changed from ${ev.prev.getLabel()} to ${ev.curr.getLabel()}.`);
            * });
            */
           this.fire('change', {
@@ -593,7 +593,7 @@ class SelectBox {
    * @return {array<Item>}
    * @example
    * selectBox.getItems(); // all items
-   * selectBox.getItems(function(item) {
+   * selectBox.getItems(item => {
    *  return !item.isDisabled();
    * }); // all enabled items
    */
@@ -621,7 +621,7 @@ class SelectBox {
    * @return {array<ItemGroup>}
    * @example
    * selectBox.getItemGroups(); // all item groups
-   * selectBox.getItemGroups(function(itemGroup) {
+   * selectBox.getItemGroups(itemGroup => {
    *  return !itemGroup.isDisabled();
    * }); // all enabled item groups
    */

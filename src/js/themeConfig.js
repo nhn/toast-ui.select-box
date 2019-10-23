@@ -8,7 +8,7 @@
  * "common" prefix is for the entire select box. Its properties are overriden by "input", "dropdown", "itemGroup", and "item".
  * @typedef {object} themeConfig
  * @example
- * var themeConfig = {
+ * const themeConfig = {
  *   'common.border': '1px solid #ddd', // border for input and dropdown (not itemGroup and item)
  *   'common.background': '#fff',
  *   'common.color': '#333',

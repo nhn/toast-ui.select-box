@@ -127,7 +127,7 @@ export default class ItemGroup {
    * Get {@link Item items} in the item group.
    * @return {array<Item>}
    * @example
-   * var items = itemGroup.getItems();
+   * const items = itemGroup.getItems();
    * console.log(items[0]); // first item in the item group
    * console.log(items.length); // the number of items in the item group
    */
