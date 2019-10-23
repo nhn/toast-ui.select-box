@@ -8,8 +8,8 @@ describe('ItemGroup', () => {
     setFixtures(`<div id="container"></div>
       <div id="native-container"></div>`);
     itemGroup = new ItemGroup({
-      text: 'fruit',
-      data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }],
+      label: 'fruit',
+      data: [{ label: 'apple', value: 1 }, { label: 'banana', value: 2 }],
       index: 0
     });
     itemGroup.appendToContainer(
@@ -39,8 +39,8 @@ describe('ItemGroup', () => {
     it('should disable and enable an ItemGroup and its Items.', () => {
       itemGroup.destroy();
       itemGroup = new ItemGroup({
-        text: 'fruit',
-        data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }],
+        label: 'fruit',
+        data: [{ label: 'apple', value: 1 }, { label: 'banana', value: 2 }],
         index: 0,
         disabled: true
       });
@@ -59,8 +59,8 @@ describe('ItemGroup', () => {
     it('should enable ItemGroup only when the Item itself is disabled.', () => {
       itemGroup.destroy();
       itemGroup = new ItemGroup({
-        text: 'fruit',
-        data: [{ text: 'apple', value: 1, disabled: true }, { text: 'banana', value: 2 }],
+        label: 'fruit',
+        data: [{ label: 'apple', value: 1, disabled: true }, { label: 'banana', value: 2 }],
         index: 0
       });
 

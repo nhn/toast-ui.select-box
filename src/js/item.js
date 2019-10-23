@@ -19,13 +19,13 @@ export default class Item {
   /**
    * @hideconstructor
    * @param {object} options - options
-   *   @param {string} [options.text] - label to be displayed in the drop-down list
+   *   @param {string} [options.label] - label to be displayed in the drop-down list
    *   @param {string} options.value - value of an item
    *   @param {boolean} [options.disabled=false] - whether an Item should be disabled or not
    *   @param {boolean} [options.selected=false] - whether an Item should be pre-selected or not
    *   @param {number} options.index - Item's index
    */
-  constructor({ value, text, disabled, selected, index }) {
+  constructor({ value, label, disabled, selected, index }) {
     /**
      * value of an item
      * @type {string}
@@ -39,7 +39,7 @@ export default class Item {
      * @type {string}
      * @private
      */
-    this.label = text || this.value;
+    this.label = label || this.value;
 
     /**
      * @type {number}

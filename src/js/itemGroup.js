@@ -20,13 +20,13 @@ export default class ItemGroup {
   /**
    * @hideconstructor
    * @param {object} options - options
-   *   @param {string} [options.text] - label to be displayed in the dropdown list
+   *   @param {string} [options.label] - label to be displayed in the dropdown list
    *   @param {array<itemData>} options.data - data for Items to be included in the ItemGroup
    *   @param {boolean} [options.disabled=false] - whether an ItemGroup should be disabled or not
    *   @param {number} options.index - index of the first Item in the ItemGroup
    *   @param {number} options.itemGroupIndex - index of the ItemGroup
    */
-  constructor({ text = '', data, disabled = false, index, itemGroupIndex }) {
+  constructor({ label = '', data, disabled = false, index, itemGroupIndex }) {
     /**
      * @type {HTMLElement}
      * @private
@@ -37,7 +37,7 @@ export default class ItemGroup {
      * @type {HTMLElement}
      * @private
      */
-    this.labelEl = createElement('span', text, { className: cls.ITEM_GROUP_LABEL }, this.el);
+    this.labelEl = createElement('span', label, { className: cls.ITEM_GROUP_LABEL }, this.el);
 
     /**
      * @type {HTMLElement}
@@ -49,7 +49,7 @@ export default class ItemGroup {
      * @type {HTMLElement}
      * @private
      */
-    this.nativeEl = createElement('optgroup', text);
+    this.nativeEl = createElement('optgroup', label);
 
     /**
      * @type {array<Item>}
@@ -62,6 +62,12 @@ export default class ItemGroup {
      * @private
      */
     this.index = itemGroupIndex;
+
+    /**
+     * @type {string}
+     * @private
+     */
+    this.label = label;
 
     /**
      * whether an ItemGroup is disabled or not
@@ -135,6 +141,14 @@ export default class ItemGroup {
    */
   getIndex() {
     return this.index;
+  }
+
+  /**
+   * Return an item group's label.
+   * @return {string}
+   */
+  getLabel() {
+    return this.label;
   }
 
   /**

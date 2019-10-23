@@ -44,18 +44,18 @@ import Theme from './theme';
  *   placeholder: 'Please select an option.',
  *   data: [
  *     {
- *       text: 'Fruits',
- *       data: [ { text: 'Apple', value: 'apple' }, { text: 'Banana', value: 'banana' } ]
+ *       label: 'Fruits',
+ *       data: [ { label: 'Apple', value: 'apple' }, { label: 'Banana', value: 'banana' } ]
  *     },
- *     { text: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
+ *     { label: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
  *     {
- *       text: 'Colors',
+ *       label: 'Colors',
  *       data: [
- *         { text: 'Red', value: 'red' },
- *         { text: 'Yellow', value: 'yellow' },
- *         { text: 'Green', value: 'green', disabled: true },
- *         { text: 'Blue', value: 'blue', disabled: true },
- *         { text: 'Purple', value: 'purple' }
+ *         { label: 'Red', value: 'red' },
+ *         { label: 'Yellow', value: 'yellow' },
+ *         { label: 'Green', value: 'green', disabled: true },
+ *         { label: 'Blue', value: 'blue', disabled: true },
+ *         { label: 'Purple', value: 'purple' }
  *       ]
  *     }
  *   ],
@@ -80,13 +80,13 @@ import Theme from './theme';
  * Data of an {@link Item item}.
  * It is used for creating a {@link SelectBox}.
  * @typedef {object} itemData - data for {@link Item item}
- * @property {string} text - label to be displayed
+ * @property {string} label - label to be displayed
  * @property {string} value - value of an item
  * @property {boolean} [disabled=false] - whether an item should be disabled or not
  * @property {boolean} [selected=false] - whether an item should be pre-selected or not
  * @example
  * var itemData = {
- *   text: 'disabled item',
+ *   label: 'disabled item',
  *   value: '0',
  *   disabled: true,
  *   selected: false
@@ -98,15 +98,15 @@ import Theme from './theme';
  * It is used for creating a {@link SelectBox}.
  * ItemGroup supports only 1 level choices, so it does not work to add item groups in the item group.
  * @typedef {object} itemGroupData - data for {@link ItemGroup item group}
- * @property {string} text - label to be displayed
+ * @property {string} label - label to be displayed
  * @property {array} data - {@link itemData data for item}
  * @property {boolean} [disabled=false] - whether an item group should be disabled or not
  * @example
  * var itemGroupData = {
- *   text: 'disabled items',
+ *   label: 'disabled items',
  *   data: [
- *     { text: 'disable', value: 'disable' },
- *     { text: 'none', value: '0' }
+ *     { label: 'disable', value: 'disable' },
+ *     { label: 'none', value: '0' }
  *   ]
  *   disabled: true
  * };

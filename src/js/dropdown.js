@@ -117,7 +117,7 @@ export default class Dropdown {
 
   /**
    * Execute a function while iterating items
-   * @param {Function} callback - function to execute
+   * @param {function} callback - function to execute
    * @param  {...any} args - arguments
    * @private
    */
@@ -128,7 +128,7 @@ export default class Dropdown {
       let result = true;
       if (item instanceof ItemGroup) {
         forEachArray(item.getItems(), itemInGroup => {
-          result = callback.apply(this, [itemInGroup, index, ...args]);
+          result = callback.apply(this, [itemInGroup, index, ...args]) || false;
           index += 1;
 
           return result;

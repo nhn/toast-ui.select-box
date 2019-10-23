@@ -7,7 +7,7 @@ describe('Item', () => {
   beforeEach(() => {
     setFixtures(`<div id="container"></div>
       <div id="native-container"></div>`);
-    item = new Item({ value: 1, text: 'first', index: 0 });
+    item = new Item({ value: 1, label: 'first', index: 0 });
     item.appendToContainer(
       document.getElementById('container'),
       document.getElementById('native-container')

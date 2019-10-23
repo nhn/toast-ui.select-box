@@ -75,7 +75,7 @@ export const getSelector = el => {
     return `#${el.id}`;
   }
 
-  const className = `.${el.className.replace(/ +/g, '.')}`;
+  const className = `.${el.className.replace(/\s+/g, '.')}`;
   if (className) {
     const elems = document.querySelectorAll(className);
 
@@ -87,22 +87,4 @@ export const getSelector = el => {
   const tagName = el.tagName.toLowerCase();
 
   return `${tagName}${className}`;
-};
-
-/**
- * Calculate a line height to align vertically
- * @param {string} height - height value with an unit (ex. '29px')
- * @return {string}
- * @private
- */
-export const getLineHeight = height => {
-  let result;
-
-  if (height) {
-    const lineHeight = parseFloat(height);
-    const unit = height.replace(lineHeight, '');
-    result = lineHeight + unit;
-  }
-
-  return result;
 };

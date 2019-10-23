@@ -79,7 +79,7 @@
  *   // highlighted Item
  *   'item.highlighted.border': '0',
  *   'item.highlighted.background': '#e5f6ff',
- *   'item.highlighted.color': '#333'*
+ *   'item.highlighted.color': '#333'
  * };
  */
 export default {

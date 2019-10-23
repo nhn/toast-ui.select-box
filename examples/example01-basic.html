@@ -10,25 +10,25 @@
     <div class="code-html">
       <div id="select-box" style="width: 200px"></div>
     </div>
-    
+
     <script type="text/javascript" src="../dist/toastui-select-box.js"></script>
     <script class="code-js">
       const selectBox = new tui.SelectBox('#select-box', {
         placeholder: 'Please select an option.',
         data: [
           {
-            text: 'Fruits',
-            data: [ { text: 'Apple', value: 'apple' }, { text: 'Banana', value: 'banana' } ]
+            label: 'Fruits',
+            data: [{ label: 'Apple', value: 'apple' }, { label: 'Banana', value: 'banana' }]
           },
-          { text: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
+          { label: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
           {
-            text: 'Colors',
-            data: [ 
-              { text: 'Red', value: 'red' }, 
-              { text: 'Yellow', value: 'yellow' },
-              { text: 'Green', value: 'green', disabled: true }, 
-              { text: 'Blue', value: 'blue', disabled: true }, 
-              { text: 'Purple', value: 'purple' }
+            label: 'Colors',
+            data: [
+              { label: 'Red', value: 'red' },
+              { label: 'Yellow', value: 'yellow' },
+              { label: 'Green', value: 'green', disabled: true },
+              { label: 'Blue', value: 'blue', disabled: true },
+              { label: 'Purple', value: 'purple' }
             ]
           }
         ],

@@ -8,7 +8,7 @@ import removeElement from 'tui-code-snippet/domUtil/removeElement';
 import isArray from 'tui-code-snippet/type/isArray';
 import isBoolean from 'tui-code-snippet/type/isBoolean';
 import isString from 'tui-code-snippet/type/isString';
-import { transform, getSelector, getLineHeight } from './utils';
+import { transform, getSelector } from './utils';
 import { cls } from './constants';
 import baseTheme from './themeConfig';
 
@@ -79,7 +79,7 @@ export default class Theme {
   buildInput(theme) {
     theme.placeholder = {};
     if (theme.height) {
-      theme.placeholder.lineHeight = getLineHeight(theme.height);
+      theme.placeholder.lineHeight = theme.height;
     }
     if (isBoolean(theme.showIcon) && !theme.showIcon) {
       theme.icon = { display: 'none' };
@@ -113,7 +113,7 @@ export default class Theme {
    */
   buildItemGroup(theme) {
     if (theme.height) {
-      theme.lineHeight = getLineHeight(theme.height);
+      theme.lineHeight = theme.height;
     }
 
     return (
@@ -130,7 +130,7 @@ export default class Theme {
    */
   buildItem(theme) {
     if (theme.height) {
-      theme.lineHeight = getLineHeight(theme.height);
+      theme.lineHeight = theme.height;
     }
     if (theme.inItemGroup && !theme.inItemGroup.paddingLeft) {
       theme.inItemGroup.paddingLeft = '8px';

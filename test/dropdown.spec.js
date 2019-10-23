@@ -10,10 +10,10 @@ describe('Dropdown', () => {
       placeholder: '',
       data: [
         {
-          text: 'fruit',
-          data: [{ text: 'apple', value: 1 }, { text: 'banana', value: 2 }]
+          label: 'fruit',
+          data: [{ label: 'apple', value: 1 }, { label: 'banana', value: 2 }]
         },
-        { text: 'none', value: 0 }
+        { label: 'none', value: 0 }
       ]
     });
     dropdown.appendToContainer(document.getElementById('container'));
