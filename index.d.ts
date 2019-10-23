@@ -2,7 +2,7 @@
 // TypeScript Version: 3.6.4
 
 export interface IItemData {
-  text: string;
+  label: string;
   value: string;
   disabled?: boolean;
   selected?: boolean;
@@ -19,7 +19,7 @@ export class Item {
 }
 
 export interface IItemGroupData {
-  text: string;
+  label: string;
   data: IItemData[];
   disabled?: boolean;
 }

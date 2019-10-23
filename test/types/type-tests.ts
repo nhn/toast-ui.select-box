@@ -9,18 +9,21 @@ const container =
 const selectBox = new SelectBox(container, {
   data: [
     {
-      text: 'Fruits',
-      data: [{ text: 'Apple', value: 'apple', selected: true }, { text: 'Banana', value: 'banana' }]
-    },
-    { text: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
-    {
-      text: 'Colors',
+      label: 'Fruits',
       data: [
-        { text: 'Red', value: 'red' },
-        { text: 'Yellow', value: 'yellow' },
-        { text: 'Green', value: 'green', disabled: true },
-        { text: 'Blue', value: 'blue', disabled: true },
-        { text: 'Purple', value: 'purple' }
+        { label: 'Apple', value: 'apple', selected: true },
+        { label: 'Banana', value: 'banana' }
+      ]
+    },
+    { label: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
+    {
+      label: 'Colors',
+      data: [
+        { label: 'Red', value: 'red' },
+        { label: 'Yellow', value: 'yellow' },
+        { label: 'Green', value: 'green', disabled: true },
+        { label: 'Blue', value: 'blue', disabled: true },
+        { label: 'Purple', value: 'purple' }
       ],
       disabled: true
     }
