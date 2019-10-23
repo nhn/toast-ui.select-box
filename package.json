@@ -3,13 +3,15 @@
   "version": "0.0.1",
   "description": "TOAST UI Select Box",
   "main": "dist/toastui-select-box",
+  "types": "index.d.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "index.d.ts"
   ],
   "scripts": {
     "test": "karma start --no-single-run",
     "test:ne": "KARMA_SERVER=ne karma start",
-    "bundle": "webpack & webpack -p",
+    "bundle": "webpack & webpack -p && node tsBannerGenerator.js",
     "build": "webpack --config webpack.config.dev.js",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
@@ -57,6 +59,7 @@
     "postcss-prefixer": "^2.1.1",
     "prettier": "^1.18.2",
     "terser-webpack-plugin": "^2.1.0",
+    "typescript": "^3.6.4",
     "url-loader": "^2.1.0",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9",
