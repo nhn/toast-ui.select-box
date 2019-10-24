@@ -16,9 +16,7 @@ describe('Theme', () => {
         'common.disabled.background': 'gray',
         'common.disabled.color': 'white',
 
-        'input.showIcon': false,
-
-        'itemGroup.items.paddingLeft': false,
+        'itemGroup.items.paddingLeft': '8px',
 
         'item.highlighted.background': 'skyblue',
 
@@ -39,7 +37,6 @@ describe('Theme', () => {
 
   it('should make css strings.', () => {
     expect(theme.cssString).toContain(`#container .${cls.ITEM_GROUP}>.${cls.ITEM}`);
-    expect(theme.cssString).toContain(`#container .${cls.ICON}{display:none;}`);
     expect(theme.cssString).toContain(`background:skyblue;`);
   });
 });

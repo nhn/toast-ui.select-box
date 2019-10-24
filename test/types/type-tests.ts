@@ -32,6 +32,7 @@ const selectBox = new SelectBox(container, {
   disabled: false,
   autofocus: true,
   autoclose: true,
+  showIcon: false,
   theme: {
     'common.border': '1px solid black',
     'common.color': 'black',
@@ -40,8 +41,6 @@ const selectBox = new SelectBox(container, {
 
     'common.disabled.background': 'gray',
     'common.disabled.color': 'lightgray',
-
-    'input.showIcon': false,
 
     'dropdown.maxHeight': '300px',
 

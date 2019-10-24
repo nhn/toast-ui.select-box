@@ -51,7 +51,6 @@ export interface IThemeConfig {
   'input.color'?: string;
   'input.width'?: string;
   'input.height'?: string;
-  'input.showIcon'?: boolean;
   'input.open.border'?: string;
   'input.open.background'?: string;
   'input.open.color'?: string;
@@ -93,6 +92,7 @@ export interface IOptions {
   disabled?: boolean;
   autofocus?: boolean;
   autoclose?: boolean;
+  showIcon?: boolean;
   theme?: IThemeConfig;
   usageStatistics?: boolean;
 }

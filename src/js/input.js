@@ -15,9 +15,10 @@ import { cls } from './constants';
  * @param {object} options - options
  *   @param {string} [options.placeholder] - placeholder for a select box
  *   @param {string} [options.disabled] - whether an input should be disabled or not
+ *   @param {boolean} [options.showIcon] - whether an arrow icon in the input should be shown
  */
 export default class Input {
-  constructor({ placeholder, disabled }) {
+  constructor({ placeholder, disabled, showIcon }) {
     /**
      * text for a placeholder
      * @type {string}
@@ -42,15 +43,19 @@ export default class Input {
       this.el
     );
 
-    this.initialize(disabled);
+    this.initialize(disabled, showIcon);
   }
 
   /**
    * Initialize
    * @private
    */
-  initialize(disabled) {
-    createElement('span', 'select', { className: cls.ICON }, this.el);
+  initialize(disabled, showIcon) {
+    if (showIcon) {
+      createElement('span', 'select', { className: cls.ICON }, this.el);
+    } else {
+      this.placeholderEl.width = '100%';
+    }
 
     if (disabled) {
       this.disable();

@@ -33,6 +33,7 @@ import Theme from './theme';
  *   @param {boolean} [options.disabled] - whether an Item should be disabled or not
  *   @param {boolean} [options.autofocus] - whether a selectbox should get focus when the select box appends to the container
  *   @param {boolean} [options.autoclose] - whether a selectbox should close after selection
+ *   @param {boolean} [options.showIcon] - whether an arrow icon in the input should be shown
  *   @param {object} [options.theme] - {@link themeConfig} for custom style
  *   @param {boolean} [options.usageStatistics] - whether send hostname to google analytics. If you don't want to send the hostname, please set to false.
  * @example
@@ -60,10 +61,10 @@ import Theme from './theme';
  *     }
  *   ],
  *   autofocus: true,
+ *   showIcon: false,
  *   theme: {
  *     'common.border': '1px solid black',
  *     'common.color': 'black',
- *     'input.showIcon': false,
  *     'item.highlighted.background': 'yellow'
  *   }
  * });
@@ -120,6 +121,7 @@ class SelectBox {
       disabled = false,
       autofocus = false,
       autoclose = true,
+      showIcon = true,
       theme,
       usageStatistics = true
     }
@@ -134,7 +136,7 @@ class SelectBox {
      * @type {Input}
      * @private
      */
-    this.input = new Input({ placeholder, disabled });
+    this.input = new Input({ placeholder, disabled, showIcon });
 
     /**
      * @type {Dropdown}

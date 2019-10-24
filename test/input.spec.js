@@ -21,6 +21,13 @@ describe('Input', () => {
     expect(document.querySelector(`.${cls.PLACEHOLDER}`)).toBe(placeholderEl);
   });
 
+  it('should not make an icon when showIcon is false.', () => {
+    input.destroy();
+    input = new Input({ showIcon: false });
+
+    expect(document.querySelector(`.${cls.ICON}`)).toBeNull();
+  });
+
   it('should disable and enable an input.', () => {
     input.disable();
     expect(input.el).toHaveClass(cls.DISABLED);

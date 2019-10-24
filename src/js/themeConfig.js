@@ -26,8 +26,6 @@
  *   'input.width': '100%',
  *   'input.height': '29px',
  *
- *   'input.showIcon': true, // if false, arrow icon is hidden.
- *
  *   // Input when dropdown is open
  *   'input.open.border': '1px solid #aaa',
  *   'input.open.background': 'inherit',
@@ -100,8 +98,6 @@ export default {
   'input.color': '#333',
   'input.width': '100%',
   'input.height': '29px',
-
-  'input.showIcon': true, // if false, arrow icon is hidden.
 
   // Input when dropdown is open
   'input.open.border': '1px solid #aaa',
