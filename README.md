@@ -8,7 +8,7 @@
 [![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 
 
-<p><a href="https://nhn.github.io/toast-ui.select-box/latest/"><img src="" />그림 추가</a></p>
+<p><a href="https://nhn.github.io/toast-ui.select-box/latest/"><img src="https://user-images.githubusercontent.com/8615506/67446734-86bd2180-f64c-11e9-96dc-84b14d8ac378.gif" /></a></p>
 
 
 ## 🚩 Table of Contents
@@ -42,18 +42,12 @@ const options = {
 const instance = new SelectBox(container, options);
 ```
 
-Or, include [`tui-code-snippet`](https://github.com/nhn/tui.code-snippet)(**v1.5.0** or **later**) and then immediately write the options as follows:
-
-```js
-tui.usageStatistics = false;
-```
-
 
 ## 📙 Documents
 * [Getting Started](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md)
-  * [Group related options](https://github.com/nhn/toast-ui.select-box/blob/docs/getting-started.md#group-related-options)
-  * [Customize the styles](https://github.com/nhn/toast-ui.select-box/blob/docs/getting-started.md#customize-the-styles)
-  * [Use custom events](https://github.com/nhn/toast-ui.select-box/blob/docs/getting-started.md#use-custom-events)
+  * [Group related options](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md#group-related-options)
+  * [Customize the styles](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md#customize-the-styles)
+  * [Use custom events](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md#use-custom-events)
 * [APIs](https://nhn.github.io/toast-ui.select-box/latest)
 
 You can also see the older versions of API page on the [releases page](https://github.com/nhn/toast-ui.select-box/releases).
@@ -68,11 +62,12 @@ You can also see the older versions of API page on the [releases page](https://g
 
 | Basic | Item Group |
 | --- | --- |
-| 그림 추가 | 그림 추가 |
+| ![select-box-basic](https://user-images.githubusercontent.com/8615506/67446761-9b99b500-f64c-11e9-83e7-78806d6cd491.gif) | ![select-box-item-group](https://user-images.githubusercontent.com/8615506/67446824-ca179000-f64c-11e9-8c1e-af93677d7945.gif) |
 
 | Theme | Custom events |
 | --- | --- |
-| 그림 추가 | 그림 추가 |
+| ![select-box-theme](https://user-images.githubusercontent.com/8615506/67446883-03e89680-f64d-11e9-97bd-871941633490.gif) | ![select-box-custom-events](https://user-images.githubusercontent.com/8615506/67446912-195dc080-f64d-11e9-99d3-ef0f1d60742e.gif)
+ |
 
 
 ## 🐾 Examples

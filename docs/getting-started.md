@@ -82,7 +82,7 @@ const selectBox = new SelectBox('#select-box', {
 
 The above code creates a select box like the one below.
 
-<img src="" /> 그림 추가
+<img width="232" alt="group-related-options" src="https://user-images.githubusercontent.com/8615506/67446951-3db99d00-f64d-11e9-9c72-29077917b957.png">
 
 Please refer to the [data option](https://nhn.github.io/toast-ui.select-box/latest/SelectBox) and [itemGroupData](https://nhn.github.io/toast-ui.select-box/latest/itemGroupData). The example using item groups can be found [here](https://nhn.github.io/toast-ui.select-box/latest/tutorial-example01-basic).
 
@@ -104,7 +104,7 @@ const selectBox = new SelectBox('#select-box', {
 
 The above code creates a select box like the one below.
 
-<img src="" /> 그림 추가
+<img width="232" alt="customize-the-styles" src="https://user-images.githubusercontent.com/8615506/67446958-4ad68c00-f64d-11e9-973e-b3ffe4c91df4.png">
 
 Please refer to the [theme option](https://nhn.github.io/toast-ui.select-box/latest/SelectBox) and [themeConfig](https://nhn.github.io/toast-ui.select-box/latest/themeConfig). The example using theme can be found [here](https://nhn.github.io/toast-ui.select-box/latest/tutorial-example02-theme).
 
