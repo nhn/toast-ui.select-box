@@ -45,9 +45,9 @@ const instance = new SelectBox(container, options);
 
 ## 📙 Documents
 * [Getting Started](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md)
-  * [Group related options](https://github.com/nhn/toast-ui.select-box/blob/docs/getting-started.md#group-related-options)
-  * [Customize the styles](https://github.com/nhn/toast-ui.select-box/blob/docs/getting-started.md#customize-the-styles)
-  * [Use custom events](https://github.com/nhn/toast-ui.select-box/blob/docs/getting-started.md#use-custom-events)
+  * [Group related options](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md#group-related-options)
+  * [Customize the styles](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md#customize-the-styles)
+  * [Use custom events](https://github.com/nhn/toast-ui.select-box/blob/production/docs/getting-started.md#use-custom-events)
 * [APIs](https://nhn.github.io/toast-ui.select-box/latest)
 
 You can also see the older versions of API page on the [releases page](https://github.com/nhn/toast-ui.select-box/releases).
