@@ -9,10 +9,10 @@
     "index.d.ts"
   ],
   "scripts": {
+    "eslint": "eslint ./src ./test",
     "test": "karma start --no-single-run",
     "test:ne": "KARMA_SERVER=ne karma start",
     "bundle": "webpack & webpack -p && node tsBannerGenerator.js",
-    "build": "webpack --config webpack.config.dev.js",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "doc:serve": "tuidoc --serv",

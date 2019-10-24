@@ -6,6 +6,7 @@
 /**
  * Theme configuration.
  * "common" prefix is for the entire select box. Its properties are overriden by "input", "dropdown", "itemGroup", and "item".
+ * The example using theme can be found {@link tutorial-example02-theme here}.
  * @typedef {object} themeConfig
  * @example
  * const themeConfig = {
