@@ -1,0 +1,116 @@
+.tui-select-box {
+  position: relative;
+}
+
+.input,
+.dropdown,
+.item-group-label,
+.item {
+  box-sizing: border-box;
+}
+
+.input {
+  border: 1px solid #ddd;
+}
+
+.input.open,
+.dropdown {
+  border: 1px solid #aaa;
+}
+
+.input,
+.dropdown {
+  background: #fff;
+}
+
+.input,
+.item-group-label,
+.item {
+  padding: 0 8px;
+  height: 29px;
+  font-size: 13px;
+  color: #333;
+  user-select: none;
+  cursor: pointer;
+}
+
+.placeholder,
+.item-group-label,
+.item {
+  line-height: 29px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.placeholder,
+.icon {
+  height: 100%
+}
+
+.placeholder {
+  display: inline-block;
+  margin: 0;
+  width: 80%;
+  width: calc(100% - 12px);
+  vertical-align: sub;
+}
+
+.icon {
+  display: block;
+  float: right;
+  background: url(../img/ico_tui_select.png) left center no-repeat;
+  width: 7px;
+  overflow: hidden;
+  text-indent: 100%;
+}
+
+.open > .icon {
+  background-position: right center;
+}
+
+.dropdown,
+.item-group {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.dropdown {
+  position: absolute;
+  border-top: none;
+  /* max-height: 145px; */
+  overflow: auto;
+  z-index: 1;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.item-group-label {
+  display: block;
+  font-weight: bold;
+  cursor: default;
+}
+
+.item-group > .item {
+  padding-left: 20px;
+}
+
+.selected {
+  background: #f4f4f4;
+}
+
+.highlight {
+  background: #e5f6ff;
+  outline: none;
+}
+
+.disabled {
+  background: #f9f9f9;
+  color: #c8c8c8;
+  cursor: default;
+}
+
+.hidden {
+  display: none; /* for test */
+}

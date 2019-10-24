@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>3. Custom Events</title>
+    <link rel="stylesheet" type="text/css" href="./css/tui-example-style.css" />
+    <link href="../dist/toastui-select-box.css" rel="stylesheet" />
+    <style>
+      #result {
+        margin-top: 20px;
+        line-height: 1.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="code-html">
+      <div id="select-box" style="width: 200px"></div>
+      <div id="result"><b>Result of events</b><br /></div>
+    </div>
+
+    <script type="text/javascript" src="../dist/toastui-select-box.js"></script>
+    <script class="code-js">
+      const resultDiv = document.querySelector('#result');
+      const selectBox = new tui.SelectBox('#select-box', {
+        data: [
+          {
+            label: 'Fruits',
+            data: [{ label: 'Apple', value: 'apple' }, { label: 'Banana', value: 'banana' }]
+          },
+          { label: 'The quick brown fox jumps over the lazy dog.', value: 'none' },
+          {
+            label: 'Colors',
+            data: [
+              { label: 'Red', value: 'red' },
+              { label: 'Yellow', value: 'yellow' },
+              { label: 'Green', value: 'green', disabled: true },
+              { label: 'Blue', value: 'blue', disabled: true },
+              { label: 'Purple', value: 'purple' }
+            ]
+          }
+        ]
+      });
+
+      function print(type, text) {
+        resultDiv.innerHTML += `${type}: ${text}<br>`;
+      }
+
+      selectBox.on('change', ev =>
+        print(ev.type, `${ev.prev.getLabel()} -> ${ev.curr.getLabel()}`)
+      );
+      selectBox.on('open', ev => print(ev.type, 'select box'));
+      selectBox.on('close', ev => print(ev.type, 'select box'));
+    </script>
+  </body>
+</html>

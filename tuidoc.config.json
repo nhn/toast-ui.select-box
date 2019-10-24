@@ -1,0 +1,37 @@
+{
+  "header": {
+    "logo": {
+      "src": "https://uicdn.toast.com/toastui/img/tui-component-bi-white.png"
+    },
+    "title": {
+      "text": "Select Box",
+      "linkUrl": "https://github.com/dotaitch/toast-ui.select-box"
+    }
+  },
+  "footer": [
+    {
+      "title": "NHN",
+      "linkUrl": "https://github.com/nhn"
+    },
+    {
+      "title": "FE Development Lab",
+      "linkUrl": "https://github.com/nhn/fe.javascript"
+    }
+  ],
+  "main": {
+    "filePath": "README.md"
+  },
+  "api": {
+    "filePath": "src/js/**",
+    "permalink": false
+  },
+  "examples": {
+    "filePath": "examples",
+    "titles": {
+      "example01-basic": "1. Basic",
+      "example02-theme": "2. Theme",
+      "example03-custom-events": "3. Custom events"
+    }
+  },
+  "pathPrefix": "tui.select-box"
+}
