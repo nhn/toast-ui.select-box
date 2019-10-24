@@ -66,8 +66,7 @@ You can also see the older versions of API page on the [releases page](https://g
 
 | Theme | Custom events |
 | --- | --- |
-| ![select-box-theme](https://user-images.githubusercontent.com/8615506/67446883-03e89680-f64d-11e9-97bd-871941633490.gif) | ![select-box-custom-events](https://user-images.githubusercontent.com/8615506/67446912-195dc080-f64d-11e9-99d3-ef0f1d60742e.gif)
- |
+| ![select-box-theme](https://user-images.githubusercontent.com/8615506/67446883-03e89680-f64d-11e9-97bd-871941633490.gif) | ![select-box-custom-events](https://user-images.githubusercontent.com/8615506/67446912-195dc080-f64d-11e9-99d3-ef0f1d60742e.gif) |
 
 
 ## 🐾 Examples
