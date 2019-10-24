@@ -20,8 +20,8 @@
 
     <script type="text/javascript" src="../dist/toastui-select-box.js"></script>
     <script class="code-js">
-      const resultDiv = document.querySelector('#result');
-      const selectBox = new tui.SelectBox('#select-box', {
+      var resultDiv = document.querySelector('#result');
+      var selectBox = new tui.SelectBox('#select-box', {
         data: [
           {
             label: 'Fruits',
@@ -42,14 +42,18 @@
       });
 
       function print(type, text) {
-        resultDiv.innerHTML += `${type}: ${text}<br>`;
+        resultDiv.innerHTML += type + ': ' + text + '<br>';
       }
 
-      selectBox.on('change', ev =>
-        print(ev.type, `${ev.prev.getLabel()} -> ${ev.curr.getLabel()}`)
-      );
-      selectBox.on('open', ev => print(ev.type, 'select box'));
-      selectBox.on('close', ev => print(ev.type, 'select box'));
+      selectBox.on('change', function(ev) {
+        print(ev.type, ev.prev.getLabel() + ' -> ' + ev.curr.getLabel());
+      });
+      selectBox.on('open', function(ev) {
+        print(ev.type, 'select box');
+      });
+      selectBox.on('close', function(ev) {
+        print(ev.type, 'select box');
+      });
     </script>
   </body>
 </html>
