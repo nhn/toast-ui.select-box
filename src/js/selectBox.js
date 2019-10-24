@@ -73,7 +73,37 @@ import Theme from './theme';
  * SelectBox provides some custom events: ({@link SelectBox#event-open open}, {@link SelectBox#event-close close}, {@link SelectBox#event-disable disable}, {@link SelectBox#event-enable enable}, {@link SelectBox#event-change change}).
  * You can bind event handlers by {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#on selectBox.on(eventName, handler)} and unbind by {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents#off selectBox.off(eventName, handler)}.
  * Refer to the {@link https://nhn.github.io/tui.code-snippet/latest/CustomEvents CustomEvents} document at {@link https://github.com/nhn/tui.code-snippet tui-code-snippet} to know how to bind, and unbind custom events.
+ * The example using custom events can be found {@link tutorial-example03-custom-events here}.
  * @typedef {class} CustomEvents
+ * @example
+ * // bind 'change' event
+ * selectBox.on('change', ev => {
+ *   console.log(`selected item is changed from ${ev.prev.getLabel()} to ${ev.curr.getLabel()}.`);
+ * });
+ *
+ * // bind 'disable' and enable event
+ * const print = ev => {
+ *   let target = '';
+ *   if (ev.target instanceof SelectBox) {
+ *     target = 'Select box';
+ *   } else {
+ *     target = ev.target.getLabel();
+ *   }
+ *   console.log(`${target} is ${ev.type}.`);
+ * }
+ * selectBox.on({
+ *   disable: print,
+ *   enable: print
+ * });
+ *
+ * // unbind change event
+ * selectBox.off('change');
+ *
+ * // unbind disable event
+ * selectBox.off(disable, print);
+ *
+ * // unbind all events
+ * selectBox.off();
  */
 
 /**
@@ -97,6 +127,7 @@ import Theme from './theme';
  * Data of an {@link ItemGroup item group}.
  * It is used for creating a {@link SelectBox}.
  * ItemGroup supports only 1 level choices, so it does not work to add item groups in the item group.
+ * The example using item groups can be found {@link tutorial-example01-basic here}.
  * @typedef {object} itemGroupData - data for {@link ItemGroup item group}
  * @property {string} label - label to be displayed
  * @property {array} data - {@link itemData data for item}
@@ -107,7 +138,7 @@ import Theme from './theme';
  *   data: [
  *     { label: 'disable', value: 'disable' },
  *     { label: 'none', value: '0' }
- *   ]
+ *   ],
  *   disabled: true
  * };
  */
