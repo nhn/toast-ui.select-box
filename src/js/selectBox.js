@@ -248,12 +248,17 @@ class SelectBox {
    * @private
    */
   bindEvents() {
-    on(document, 'click', ev => {
-      const target = getTarget(ev);
-      if (!closest(target, `.${cls.SELECT_BOX}`)) {
-        this.close();
-      }
-    });
+    on(
+      document,
+      'click',
+      ev => {
+        const target = getTarget(ev);
+        if (!closest(target, `.${cls.SELECT_BOX}`) && this.opened) {
+          this.close();
+        }
+      },
+      this
+    );
     on(this.el, 'click', ev => this.handleClick(ev, cls));
     on(this.el, 'mouseover', ev => this.handleMouseover(ev, cls));
     on(this.el, 'keydown', ev => this.handleKeydown(ev, cls));
@@ -323,29 +328,43 @@ class SelectBox {
   /**
    * Handle keydown events
    * @param {Event} ev - an event
-   * @param {object} cls - cls
+   * @param {object} classNames - cls
    * @private
    */
-  handleKeydown(ev, { INPUT, ITEM }) {
-    const target = getTarget(ev);
+  handleKeydown(ev, classNames) {
     const key = identifyKey(ev);
-    const keys = ['arrowUp', 'arrowDown', 'space', 'enter', 'escape'];
+    const closeKeys = ['tab', 'escape'];
+    const activeKeys = ['arrowUp', 'arrowDown', 'space', 'enter'];
 
-    if (key === 'tab') {
+    if (closeKeys.indexOf(key) > -1 && this.opened) {
       this.close();
-    } else if (keys.indexOf(key) > -1) {
-      preventDefault(ev);
-
-      const itemEl = closest(target, `.${ITEM}`);
-
       if (key === 'escape') {
-        this.close();
         this.input.focus();
-      } else if (itemEl) {
-        this.pressKeyOnItem(key, itemEl);
-      } else if (closest(target, `.${INPUT}`)) {
-        this.pressKeyOnInput(key);
       }
+    } else if (activeKeys.indexOf(key) > -1) {
+      preventDefault(ev);
+      this.activateKeydown(ev, key, classNames);
+    }
+  }
+
+  /**
+   * Activate keydown events
+   * @param {Event} ev - an event
+   * @param {string} key - key pressed
+   * @param {object} classNames - cls
+   * @private
+   */
+  activateKeydown(ev, key, { ITEM, INPUT }) {
+    const target = getTarget(ev);
+    const itemEl = closest(target, `.${ITEM}`);
+
+    if (key === 'escape' && this.opened) {
+      this.close();
+      this.input.focus();
+    } else if (itemEl) {
+      this.pressKeyOnItem(key, itemEl);
+    } else if (closest(target, `.${INPUT}`)) {
+      this.pressKeyOnInput(key);
     }
   }
 
@@ -587,7 +606,7 @@ class SelectBox {
           });
         }
 
-        if (this.autoclose) {
+        if (this.autoclose && this.opened) {
           this.close();
         }
       }
