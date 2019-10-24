@@ -1,4 +1,4 @@
-// Type definitions for TOAST UI Select Box v0.0.1
+// Type definitions for TOAST UI Select Box v1.0.0
 // TypeScript Version: 3.6.4
 
 export interface IItemData {

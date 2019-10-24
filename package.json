@@ -1,7 +1,7 @@
 {
   "name": "@toast-ui/select-box",
-  "version": "0.0.1",
-  "description": "TOAST UI Select Box",
+  "version": "1.0.0",
+  "description": "TOAST UI Components: SelectBox",
   "main": "dist/toastui-select-box",
   "types": "index.d.ts",
   "files": [
@@ -17,6 +17,10 @@
     "serve:ie8": "webpack-dev-server -d",
     "doc:serve": "tuidoc --serv",
     "doc": "tuidoc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nhn/toast-ui.select-box"
   },
   "keywords": [
     "nhn",

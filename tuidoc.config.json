@@ -5,7 +5,7 @@
     },
     "title": {
       "text": "Select Box",
-      "linkUrl": "https://github.com/dotaitch/toast-ui.select-box"
+      "linkUrl": "https://github.com/nhn/toast-ui.select-box"
     }
   },
   "footer": [
@@ -15,7 +15,7 @@
     },
     {
       "title": "FE Development Lab",
-      "linkUrl": "https://github.com/nhn/fe.javascript"
+      "linkUrl": "https://ui.toast.com/"
     }
   ],
   "main": {
@@ -23,7 +23,7 @@
   },
   "api": {
     "filePath": "src/js/**",
-    "permalink": false
+    "permalink": true
   },
   "examples": {
     "filePath": "examples",
@@ -33,5 +33,5 @@
       "example03-custom-events": "3. Custom events"
     }
   },
-  "pathPrefix": "tui.select-box"
+  "pathPrefix": "toast-ui.select-box"
 }
