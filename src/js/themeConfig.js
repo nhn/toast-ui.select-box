@@ -117,7 +117,6 @@ export default {
   'dropdown.maxHeight': '',
 
   // ItemGroup's items
-  // if you want to set the same padding value as the itemGroup.label, set to '8px'.
   'itemGroup.items.paddingLeft': '20px',
 
   // ItemGroup's label
