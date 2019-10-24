@@ -7,9 +7,6 @@ pids
 *.pid
 *.seed
 
-# Compiled files
-dist
-
 # Coverage directory used by tools like istanbul
 coverage
 
