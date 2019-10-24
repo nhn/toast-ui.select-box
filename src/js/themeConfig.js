@@ -27,8 +27,6 @@
  *   'input.width': '100%',
  *   'input.height': '29px',
  *
- *   'input.showIcon': true, // if false, arrow icon is hidden.
- *
  *   // Input when dropdown is open
  *   'input.open.border': '1px solid #aaa',
  *   'input.open.background': 'inherit',
@@ -47,7 +45,8 @@
  *   'dropdown.maxHeight': '',
  *
  *   // ItemGroup's items
- *   'itemGroup.items.paddingLeft': '20px', // if false, there is no indentation for items in itemGroup.
+ *   // if you want to set the same padding value as the itemGroup.label, set to '8px'.
+ *   'itemGroup.items.paddingLeft': '20px',
  *
  *   // ItemGroup's label
  *   'itemGroup.label.border': '0',
@@ -101,8 +100,6 @@ export default {
   'input.width': '100%',
   'input.height': '29px',
 
-  'input.showIcon': true, // if false, arrow icon is hidden.
-
   // Input when dropdown is open
   'input.open.border': '1px solid #aaa',
   'input.open.background': 'inherit',
@@ -121,7 +118,7 @@ export default {
   'dropdown.maxHeight': '',
 
   // ItemGroup's items
-  'itemGroup.items.paddingLeft': '20px', // if false, there is no indentation for items in itemGroup.
+  'itemGroup.items.paddingLeft': '20px',
 
   // ItemGroup's label
   'itemGroup.label.border': '0',
