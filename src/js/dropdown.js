@@ -245,17 +245,35 @@ export default class Dropdown {
   moveHighlightedItem(direction) {
     const highlightedItem = this.getHighlightedItem();
     const items = this.getItems();
+    const { length } = items;
 
     let index = items.indexOf(highlightedItem);
     if (index > -1) {
-      index += direction;
-      for (; index < items.length && index >= 0; index += direction) {
+      index = this.getItemIndex(index, length, direction);
+
+      while (index < length && index >= 0) {
         if (!items[index].isDisabled()) {
           this.highlight(items[index]);
           break;
         }
+
+        index = this.getItemIndex(index, length, direction);
       }
     }
+  }
+
+  /**
+   * Get circular index of Items for highlighting
+   * @param {number} index - previous index
+   * @param {number} length - length of items
+   * @param {number} direction - direction to move
+   * @return {number}
+   */
+  getItemIndex(index, length, direction) {
+    index += direction + length;
+    index %= length;
+
+    return index;
   }
 
   /**
