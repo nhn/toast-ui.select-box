@@ -95,6 +95,27 @@ describe('Dropdown', () => {
       dropdown.moveHighlightedItem(-1);
       expect(dropdown.highlightedItem).toBe(dropdown.getItem(0));
     });
+
+    it('should circular move a highlight', () => {
+      dropdown.highlight(0);
+
+      dropdown.moveHighlightedItem(-1);
+      expect(dropdown.highlightedItem).toBe(dropdown.getItem(2));
+
+      dropdown.moveHighlightedItem(1);
+      expect(dropdown.highlightedItem).toBe(dropdown.getItem(0));
+    });
+
+    it('should circular move a highlight among enable items', () => {
+      dropdown.items[0].items[0].disable();
+      dropdown.highlight(1);
+
+      dropdown.moveHighlightedItem(-1);
+      expect(dropdown.highlightedItem).toBe(dropdown.getItem(2));
+
+      dropdown.moveHighlightedItem(1);
+      expect(dropdown.highlightedItem).toBe(dropdown.getItem(1));
+    });
   });
 
   describe('open and highlight', () => {

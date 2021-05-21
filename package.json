@@ -1,6 +1,6 @@
 {
   "name": "@toast-ui/select-box",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TOAST UI Components: SelectBox",
   "main": "dist/toastui-select-box",
   "types": "index.d.ts",
