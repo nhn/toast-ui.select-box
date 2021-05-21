@@ -251,7 +251,7 @@ export default class Dropdown {
     if (index > -1) {
       index = this.getItemIndex(index, length, direction);
 
-      while (index < length && index >= 0) {
+      while (index < length) {
         if (!items[index].isDisabled()) {
           this.highlight(items[index]);
           break;
@@ -270,10 +270,7 @@ export default class Dropdown {
    * @return {number}
    */
   getItemIndex(index, length, direction) {
-    index += direction + length;
-    index %= length;
-
-    return index;
+    return (index + direction + length) % length;
   }
 
   /**
