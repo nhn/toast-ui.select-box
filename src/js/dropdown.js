@@ -262,13 +262,6 @@ export default class Dropdown {
     }
   }
 
-  /**
-   * Get circular index of Items for highlighting
-   * @param {number} index - previous index
-   * @param {number} length - length of items
-   * @param {number} direction - direction to move
-   * @return {number}
-   */
   getItemIndex(index, length, direction) {
     return (index + direction + length) % length;
   }
