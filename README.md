@@ -18,7 +18,6 @@
 * [Examples](#-examples)
 * [Install](#-install)
 * [Usage](#-usage)
-* [Dependency](#-dependency)
 * [Browser Support](#-browser-support)
 * [Pull Request Steps](#-pull-request-steps)
 * [Contributing](#-contributing)
@@ -174,10 +173,6 @@ console.log(selectBox.getSelectedItem().getLabel()); // 'Apple'
 ```
 
 For more information about the API, please see [here](https://nhn.github.io/toast-ui.select-box/latest/SelectBox).
-
-
-## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >= 2.0.0
 
 
 ## 🌏 Browser Support
