@@ -13,6 +13,12 @@
   border: 1px solid #ddd;
 }
 
+.input:focus {
+  outline: 5px auto Highlight;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+
 .input.open,
 .dropdown {
   border: 1px solid #aaa;
