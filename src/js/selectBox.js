@@ -288,6 +288,7 @@ class SelectBox {
     } else if (closest(target, `.${INPUT}`)) {
       this.toggle();
     }
+    this.focus();
   }
 
   /**
