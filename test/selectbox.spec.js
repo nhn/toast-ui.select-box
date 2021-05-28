@@ -59,12 +59,12 @@ describe('SelectBox', () => {
   });
 
   it('should focus input when the focus api call', () => {
-    const { input } = selectBox;
+    const { el } = selectBox.input;
 
-    expect(input.el).not.toBeFocused();
+    expect(el).not.toBeFocused();
 
     selectBox.focus();
-    expect(input.el).toBeFocused();
+    expect(el).toBeFocused();
   });
 
   describe('disable/enable', () => {
