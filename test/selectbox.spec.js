@@ -58,6 +58,15 @@ describe('SelectBox', () => {
     expect(dropdown.el).toHaveClass(cls.HIDDEN);
   });
 
+  it('should focus input when the focus api call', () => {
+    const { input } = selectBox;
+
+    expect(input.el).not.toBeFocused();
+
+    selectBox.focus();
+    expect(input.el).toBeFocused();
+  });
+
   describe('disable/enable', () => {
     it('should disable and enable a select box.', () => {
       const { input, dropdown } = selectBox;
