@@ -9,7 +9,10 @@ describe('ItemGroup', () => {
       <div id="native-container"></div>`);
     itemGroup = new ItemGroup({
       label: 'fruit',
-      data: [{ label: 'apple', value: 1 }, { label: 'banana', value: 2 }],
+      data: [
+        { label: 'apple', value: 1 },
+        { label: 'banana', value: 2 }
+      ],
       index: 0
     });
     itemGroup.appendToContainer(
@@ -24,7 +27,7 @@ describe('ItemGroup', () => {
 
   it('should make label, itemContainer, optgroup elements.', () => {
     const { itemContainerEl, nativeEl } = itemGroup;
-    expect(document.querySelector(`.${cls.ITEM_GROUP_LABEL}`)).toHaveText('fruit');
+    expect(document.querySelector(`.${cls.ITEM_GROUP_LABEL}`)).toHaveTextContent('fruit');
     expect(document.querySelector(`.${cls.ITEM_GROUP}`)).toBe(itemContainerEl);
     expect(document.querySelector('optgroup')).toBe(nativeEl);
   });
@@ -40,7 +43,10 @@ describe('ItemGroup', () => {
       itemGroup.destroy();
       itemGroup = new ItemGroup({
         label: 'fruit',
-        data: [{ label: 'apple', value: 1 }, { label: 'banana', value: 2 }],
+        data: [
+          { label: 'apple', value: 1 },
+          { label: 'banana', value: 2 }
+        ],
         index: 0,
         disabled: true
       });
@@ -60,7 +66,10 @@ describe('ItemGroup', () => {
       itemGroup.destroy();
       itemGroup = new ItemGroup({
         label: 'fruit',
-        data: [{ label: 'apple', value: 1, disabled: true }, { label: 'banana', value: 2 }],
+        data: [
+          { label: 'apple', value: 1, disabled: true },
+          { label: 'banana', value: 2 }
+        ],
         index: 0
       });
 

@@ -46,12 +46,13 @@ describe('Input', () => {
 
   it('should focus an input.', () => {
     input.focus();
-    expect(input.el).toBeFocused();
+    expect(input.el).toHaveFocus();
   });
 
   it('should change text in the placeholder by the Item.', () => {
     const item = new Item({ value: 1, label: 'first', index: 0 });
     input.changeText(item);
-    expect(input.placeholderEl).toContainText('first');
+
+    expect(input.placeholderEl.textContent).toContain('first');
   });
 });

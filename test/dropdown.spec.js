@@ -11,7 +11,10 @@ describe('Dropdown', () => {
       data: [
         {
           label: 'fruit',
-          data: [{ label: 'apple', value: 1 }, { label: 'banana', value: 2 }]
+          data: [
+            { label: 'apple', value: 1 },
+            { label: 'banana', value: 2 }
+          ]
         },
         { label: 'none', value: 0 }
       ]
