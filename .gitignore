@@ -10,9 +10,6 @@ pids
 # Compiled files
 dist
 
-# Coverage directory used by tools like istanbul
-coverage
-
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
@@ -46,10 +43,6 @@ Desktop.ini
 
 # build
 build
-
-#report / screenshots / cypress
-report
-screenshots
 
 # Atom
 tags

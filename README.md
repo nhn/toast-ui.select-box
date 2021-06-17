@@ -12,17 +12,31 @@
 
 
 ## 🚩 Table of Contents
-* [Collect statistics on the use of open source](#Collect-statistics-on-the-use-of-open-source)
-* [Documents](#-documents)
-* [Features](#-features)
-* [Examples](#-examples)
-* [Install](#-install)
-* [Usage](#-usage)
-* [Browser Support](#-browser-support)
-* [Pull Request Steps](#-pull-request-steps)
-* [Contributing](#-contributing)
-* [TOAST UI Family](#-toast-ui-family)
-* [License](#-license)
+
+- [Collect statistics on the use of open source](#collect-statistics-on-the-use-of-open-source)
+- [📙 Documents](#-documents)
+- [🎨 Features](#-features)
+- [🐾 Examples](#-examples)
+- [💾 Install](#-install)
+  - [Via Package Manager](#via-package-manager)
+    - [npm](#npm)
+  - [Via Contents Delivery Network (CDN)](#via-contents-delivery-network-cdn)
+  - [Download Source Files](#download-source-files)
+- [🔨 Usage](#-usage)
+  - [HTML](#html)
+  - [JavaScript](#javascript)
+    - [Using namespace in browser environment](#using-namespace-in-browser-environment)
+    - [Using module format in node environment](#using-module-format-in-node-environment)
+- [🌏 Browser Support](#-browser-support)
+- [🔧 Pull Request Steps](#-pull-request-steps)
+  - [Setup](#setup)
+  - [Develop](#develop)
+    - [Run dev server](#run-dev-server)
+    - [Run test](#run-test)
+  - [Pull Request](#pull-request)
+- [💬 Contributing](#-contributing)
+- [🍞 TOAST UI Family](#-toast-ui-family)
+- [📜 License](#-license)
 
 
 ## Collect statistics on the use of open source
@@ -205,13 +219,13 @@ Let's start development!
 You can see your code is reflected as soon as you saving the codes by running a server.
 Don't miss adding test cases and then make green rights.
 
-#### Run webpack-dev-server
+#### Run dev server
 
 ``` sh
 $ npm run serve
 ```
 
-#### Run karma test
+#### Run test
 
 ``` sh
 $ npm run test
