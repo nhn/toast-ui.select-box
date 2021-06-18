@@ -44,11 +44,11 @@ describe('Item', () => {
 
   it('should select and deselect an Item.', () => {
     item.select('1');
-    expect(item.nativeEl).toBeSelected();
+    expect(item.nativeEl.selected).toBe(true);
     expect(item.el).toHaveClass(cls.SELECTED);
 
     item.deselect();
-    expect(item.nativeEl).not.toBeSelected();
+    expect(item.nativeEl.selected).toBe(false);
     expect(item.el).not.toHaveClass(cls.SELECTED);
   });
 

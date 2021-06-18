@@ -40,7 +40,7 @@ describe('SelectBox', () => {
   describe('initialization', () => {
     it('should select the first Item when there is no placeholder.', () => {
       createSelectBox();
-      expect(document.querySelector('option')).toBeSelected();
+      expect(document.querySelector('option').selected).toBe(true);
     });
 
     it('should focus input after it appends to the container when autofocus is true.', () => {

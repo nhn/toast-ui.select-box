@@ -53,6 +53,6 @@ describe('Input', () => {
     const item = new Item({ value: 1, label: 'first', index: 0 });
     input.changeText(item);
 
-    expect(input.placeholderEl.textContent).toContain('first');
+    expect(input.placeholderEl).toHaveTextContent('first');
   });
 });
