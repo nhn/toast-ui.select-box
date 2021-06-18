@@ -13,7 +13,10 @@ describe('SelectBox', () => {
       data: [
         {
           label: 'fruit',
-          data: [{ label: 'apple', value: 1 }, { label: 'banana', value: 2 }]
+          data: [
+            { label: 'apple', value: 1 },
+            { label: 'banana', value: 2 }
+          ]
         },
         { label: 'none', value: 0 }
       ],
@@ -37,12 +40,12 @@ describe('SelectBox', () => {
   describe('initialization', () => {
     it('should select the first Item when there is no placeholder.', () => {
       createSelectBox();
-      expect(document.querySelector('option')).toBeSelected();
+      expect(document.querySelector('option').selected).toBe(true);
     });
 
     it('should focus input after it appends to the container when autofocus is true.', () => {
       createSelectBox({ autofocus: true });
-      expect(selectBox.input.el).toBeFocused();
+      expect(selectBox.input.el).toHaveFocus();
     });
   });
 
@@ -61,10 +64,10 @@ describe('SelectBox', () => {
   it('should focus input when the focus api call', () => {
     const { el } = selectBox.input;
 
-    expect(el).not.toBeFocused();
+    expect(el).not.toHaveFocus();
 
     selectBox.focus();
-    expect(el).toBeFocused();
+    expect(el).toHaveFocus();
   });
 
   describe('disable/enable', () => {
@@ -122,7 +125,8 @@ describe('SelectBox', () => {
       const result = selectBox.select('0');
       expect(result).toBe(item);
       expect(selectBox.getSelectedItem()).toBe(item);
-      expect(input.placeholderEl).toHaveText('none');
+
+      expect(input.placeholderEl).toHaveTextContent('none');
 
       selectBox.deselect();
       expect(selectBox.getSelectedItem()).toBe(null);
@@ -133,7 +137,7 @@ describe('SelectBox', () => {
 
       selectBox.select(0);
       selectBox.select('wrong value');
-      expect(input.placeholderEl).toHaveText('apple');
+      expect(input.placeholderEl).toHaveTextContent('apple');
     });
 
     it('should be a placeholder when deselect if there is a placeholder.', () => {
@@ -141,7 +145,7 @@ describe('SelectBox', () => {
 
       selectBox.select(0);
       selectBox.deselect();
-      expect(input.placeholderEl).toHaveText('Please select an option.');
+      expect(input.placeholderEl).toHaveTextContent('Please select an option.');
     });
 
     it('should be empty when deselect if there is no placeholder.', () => {
@@ -151,7 +155,7 @@ describe('SelectBox', () => {
 
       selectBox.select(0);
       selectBox.deselect();
-      expect(input.placeholderEl).toHaveText('');
+      expect(input.placeholderEl).toHaveTextContent('');
     });
 
     it('should select an Item by its value (string) and index (number).', () => {
@@ -187,7 +191,7 @@ describe('SelectBox', () => {
       const result = selectBox.select('0');
       expect(result).toBe(item);
       expect(selectBox.getSelectedItem()).toBe(item);
-      expect(input.placeholderEl).toHaveText('none');
+      expect(input.placeholderEl).toHaveTextContent('none');
     });
 
     it('should close a dropdown list when click anywhere except the select box.', () => {
@@ -222,7 +226,7 @@ describe('SelectBox', () => {
 
     it('should move a highlighted Item when press ArrowUp and ArrowDown on the input if a dropdown is opened.', () => {
       selectBox.open();
-      spyOn(selectBox.dropdown, 'moveHighlightedItem');
+      selectBox.dropdown.moveHighlightedItem = jest.fn();
 
       selectBox.handleKeydown(
         { target: selectBox.input.el, key: 'ArrowUp', preventDefault: () => {} },
@@ -253,7 +257,7 @@ describe('SelectBox', () => {
 
     it('should close a dropdown list when press Escape or Tab on the input and Items.', () => {
       selectBox.open();
-      spyOn(selectBox, 'close');
+      selectBox.close = jest.fn();
 
       selectBox.handleKeydown(
         { target: selectBox.getItem(2).el, key: 'Escape', preventDefault: () => {} },
@@ -273,7 +277,7 @@ describe('SelectBox', () => {
     let spy;
 
     beforeEach(() => {
-      spy = jasmine.createSpy();
+      spy = jest.fn();
     });
 
     afterEach(() => selectBox.off());

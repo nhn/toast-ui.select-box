@@ -32,7 +32,7 @@ describe('Theme', () => {
   });
 
   it('should make a style element.', () => {
-    expect(theme.styleEl).toBeInDOM();
+    expect(theme.styleEl).toBeInTheDocument();
   });
 
   it('should make css strings.', () => {

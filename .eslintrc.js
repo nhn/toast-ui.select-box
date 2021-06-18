@@ -9,7 +9,7 @@ module.exports = {
     browser: true,
     node: true,
     es6: true,
-    jasmine: true
+    jest: true
   },
   extends: ['tui/es6', 'plugin:prettier/recommended'],
   globals: {

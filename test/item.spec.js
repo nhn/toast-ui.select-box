@@ -44,21 +44,21 @@ describe('Item', () => {
 
   it('should select and deselect an Item.', () => {
     item.select('1');
-    expect(item.nativeEl).toBeSelected();
+    expect(item.nativeEl.selected).toBe(true);
     expect(item.el).toHaveClass(cls.SELECTED);
 
     item.deselect();
-    expect(item.nativeEl).not.toBeSelected();
+    expect(item.nativeEl.selected).toBe(false);
     expect(item.el).not.toHaveClass(cls.SELECTED);
   });
 
   it('should highlight and dehighlight an Item.', () => {
     item.highlight();
     expect(item.el).toHaveClass(cls.HIGHLIGHT);
-    expect(item.el).toBeFocused();
+    expect(item.el).toHaveFocus();
 
     item.dehighlight();
     expect(item.el).not.toHaveClass(cls.HIGHLIGHT);
-    expect(item.el).not.toBeFocused();
+    expect(item.el).not.toHaveFocus();
   });
 });

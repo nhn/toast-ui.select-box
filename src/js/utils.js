@@ -43,7 +43,7 @@ export const createElement = (tagName, content, options, container) => {
   const el = document.createElement(tagName);
 
   if (content) {
-    el.innerText = content;
+    el.textContent = content;
   }
 
   forEachOwnProperties(options, (value, key) => {

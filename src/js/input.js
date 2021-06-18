@@ -103,9 +103,9 @@ export default class Input {
    */
   changeText(item) {
     if (item) {
-      this.placeholderEl.innerText = item.getLabel();
+      this.placeholderEl.textContent = item.getLabel();
     } else {
-      this.placeholderEl.innerText = this.placeholderText;
+      this.placeholderEl.textContent = this.placeholderText;
     }
   }
 
