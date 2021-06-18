@@ -202,7 +202,7 @@ class SelectBox {
     this.appendToContainer(container);
 
     if (autofocus) {
-      this.input.focus();
+      this.focus();
     }
 
     if (usageStatistics) {
@@ -288,6 +288,7 @@ class SelectBox {
     } else if (closest(target, `.${INPUT}`)) {
       this.toggle();
     }
+    this.focus();
   }
 
   /**
@@ -339,7 +340,7 @@ class SelectBox {
     if (closeKeys.indexOf(key) > -1 && this.opened) {
       this.close();
       if (key === 'escape') {
-        this.input.focus();
+        this.focus();
       }
     } else if (activeKeys.indexOf(key) > -1) {
       preventDefault(ev);
@@ -360,7 +361,7 @@ class SelectBox {
 
     if (key === 'escape' && this.opened) {
       this.close();
-      this.input.focus();
+      this.focus();
     } else if (itemEl) {
       this.pressKeyOnItem(key, itemEl);
     } else if (closest(target, `.${INPUT}`)) {
@@ -403,7 +404,7 @@ class SelectBox {
   selectByKeydown(itemEl) {
     this.select(itemEl.getAttribute('data-value'));
     this.close();
-    this.input.focus();
+    this.focus();
   }
 
   /**
@@ -549,6 +550,15 @@ class SelectBox {
     } else {
       this.open();
     }
+  }
+
+  /**
+   * Focus to select box.
+   * @example
+   * selectBox.focus();
+   */
+  focus() {
+    this.input.focus();
   }
 
   /**

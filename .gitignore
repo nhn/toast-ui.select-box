@@ -7,8 +7,8 @@ pids
 *.pid
 *.seed
 
-# Coverage directory used by tools like istanbul
-coverage
+# Compiled files
+dist
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
@@ -43,10 +43,6 @@ Desktop.ini
 
 # build
 build
-
-#report / screenshots / cypress
-report
-screenshots
 
 # Atom
 tags
