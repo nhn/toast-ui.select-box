@@ -1,6 +1,5 @@
 /**
  * @fileoverview SelectBox
- * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
 import CustomEvents from 'tui-code-snippet/customEvents/customEvents';

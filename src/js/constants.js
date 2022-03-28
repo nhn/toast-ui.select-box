@@ -1,6 +1,5 @@
 /**
  * @fileoverview The static values
- * @author NHN. FE dev team.<dl_javascript@nhn.com>
  */
 
 import forEachOwnProperties from 'tui-code-snippet/collection/forEachOwnProperties';

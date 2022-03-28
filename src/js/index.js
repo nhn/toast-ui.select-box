@@ -1,6 +1,5 @@
 /**
  * @fileoverview
- * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
 import SelectBox from './selectBox';

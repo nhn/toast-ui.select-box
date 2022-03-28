@@ -1,6 +1,5 @@
 /**
  * @fileoverview ItemGroup
- * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
 import addClass from 'tui-code-snippet/domUtil/addClass';
