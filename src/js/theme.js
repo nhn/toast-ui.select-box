@@ -1,6 +1,5 @@
 /**
  * @fileoverview Theme
- * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
 import forEachOwnProperties from 'tui-code-snippet/collection/forEachOwnProperties';

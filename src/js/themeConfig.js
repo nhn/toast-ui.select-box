@@ -1,6 +1,5 @@
 /**
  * @fileoverview Theme configuration
- * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 
 /**

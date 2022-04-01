@@ -1,6 +1,5 @@
 /**
  * @fileoverview Utility functions related to key events
- * @author NHN. FE dev team.<dl_javascript@nhn.com>
  */
 
 const keyCodeMap = {
